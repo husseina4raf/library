@@ -1,0 +1,26 @@
+.bookCard{
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+.bookCard {
+    width: 200px;
+}
+
+.btnBorrow{
+    background-color:  rgb(82, 9, 9);
+    color: #fff;
+    padding: 5px 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    border: none;
+    margin-top: 25px;
+}
+h6{
+    text-transform: uppercase;
+    font-size: 15px;
+    line-height: 14px;
+    letter-spacing: 1px;
+    padding-top: 25px;
+
+}

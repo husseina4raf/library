@@ -1,0 +1,26 @@
+.bookCard{
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+.bookCard {
+    width: 200px;
+}
+
+.btnBorrow{
+    background-color: #535C58;
+    color: #fff;
+    padding: 5px 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    border: none;
+    margin-top: 25px;
+}
+
+.btnBorrow:hover{
+    color: brown;
+}
+.titleWrapper{
+    min-width: 100px;
+    min-height: 85px;
+}

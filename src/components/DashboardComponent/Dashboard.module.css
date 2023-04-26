@@ -1,0 +1,28 @@
+.dashboradItemWrapper{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 50px;
+    
+
+}
+
+.dashboradItem{
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid gray;
+    padding: 13px !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    border-radius:10px ;
+}
+
+.dashboradItem p {
+    margin-top: 10px;
+}
+
+a {
+    color: black !important;
+}
