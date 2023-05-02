@@ -25,6 +25,8 @@ const Login = () => {
         var {roles,sub}=decoded;
         localStorage.setItem('role',roles);
         localStorage.setItem('userId',sub);
+        localStorage.setItem('role',roles);
+        localStorage.setItem('adminId',sub);
         navigate('/home');
 
         console.log(roles);

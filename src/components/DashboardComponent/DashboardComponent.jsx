@@ -10,6 +10,10 @@ import AddAdminComponet from '../AddAdminComponent/AddAdminComponet';
 import AddPublisherComponent from '../AddPublisherComponent/AddPublisherComponent';
 import AddDistributorComponent from '../AddDistributorComponent/AddDistributorComponent';
 const DashboardComponent = () => {
+
+    const adminRole=localStorage.getItem('role');
+
+
     return (
         <>
          
@@ -41,12 +45,13 @@ const DashboardComponent = () => {
             <i class="fa-solid fa-user-plus"></i>
             <p>Add Distributors</p>
             </NavLink>
-
+            { adminRole!=="Admin" &&
              <NavLink className={styles.dashboradItem} to='addaudit'>
             <i class="fa-solid fa-file-shield"></i>
             <p>Audit Logs</p>
             </NavLink>
 
+             }
 
             <NavLink className={styles.dashboradItem} to='bookstock'>
             <i class="fa-solid fa-user-plus"></i>

@@ -131,7 +131,7 @@ const AddBookComponent = () => {
 
                   </div>
                   <div className="form-group my-3">
-             <label htmlFor="exampleInputEmail1">copyWriteYear</label>
+             <label htmlFor="exampleInputEmail1">Copy Write Year</label>
              <input
                name="copyWriteYear"
                onChange={handleChange}
@@ -143,7 +143,7 @@ const AddBookComponent = () => {
                   </div>
 
                   <div className="form-group my-3">
-             <label htmlFor="exampleInputEmail1">numberOfPages</label>
+             <label htmlFor="exampleInputEmail1">Number Of Pages</label>
              <input
                name="numberOfPages"
                onChange={handleChange}
@@ -156,13 +156,6 @@ const AddBookComponent = () => {
              
                   <div className="form-group my-3">
              <label htmlFor="exampleInputEmail1"> Publisher </label>
-             {/* <input
-               name="editionNumber"
-               onChange={handleChange}
-               value={values.editionNumber}
-               onBlur={handleBlur} 
-             
-             type="number" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' /> */}
             <select
                       name='publisherIds'
                       onChange={handleChange}
@@ -181,20 +174,14 @@ const AddBookComponent = () => {
 
                   <div className="form-group my-3">
              <label htmlFor="exampleInputEmail1"> author </label>
-             {/* <input
-               name="editionNumber"
-               onChange={handleChange}
-               value={values.editionNumber}
-               onBlur={handleBlur} 
              
-             type="number" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' /> */}
             <select
                       name='authorIds'
                       onChange={handleChange}
                          value={values.authorIds}
                          onBlur={handleBlur}
                       >
-                      <option value="" label="author Name">
+                      <option value="" label="Author Name">
                       author Name
                         </option>
                         {authors.map((item)=>(
@@ -206,7 +193,7 @@ const AddBookComponent = () => {
 
 
                   <div className="form-group my-3">
-             <label htmlFor="exampleInputEmail1" id='gg'> genre </label>
+             <label htmlFor="exampleInputEmail1" > Genre </label>
              {/* <input
                name="editionNumber"
                onChange={handleChange}
@@ -220,7 +207,7 @@ const AddBookComponent = () => {
                          value={values.genreIds}
                          onBlur={handleBlur}
                       >
-                      <option value="" label="genre Name">
+                      <option value="" label="Genre Name">
                       genre Name
                         </option>
                         {genres.map((item)=>(
@@ -229,14 +216,6 @@ const AddBookComponent = () => {
                         
                       </select>
                   </div>
-
-
-                  {/* <div className="form-group my-3">
-             <label htmlFor="exampleInputEmail1"></label>
-             <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  placeholder='Author'/>
-
-                  </div> */}
-    
              </div>       
              
              <div>
