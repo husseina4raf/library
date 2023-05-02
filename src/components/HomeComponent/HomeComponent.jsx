@@ -80,7 +80,7 @@ const HomeComponent = () => {
     const [computerBooks,compSetState]=useState([]);
     const [langBooks,langSetState]=useState([]);
     const [archBooks,archSetState]=useState([]);
-    const [electricalBooks,elecSetState]=useState([]);
+    const [PhysBooks,PhysState]=useState([]);
 
     const responsive = {
         superLargeDesktop: {
@@ -116,18 +116,19 @@ const HomeComponent = () => {
          console.log(err);
        })
 
-       axios.get('http://localhost:3000/books/Arch.').then(res=>{
+       axios.get('http://localhost:3000/books/').then(res=>{
         archSetState(res.data);
      }).catch(err=>{
        console.log(err);
      })
 
-    //    axios.get('http://localhost:3000/books/Mechanics').then(res=>{
-    //     mechSetState(res.data);
-    //     console.log(mechBooks);
-    //  }).catch(err=>{
-    //    console.log(err);
-    //  })
+     axios.get('http://localhost:3000/books/Phys.').then(res=>{
+      PhysState(res.data);
+   }).catch(err=>{
+     console.log(err);
+   })
+
+   
 
 
       },[])
@@ -223,6 +224,26 @@ const HomeComponent = () => {
        ))}
         
       </Carousel>   
+
+      <h6 className='my-3'>Phys.</h6>
+        <Carousel
+        centerMode={true}
+        itemClass="carousel-item-padding-40-px"
+        responsive={responsive}>
+    
+       {PhysBooks.map((item)=>(
+        <div className={styles.bookCard} key={item.id}>
+            <div className={styles.titleWrapper}>
+            <h6>{item.bookTitle}</h6>
+            </div>
+            <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
+            <button onClick={()=>{borrowBook(item.id)}} className={styles.btnBorrow} >Borrow</button>
+        </div>
+       ))}
+        
+      </Carousel> 
+ 
+      
 
 
       </div>

@@ -1,12 +1,14 @@
 import React from 'react';
 import { NavLink ,Outlet,Routes,Route} from 'react-router-dom';
 import styles from './Dashboard.module.css'
-import AddAdminComponent from '../AddAdminComponent/AddAdminComponent';
 import AddAuthorComponent from '../AddAuthorComponent/AddAuthorComponent';
 import AddUserCompoonent from '../AddUserCmponent/AddUserCompoonent';
 import AddBookComponent from '../AddBookCompnent/AddBookComponent';
 import AuditLogsComponet from '../AuditLogsComponent/AuditLogsComponet';
 import BookStockComponent from '../BookStockComponent/BookStockComponent';
+import AddAdminComponet from '../AddAdminComponent/AddAdminComponet';
+import AddPublisherComponent from '../AddPublisherComponent/AddPublisherComponent';
+import AddDistributorComponent from '../AddDistributorComponent/AddDistributorComponent';
 const DashboardComponent = () => {
     return (
         <>
@@ -16,6 +18,7 @@ const DashboardComponent = () => {
             <i className="fa-solid fa-user-plus"></i>
             <p>Add User</p>
             </NavLink>
+             
              
             
             <NavLink className={styles.dashboradItem} to='addbook' >
@@ -27,6 +30,18 @@ const DashboardComponent = () => {
             <i class="fa-solid fa-user-plus"></i>
             <p>Add Author</p>
             </NavLink>
+
+            <NavLink className={styles.dashboradItem} to='addpublisher'>
+            <i class="fa-solid fa-user-plus"></i>
+            <p>Add Publishers</p>
+            </NavLink>
+
+
+            <NavLink className={styles.dashboradItem} to='adddistributor'>
+            <i class="fa-solid fa-user-plus"></i>
+            <p>Add Distributors</p>
+            </NavLink>
+
              <NavLink className={styles.dashboradItem} to='addaudit'>
             <i class="fa-solid fa-file-shield"></i>
             <p>Audit Logs</p>
@@ -44,12 +59,16 @@ const DashboardComponent = () => {
          <Routes>
         <Route   className={({ isActive, isPending }) =>
     isPending ? "pending" : isActive ? "active" : ""
-  } path="addadmin" element={<AddAdminComponent/>} />
+  } path="addadmin" element={<AddAdminComponet/>} />
         <Route path="adduser" element={<AddUserCompoonent/>} />
         <Route path="addauthor" element={<AddAuthorComponent/>} />
         <Route path="addbook" element={<AddBookComponent/>} />
         <Route path="addaudit" element={<AuditLogsComponet/>} />
         <Route path="bookstock" element={<BookStockComponent/>} />
+        <Route path="addpublisher" element={<AddPublisherComponent/>} />
+        <Route path="adddistributor" element={<AddDistributorComponent/>} />
+
+
 
        
       </Routes>

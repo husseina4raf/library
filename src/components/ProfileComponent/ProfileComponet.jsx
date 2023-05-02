@@ -3,6 +3,9 @@ import styles from "./Profile.module.css";
 
 
 const ProfileComponet = () => {
+
+
+    
     return (
 
         <div>
@@ -13,8 +16,8 @@ const ProfileComponet = () => {
                  <div className="col-md-12">
  
                  <div className="form-group my-3">
-                 <label htmlFor="exampleInputEmail1">Full Name</label>
-                 <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+                 <label htmlFor="exampleInputEmail1">User ID</label>
+                 <input type="number" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
    
                       </div>
         
@@ -32,24 +35,13 @@ const ProfileComponet = () => {
 
                   <div className='col-md-12 my-3'>
                      <div className='form-group'>
-                     <label htmlFor="exampleInputEmail1">Phone</label>
+                     <label htmlFor="exampleInputEmail1">Role</label>
                       <input type="phone" className="form-control" id="exampleInputpassword1" aria-describedby="nameHelp" />
 
 
                      </div>
 
-                     <div className="col-md-12 my-3">
-                         <div className="form-group">
-
-                         <label htmlFor="exampleInputEmail1">Level</label>
-                      <input type="number" className="form-control" id="exampleInputpassword1" aria-describedby="nameHelp" />
-
-                         </div>
-
-                        
-
-                     </div>
-
+                     
                     
 
                   </div>
