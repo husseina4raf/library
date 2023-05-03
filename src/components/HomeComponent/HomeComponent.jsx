@@ -1,20 +1,67 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import styles from './Home.module.css'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import axios from 'axios';
+import moment from 'moment/moment';
+import Modal from 'react-modal';
+import { useFormik } from "formik";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%,-50%)',
+  },
+};
+Modal.setAppElement('#root');
 const HomeComponent = () => {
-   var d = new Date,
-     dformat = [d.getMonth()+1,
-                d.getDate(),
-                d.getFullYear()].join('-')+' '+
-               [d.getHours(),
-                d.getMinutes(),
-                d.getSeconds()].join(':');
 
+
+
+     const onSubmit=(values,actions)=>{
+            reservedBook(values);
+        
+
+        }
+        
+        const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
+            initialValues: {
+              reservationDate:'', 
+              dueDate:''  
+            },
+            validationSchema:'',
+            onSubmit
+          });
+        
+
+  let subtitle;
+
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [bookId,setBookId]=useState()
+  function openModal(id) {
+    setBookId(id);
+  
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    subtitle.style.color = '#f00';
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
     const borrowBook=(bookStockId)=>{
       axios.post('http://localhost:3000/reservations/',{
-         reservationDate:dformat,
+         reservationDate:moment().format('YYYY-MM-DD h:mm:ss'),
         dueDate: "9999-12-31 23:59:59",
         reservationStatus: "pending",
         userId:localStorage.getItem('userId'),
@@ -76,12 +123,27 @@ const HomeComponent = () => {
 
         }
     ]);
+    const reservedBook=(data)=>{
+      console.log(bookId);
+        axios.post('http://localhost:3000/reservations/',{
+         reservationDate:data.reservationDate,
+        dueDate: data.dueDate,
+        reservationStatus: "pending",
+        userId:localStorage.getItem('userId'),
+        bookStockId:bookId
+    }).then(res=>{
+        console.log(res);
+
+    }).catch(err=>{
+        console.log(err);
+    })
+    }
 
     const [computerBooks,compSetState]=useState([]);
     const [langBooks,langSetState]=useState([]);
     const [archBooks,archSetState]=useState([]);
     const [PhysBooks,PhysState]=useState([]);
-
+  const [tasteBooks,setTastBook]=useState([]);
     const responsive = {
         superLargeDesktop: {
           // the naming can be any, depends on you.
@@ -103,6 +165,14 @@ const HomeComponent = () => {
       };
   
       useEffect(()=>{
+       
+        axios.post(`http://localhost:3000/ai-client-app/id/${localStorage.getItem("userId")}`).then(res=>{
+           setTastBook(res.data.books);
+                  
+       }).catch(err=>{
+         console.log(err);
+       })
+
         axios.get('http://localhost:3000/books/Computer').then(res=>{
            compSetState(res.data);
           //  console.log(computerBooks);
@@ -132,6 +202,7 @@ const HomeComponent = () => {
 
 
       },[])
+
     return (
         <div className="container my-4">
             <h6 className='my-3'>Books Based On Your Taste</h6>
@@ -139,13 +210,16 @@ const HomeComponent = () => {
         centerMode={true}
         itemClass="carousel-item-padding-40-px"
         responsive={responsive}>
-    
-       {books.map((item)=>(
-        <div className={styles.bookCard} key={item.id}>
-            <h5>{item.name}</h5>
-            <img className='img-fluid' src={item.imgURL} alt="book Cover" />
-            <button className={styles.btnBorrow} >Borrow</button>
-        </div>
+          
+         
+       {tasteBooks.map((item)=>(
+      <div className={styles.bookCard} key={item.id}>
+      <div className={styles.titleWrapper}>
+      <h6>{item.bookTitle}</h6>
+      </div>
+      <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
+      <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
+       </div>
        ))}
         
       </Carousel> 
@@ -174,7 +248,6 @@ const HomeComponent = () => {
         itemClass="carousel-item-padding-40-px"
         responsive={responsive}>
     
-       { console.log(computerBooks)}
        {
        computerBooks.map((item)=>(
         <div className={styles.bookCard} key={item.id}>
@@ -182,7 +255,10 @@ const HomeComponent = () => {
             <h6>{item.bookTitle}</h6>
             </div>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
-            <button onClick={()=>{borrowBook(item.id)}} className={styles.btnBorrow} >Borrow</button>
+            <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
+
+
+
         </div>
        ))}
         
@@ -201,7 +277,9 @@ const HomeComponent = () => {
             <h6>{item.bookTitle}</h6>
             </div>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
-            <button onClick={()=>{borrowBook(item.id)}} className={styles.btnBorrow} >Borrow</button>
+            <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
+
+            
         </div>
        ))}
         
@@ -219,7 +297,7 @@ const HomeComponent = () => {
             <h6>{item.bookTitle}</h6>
             </div>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
-            <button onClick={()=>{borrowBook(item.id)}} className={styles.btnBorrow} >Borrow</button>
+            <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
         </div>
        ))}
         
@@ -237,14 +315,55 @@ const HomeComponent = () => {
             <h6>{item.bookTitle}</h6>
             </div>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
-            <button onClick={()=>{borrowBook(item.id)}} className={styles.btnBorrow} >Borrow</button>
+
+            <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
+        
         </div>
        ))}
         
       </Carousel> 
  
       
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}  
+      >
+        <button onClick={closeModal}>close</button>
+         <form type="submit" onSubmit={handleSubmit}>
 
+         <div className="col-md-12 my-3">
+                  <div className="form-group">
+                     <label htmlFor="exampleInputEmail1">Reservation Date</label>
+                     <input
+                       onChange={handleChange}
+                       value={values.reservationDate}
+                       name="reservationDate"
+                    //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
+                    type="datetime-local" class="form-control js-daterangepicker"/>
+                 </div>
+                </div>
+
+                
+         <div className="col-md-12 my-3">
+                  <div className="form-group">
+                     <label htmlFor="exampleInputEmail1">Reservation Date</label>
+                     <input
+                       onChange={handleChange}
+                       value={values.dueDate}
+                       name="dueDate"
+                    //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
+                    type="datetime-local" class="form-control js-daterangepicker"/>
+                 </div>
+                </div>
+ 
+                <button>Submit</button>
+           
+         </form>
+               
+        
+      </Modal>
 
       </div>
     )

@@ -3,6 +3,7 @@ import logo from "../../../src/assets/images/modernlogo.png"
 import { useFormik } from "formik";
 import { basicSchema } from "../schema";
 import { NavLink } from "react-router-dom";
+import { DateRangePicker } from 'react-date-range';
 
 const Register = () => {
    
@@ -134,10 +135,7 @@ const Register = () => {
                  </div>
                 </div> 
                 <div>
-                {/* <div className="form-check ">
-             <input className="form-check-input" type="checkbox"  id="exampleCheck1"/>
-             <label className="form-check-label"  htmlFor="exampleCheck1">i agree the <span>terms</span> and <span>privacy policy</span></label>
-             </div>  */}
+               +
              <div className="text-center mt-3 " >
                         <button className={styles.SinBtn}>Sign Up</button>
                     </div>

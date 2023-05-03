@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './MyBooks.module.css'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import axios from 'axios';
 
 const MyBooksComponent = () => {
     const [books,]=useState([
@@ -74,7 +75,15 @@ const MyBooksComponent = () => {
           items: 1
         }
       };
-     
+
+      useEffect(()=>{
+        axios.get(`http://localhost:3000/books/id/${localStorage.getItem("userId")}`).then(res=>{
+          console.log(res.data);
+        }).catch(err=>{
+          console.log(err);
+        })
+      },[])
+      
     return (
         <div className="container my-4">
             <h6 className='my-3'>My Borrowed Books</h6>
