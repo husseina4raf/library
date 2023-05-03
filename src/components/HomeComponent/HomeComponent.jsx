@@ -348,7 +348,7 @@ const HomeComponent = () => {
                 
          <div className="col-md-12 my-3">
                   <div className="form-group">
-                     <label htmlFor="exampleInputEmail1">Reservation Date</label>
+                     <label htmlFor="exampleInputEmail1">Due Date</label>
                      <input
                        onChange={handleChange}
                        value={values.dueDate}
