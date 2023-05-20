@@ -4,6 +4,7 @@ import {useEffect ,useState} from 'react';
  import axios from 'axios';
 import { Button,Modal,Input } from 'react-bootstrap';
   import { useFormik } from "formik";
+import { Edit } from "@mui/icons-material";
 const AddDistributorComponent = () => {
 
     const onSubmit=(values,actions)=>{
@@ -13,10 +14,16 @@ const AddDistributorComponent = () => {
               
             distributorName:values.distributorName
             }).then(res=>{
+          axios.get("http://localhost:3000/distributors").then(res=>{
+                setdistributors(res.data)
+              }).catch(err=>{
+                console.log(err);
+              })
          console.log(res);
             }).catch(err=>{
          console.log(err);
             })
+            
         }
          const [distributors,setdistributors]=useState([]);
          useEffect(()=>{
@@ -39,22 +46,75 @@ const AddDistributorComponent = () => {
             console.log(err);
           })
          }
+
+         
         
-        const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
+        const {values,handleBlur,handleChange,handleSubmit,errors,touched,setValues} = useFormik({
             initialValues: {
          distributorName:'',   
               
             },
             validationSchema:'',
+            enableReinitialize:true,
             onSubmit
           });
-        
+          const [updateState, setUpdateState] = useState(-1)
+
+
  
     const [show, setShow] = useState(false);
+    const [showUpdate,setShowUpdate]=useState(false);
+
  
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const updateDialog=(id)=>{
+      setUpdateState(id);
+    axios.get(`http://localhost:3000/distributors/${id}`).then(res=>{
+      const{distributorName}=res.data   
+      console.log(distributorName);
+    setValues({distributorName})     
+    }).catch(err=>{
+      console.log(err);
+    })
+
+    setShowUpdate(true);
+    console.log(id);
+  }
+  const handleCloseUpdate=()=>{
+    setShowUpdate(false);
+    setValues({distributorName:''})
+  }
+
+  const handleEdit=(e)=>{
+    e.preventDefault();
+    axios.put(`http://localhost:3000/distributors/${updateState}`,values).then(res=>{
+      axios.get("http://localhost:3000/distributors/").then(res=>{
+        console.log("aaaaaaa");
+        setdistributors(res.data)
+        setShowUpdate(false)
+        setValues({distributorName:''})
+   }).catch(err=>{
+     console.log(err);
+   })
+    }).catch(err=>{
+      console.log(err);
+    })
+   }
+
+   const [currentPage, setCurrentPage]= useState(1)
+    const recordsPerPage = 5;
+    const lastIndex = currentPage * recordsPerPage;
+    const firstIndex = lastIndex - recordsPerPage;
+    const records = distributors.slice(firstIndex,lastIndex);
+    const npage = Math.ceil(distributors.length / recordsPerPage );
+    const numbers = [...Array(npage + 1).keys()].slice(1);
+
+
+
   return (
+    <>
  
        <div class="container ">
           <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded"> 
@@ -62,12 +122,12 @@ const AddDistributorComponent = () => {
  <div class="row ">
     
     <div class="col-sm-3 mt-5 mb-4 text-gred">
-<div className="search">
+{/* <div className="search">
   <form class="form-inline">
    <input class="form-control mr-sm-2" type="search" placeholder="Search Student" aria-label="Search"/>
   
   </form>
-</div>    
+</div>     */}
 </div>  
 <div class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" style={{color:"red"}}><h2><b>distributors Details</b></h2></div>
 <div class="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
@@ -88,12 +148,20 @@ const AddDistributorComponent = () => {
       </thead>
   
       <tbody>
-      {distributors.map((item)=>(
+  
+{records.map((item)=>(
+        // updateState === item.id ? <Edit item= {item} books={distributors} setbooks={setdistributors} /> : 
       <tr key={item.id}>
         <td>{item.id}</td>
         <td>{item.distributorName}</td>
-       
-        <td><button onClick={()=>{deletedistributor(item.id)}} className="danger">Delete</button></td>
+        
+
+        <td>
+          <button onClick={()=>{deletedistributor(item.id)}} className="danger">Delete</button>
+          <button  onClick={()=>{updateDialog(item.id)}}  className="danger">Update</button>
+          
+
+          </td>
       </tr>
    ))}
    </tbody>
@@ -138,10 +206,92 @@ const AddDistributorComponent = () => {
       </Modal>
   
 {/* Model Box Finsihs */}
-</div>  
+</div> 
+
+<div className="model_box">
+      <Modal
+ show={showUpdate}
+ onHide={handleCloseUpdate}
+ backdrop="static"
+ keyboard={false}
+      >
+ <Modal.Header closeButton>
+   <Modal.Title>Add Record</Modal.Title>
+ </Modal.Header>
+     <Modal.Body>
+     <form  type="submit" onSubmit={handleSubmit}>
+  <div class="form-group">
+ <input 
+ 
+               name='distributorName'
+                onChange={handleChange}
+                value={values.distributorName}
+                onBlur={handleBlur}
+ type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="distributor Name"/>
+  </div>
+  
+  
+    <button type="submit" onClick={handleEdit} class="btn btn-success mt-4">Add </button>
+  </form>
+     </Modal.Body>
+ 
+ <Modal.Footer>
+   <Button variant="secondary" onClick={handleClose}>
+     Close
+   </Button>
+   
+ </Modal.Footer>
+      </Modal>
+  
+{/* Model Box Finsihs */}
+</div> 
+
       </div>    
       </div>  
+      <nav>
+      <ul className='pagination'>
+        <li className='page-item'>
+          <a  className='page-link'
+          onClick={prePage}> Prev </a>
+      
+        </li>
+        {
+          numbers.map((n, i)=>{
+            <li className={`page-item ${currentPage === n ? 'active' : '' }` } key={i}>
+              <a  className='page-link' 
+              onClick={ ()=> changeCPage(n)}>{n}</a>
+            </li>
+            
+      
+          })
+        }
+         <li className='page-item'>
+          <a className='page-link'
+          onClick={nextPage}> Next </a>
+      
+        </li>
+      
+      
+      </ul>
+      </nav> 
+      </>
   );
+  function prePage(){
+    if(currentPage !== 1){
+      setCurrentPage(currentPage - 1)
+    }
+    
+  }
+  function changeCPage(id){
+    setCurrentPage(id)
+    
+  }
+  function nextPage(){
+    if(currentPage !== npage){
+      setCurrentPage(currentPage + 1)
+    }
+  
+  }
 }
  
 export default AddDistributorComponent;

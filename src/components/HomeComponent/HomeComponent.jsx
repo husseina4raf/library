@@ -34,7 +34,8 @@ const HomeComponent = () => {
         const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
             initialValues: {
               reservationDate:'', 
-              dueDate:''  
+              dueDate:''  ,
+              userId:localStorage.getItem('userId')
             },
             validationSchema:'',
             onSubmit
@@ -68,6 +69,7 @@ const HomeComponent = () => {
         bookStockId
     }).then(res=>{
         console.log(res);
+     
 
     }).catch(err=>{
         console.log(err);
@@ -129,10 +131,11 @@ const HomeComponent = () => {
          reservationDate:data.reservationDate,
         dueDate: data.dueDate,
         reservationStatus: "pending",
-        userId:localStorage.getItem('userId'),
+        userId:data.userId,
         bookStockId:bookId
     }).then(res=>{
         console.log(res);
+        closeModal()
 
     }).catch(err=>{
         console.log(err);
@@ -173,26 +176,26 @@ const HomeComponent = () => {
          console.log(err);
        })
 
-        axios.get('http://localhost:3000/books/Computer').then(res=>{
+        axios.get('http://localhost:3000/books/?genre=Computer').then(res=>{
            compSetState(res.data);
           //  console.log(computerBooks);
         }).catch(err=>{
           console.log(err);
         })
            
-        axios.get('http://localhost:3000/books/Language').then(res=>{
+        axios.get('http://localhost:3000/books/?genre=Language').then(res=>{
           langSetState(res.data);
        }).catch(err=>{
          console.log(err);
        })
 
-       axios.get('http://localhost:3000/books/').then(res=>{
+       axios.get('http://localhost:3000/books/?genre=Arch.').then(res=>{
         archSetState(res.data);
      }).catch(err=>{
        console.log(err);
      })
 
-     axios.get('http://localhost:3000/books/Phys.').then(res=>{
+     axios.get('http://localhost:3000/books/?genre=Phys.').then(res=>{
       PhysState(res.data);
    }).catch(err=>{
      console.log(err);

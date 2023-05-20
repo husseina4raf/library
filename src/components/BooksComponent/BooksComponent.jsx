@@ -101,9 +101,19 @@ const BooksComponent = () => {
       })
        console.log(param);
      }
+     const [currentPage, setCurrentPage]= useState(1)
+     const recordsPerPage = 4;
+     const lastIndex = currentPage * recordsPerPage;
+     const firstIndex = lastIndex - recordsPerPage;
+     const records = books.slice(firstIndex,lastIndex);
+     const npage = Math.ceil(books.length / recordsPerPage);
+     const numbers = [...Array(npage+1).keys()].slice(1);
+
+
+
     return (
 
-    
+    <>
 
 
 
@@ -131,7 +141,7 @@ const BooksComponent = () => {
             <h6 className='my-3'>Books Based On Your Taste</h6>
        
         <div className="row my-5">
-          {books.map((item)=>(
+          {records.map((item)=>(
             <div className="col-md-3">
               <div className={styles.bookCard} key={item.id}>
 
@@ -145,10 +155,53 @@ const BooksComponent = () => {
         </div>
 
       </div>
+      <nav>
+      <ul className='pagination'>
+        <li className='page-item'>
+          <a  className='page-link'
+          onClick={prePage}> Prev </a>
       
+        </li>
+        {
+          numbers.map((n, i)=>{
+            <li className={`page-item ${currentPage === n ? 'active' : '' }` } key={i}>
+              <a  className='page-link' 
+              onClick={ ()=> changeCPage(n)}>{n}</a>
+            </li>
+            
+      
+          })
+        }
+         <li className='page-item'>
+          <a className='page-link'
+          onClick={nextPage}> Next </a>
+      
+        </li>
+      
+      
+      </ul>
+      </nav>      
+      </>
 
       
     )
+
+    function prePage(){
+      if(currentPage !== 1){
+        setCurrentPage(currentPage - 1)
+      }
+      
+    }
+    function changeCPage(id){
+      setCurrentPage(id)
+      
+    }
+    function nextPage(){
+      if(currentPage !== npage){
+        setCurrentPage(currentPage + 1)
+      }
+    
+    }
 };
 
 export default BooksComponent; 

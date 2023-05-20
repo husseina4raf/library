@@ -5,7 +5,7 @@ import "react-multi-carousel/lib/styles.css";
 import axios from 'axios';
 
 const MyBooksComponent = () => {
-    const [books,]=useState([
+    const [books,setBooks]=useState([
         {
             id:1,
           name:"book1",
@@ -56,6 +56,12 @@ const MyBooksComponent = () => {
         // }
     ]);
 
+     useEffect(()=>{
+      axios.get(`http://localhost:3000/books/id/${localStorage.getItem('userId')}`).then(res=>{
+        setBooks(res.data)
+      })
+     },[])
+
     const responsive = {
         superLargeDesktop: {
           // the naming can be any, depends on you.
@@ -94,9 +100,9 @@ const MyBooksComponent = () => {
     
        {books.map((item)=>(
         <div className={styles.bookCard} key={item.id}>
-            <h5>{item.name}</h5>
-            <img className='img-fluid' src={item.imgURL} alt="book Cover" />
-            <button className={styles.btnBorrow} >Borrow</button>
+            <h5>{item.bookTitle}</h5>
+            <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
+           
         </div>
        ))}
         

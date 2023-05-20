@@ -1,12 +1,28 @@
 import React from 'react';
-// import { Navbar, Container, Nav } from 'react-bootstrap';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {useEffect ,useState} from 'react';
+import axios from 'axios';
 import logo from "../../../src/assets/images/modernlogo.png"
 import styles from "./Nav.module.css"; 
 import { NavLink, useNavigate } from 'react-router-dom';
+
 function NavComponent() {
+
     const userRole=localStorage.getItem('role');
+    const [input, setInput] = useState("");
   const navigate= useNavigate()
+        const faData =(value) =>{
+           axios.get("http://localhost:3000/books/search/Arch") .then(response =>response.json().then(json =>{
+            console.log(json);
+           }))
+                 }
+
+                 const handleChange = (value) =>{
+                  setInput(value);
+                  faData(value);
+
+                 }
+  
+
 
     return (
     
@@ -21,7 +37,9 @@ function NavComponent() {
                        <div className={styles.searchWrapper}>
                     
                     <i className="fa-sharp fa-solid fa-magnifying-glass"></i>
-                      <input type="search" placeholder='search'></input>
+                      <input type="search" placeholder='search' 
+                      value={input}
+                      onChange={(e) =>handleChange(e.target.value)}></input>
                </div>
 
                     

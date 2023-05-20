@@ -20,6 +20,8 @@ import Pagination from '@mui/material/Pagination';
 import axios from 'axios';
 import styles from "./AuditLogs.module.css"
 function showBody(props){
+
+
    switch(props.entity)  {
         case "Books" : 
          return (
@@ -176,6 +178,7 @@ function Row(props) {
   console.log(row);
   const [open, setOpen] = React.useState(false);
 
+
   return (
     <React.Fragment>
       <TableRow className={styles.row} sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -193,9 +196,7 @@ function Row(props) {
         </TableCell>
         <TableCell align="right">{row.type}</TableCell>
         <TableCell align="right">{row.entity}</TableCell>
-        {/* <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell> */}
+       
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -226,7 +227,16 @@ export default function CollapsibleTable() {
           })
      },[]);
 
+     const [currentPage, setCurrentPage]= useState(1)
+  const recordsPerPage = 5;
+  const lastIndex = currentPage * recordsPerPage;
+  const firstIndex = lastIndex - recordsPerPage;
+  const records = logsData.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(logsData.length / recordsPerPage )
+  const numbers = [...Array(npage + 1).keys()].slice(1)
+ 
   return (
+    <>
     <TableContainer  className={styles.TableContainer} >
       <Table className={styles.tableWrapper} aria-label="collapsible table">
         <TableHead>
@@ -235,10 +245,12 @@ export default function CollapsibleTable() {
             <TableCell>ID</TableCell>
             <TableCell align="right">Type</TableCell>
             <TableCell align="right">Entity</TableCell>
+            <TableCell align="right">Action</TableCell>
+
           </TableRow>
         </TableHead>
         <TableBody>
-          {logsData.map((logData) => (
+          {records.map((logData) => (
             <Row  key={logData.id} row={logData} />
           ))}
           
@@ -249,9 +261,53 @@ export default function CollapsibleTable() {
 
         </TableBody>
       </Table>
+     
     </TableContainer>
+    <nav>
+        <ul className='pagination'>
+          <li className='page-item'>
+            <a  className='page-link'
+            onClick={prePage}> Prev </a>
 
-    
+          </li>
+          {
+            numbers.map((n, i)=>{
+              <li className={`page-item ${currentPage === n ? 'active' : '' }` } key={i}>
+                <a  className='page-link' 
+                onClick={ ()=> changeCPage(n)}>{n}</a>
+              </li>
+              
+
+            })
+          }
+           <li className='page-item'>
+            <a className='page-link'
+            onClick={nextPage}> Next </a>
+
+          </li>
+
+
+        </ul>
+      </nav>
+    </>
   );
+
+  
+  function prePage(){
+    if(currentPage !== 1){
+      setCurrentPage(currentPage - 1)
+    }
+    
+  }
+  function changeCPage(id){
+    setCurrentPage(id)
+    
+  }
+  function nextPage(){
+    if(currentPage !== npage){
+      setCurrentPage(currentPage + 1)
+    }
+
+  }
   
 }
