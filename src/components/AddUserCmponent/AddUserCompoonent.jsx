@@ -294,14 +294,14 @@ import { Edit } from "@mui/icons-material";
  
  type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email"/>
   </div>
-  <div class="form-group">
+  {/* <div class="form-group">
  <input
   name="password"
   onChange={handleChange}
   value={values.password}
  onBlur={handleBlur}
   type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="password"/>
-  </div>
+  </div> */}
   <div class="form-group">
  <input
   name="phone"
