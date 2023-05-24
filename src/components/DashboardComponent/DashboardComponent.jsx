@@ -6,7 +6,6 @@ import AddUserCompoonent from '../AddUserCmponent/AddUserCompoonent';
 import AddBookComponent from '../AddBookCompnent/AddBookComponent';
 import AuditLogsComponet from '../AuditLogsComponent/AuditLogsComponet';
 import BookStockComponent from '../BookStockComponent/BookStockComponent';
-import AddAdminComponet from '../AddAdminComponent/AddAdminComponet';
 import AddPublisherComponent from '../AddPublisherComponent/AddPublisherComponent';
 import AddDistributorComponent from '../AddDistributorComponent/AddDistributorComponent';
 const DashboardComponent = () => {
@@ -62,9 +61,7 @@ const DashboardComponent = () => {
          < Outlet />
 
          <Routes>
-        <Route   className={({ isActive, isPending }) =>
-    isPending ? "pending" : isActive ? "active" : ""
-  } path="addadmin" element={<AddAdminComponet/>} />
+
         <Route path="adduser" element={<AddUserCompoonent/>} />
         <Route path="addauthor" element={<AddAuthorComponent/>} />
         <Route path="addbook" element={<AddBookComponent/>} />

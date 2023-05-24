@@ -4,14 +4,18 @@ import axios from 'axios';
 import logo from "../../../src/assets/images/modernlogo.png"
 import styles from "./Nav.module.css"; 
 import { NavLink, useNavigate } from 'react-router-dom';
-
+import { UserConsumer } from '../../context';
 function NavComponent() {
 
     const userRole=localStorage.getItem('role');
+    const adminRole=localStorage.getItem('role');
+    const superAdminRole=localStorage.getItem('role');
+
+
     const [input, setInput] = useState("");
   const navigate= useNavigate()
         const faData =(value) =>{
-           axios.get("http://localhost:3000/books/search/Arch") .then(response =>response.json().then(json =>{
+           axios.get("http://localhost:3000/books/search/Art") .then(response =>response.json().then(json =>{
             console.log(json);
            }))
                  }
@@ -26,7 +30,8 @@ function NavComponent() {
 
     return (
     
-             
+      <UserConsumer>
+          {({ updateBookname }) => (
              <nav>
                 <div className={` ${styles.containerNav}`}>
                    
@@ -38,8 +43,20 @@ function NavComponent() {
                     
                     <i className="fa-sharp fa-solid fa-magnifying-glass"></i>
                       <input type="search" placeholder='search' 
-                      value={input}
-                      onChange={(e) =>handleChange(e.target.value)}></input>
+                  
+                      onChange={event => {
+                         console.log(event.target.value);
+                         axios.get(`http://localhost:3000/books/search/${event.target.value}`).then(res=>{
+                          console.log(res.data);
+                          updateBookname(res.data);
+                   }).catch(err=>{
+                    axios.get(`http://localhost:3000/books/`).then(res=>{
+                      console.log(res.data);
+                      updateBookname(res.data);
+               })
+                   })
+                      }}
+                     ></input>
                </div>
 
                     
@@ -83,6 +100,15 @@ function NavComponent() {
                        </div>
                        </NavLink>
                        }
+                        {  adminRole!== "Admin" && superAdminRole!=="SuperAdmin" && 
+
+                       <NavLink className={styles.navLink} to='reservationUser'>
+                       <div className={styles.navigationItem}>
+                       <i className="fa-solid fa-users-rectangle"></i>
+                      Reservations
+                       </div>
+                       </NavLink>
+                       }
                        <NavLink className={styles.navLink} to='profile'>
                        <div className={styles.navigationItem}>
                        <i className="fa-solid fa-user"></i>
@@ -100,6 +126,8 @@ function NavComponent() {
                  </div>
                  
              </nav>
+             )}
+             </UserConsumer>
     );
 }
 

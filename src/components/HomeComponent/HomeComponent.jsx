@@ -130,6 +130,7 @@ const HomeComponent = () => {
         axios.post('http://localhost:3000/reservations/',{
          reservationDate:data.reservationDate,
         dueDate: data.dueDate,
+        returnDate:data.returnDate,
         reservationStatus: "pending",
         userId:data.userId,
         bookStockId:bookId
@@ -176,26 +177,26 @@ const HomeComponent = () => {
          console.log(err);
        })
 
-        axios.get('http://localhost:3000/books/?genre=Computer').then(res=>{
+        axios.get('http://localhost:3000/books/genre/Computer').then(res=>{
            compSetState(res.data);
           //  console.log(computerBooks);
         }).catch(err=>{
           console.log(err);
         })
            
-        axios.get('http://localhost:3000/books/?genre=Language').then(res=>{
+        axios.get('http://localhost:3000/books/genre/Language').then(res=>{
           langSetState(res.data);
        }).catch(err=>{
          console.log(err);
        })
 
-       axios.get('http://localhost:3000/books/?genre=Arch.').then(res=>{
+       axios.get('http://localhost:3000/books/genre/Arch.').then(res=>{
         archSetState(res.data);
      }).catch(err=>{
        console.log(err);
      })
 
-     axios.get('http://localhost:3000/books/?genre=Phys.').then(res=>{
+     axios.get('http://localhost:3000/books/genre/Phys.').then(res=>{
       PhysState(res.data);
    }).catch(err=>{
      console.log(err);
@@ -355,6 +356,17 @@ const HomeComponent = () => {
                      <input
                        onChange={handleChange}
                        value={values.dueDate}
+                       name="dueDate"
+                    //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
+                    type="datetime-local" class="form-control js-daterangepicker"/>
+                 </div>
+                </div>
+                <div className="col-md-12 my-3">
+                  <div className="form-group">
+                     <label htmlFor="exampleInputEmail1">Return Date</label>
+                     <input
+                       onChange={handleChange}
+                       value={values.returnDate}
                        name="dueDate"
                     //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
                     type="datetime-local" class="form-control js-daterangepicker"/>

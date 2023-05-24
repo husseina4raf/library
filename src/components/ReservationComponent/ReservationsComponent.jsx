@@ -59,26 +59,13 @@ const Reservations = () => {
     //     })
     // }
 
-    const deletepublisher=(id)=>{
-      axios.delete(`http://localhost:3000/reservations/${id}`).then(res=>{
-        axios.get("http://localhost:3000/reservations").then(res=>{
-          setReservation(res.data)
-     }).catch(err=>{
-       console.log(err);
-     })
     
-      }).catch(err=>{
-        console.log(err);
-      })
-     }
-
      const [updateState, setUpdateState] = useState(-1)
 
           
     const [show, setShow] = useState(false);
     const [showUpdate,setShowUpdate]=useState(false);
 
- 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -87,7 +74,10 @@ const Reservations = () => {
         reservationDate:'', 
         dueDate:'' ,
         returnDate:'',
-        reservationStatus:''
+        reservationStatus:'',
+        userId:'',
+        bookStockId:''
+        
       },
       validationSchema:'',
       enableReinitialize:true,
@@ -97,9 +87,9 @@ const Reservations = () => {
       console.log(id);
       setUpdateState(id);
     axios.get(`http://localhost:3000/reservations/${id}`).then(res=>{
-      const{reservationDate,dueDate,returnDate,reservationStatus}=res.data   
-      console.log(res.data);
-      setValues({reservationDate,dueDate,returnDate,reservationStatus});
+      const{reservationDate,dueDate,returnDate,reservationStatus,userId,bookStockId}=res.data[0] 
+      setValues({reservationDate,dueDate,returnDate,reservationStatus,userId,bookStockId});
+
       // console.log(reservationDate,moment.utc(reservationDate).format('dd-MM-yyyy HH:mm:ss'));
     }).catch(err=>{
       console.log(err);
@@ -114,8 +104,18 @@ const Reservations = () => {
   }
 
   const handleEdit=(e)=>{
+    const {bookStockId,dueDate,reservationDate,reservationStatus,returnDate,userId}=values;
     e.preventDefault();
-    axios.put(`http://localhost:3000/reservations/${updateState}`,values).then(res=>{
+    console.log(values);
+    axios.put(`http://localhost:3000/reservations/${updateState}`,{
+      reservationDate,
+      dueDate,
+      reservationStatus,
+      returnDate,
+      userId:userId.id,
+      bookStockId:bookStockId.id
+    
+    }).then(res=>{
       axios.get("http://localhost:3000/reservations/").then(res=>{
         console.log("aaaaaaa");
         setReservation(res.data)

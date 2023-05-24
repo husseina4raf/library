@@ -10,11 +10,12 @@ import MyBooksComponent from './components/MyBooksComponent/MyBooksComponent';
 import ProfileComponet from './components/ProfileComponent/ProfileComponet';
 import DashboardComponent from './components/DashboardComponent/DashboardComponent';
 import ForgtPasswordComponent from './components/ForgetPasswordComponent/ForgtPasswordComponent';
-
-
+import ReservationsUserComponent from './components/ReservationsUserComponent/reservationsUserComponent';
+import { UserProvider } from './context';
 function App() {
   return (
     <> 
+     <UserProvider>
    {localStorage.getItem('token') && <NavComponent/> }
     <Routes>
      
@@ -28,10 +29,13 @@ function App() {
         <Route path='/profile' element={<ProfileComponet />} />  
         <Route path='/dashboard/*' element={<DashboardComponent />} /> 
         <Route path='/forgetPassword' element={< ForgtPasswordComponent/>} /> 
+        <Route path='/reservationUser' element={< ReservationsUserComponent/>} /> 
+
 
 
        
      </Routes>
+     </UserProvider>
     </>
   );
 }
