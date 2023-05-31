@@ -44,21 +44,7 @@ const Reservations = () => {
 
     },[]);
 
-    // const actionReservation=(id,status)=>{
-    //     axios.put(`http://localhost:3000/reservations/${id}`,{
-    //         "reservationStatus": status,
-    //     }).then(res=>{
-    //         if(res.status==200){
-    //             axios.get("http://localhost:3000/reservations/").then(res=>{
-    //                 console.log(res.data);
-    //                 setReservation(res.data)
-    //             }).catch(err=>{
-    //                 console.log(err);
-    //             })
-    //         }
-    //     })
-    // }
-
+ 
     
      const [updateState, setUpdateState] = useState(-1)
 

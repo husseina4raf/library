@@ -6,6 +6,8 @@ import axios from 'axios';
 import moment from 'moment/moment';
 import Modal from 'react-modal';
 import { useFormik } from "formik";
+import $ from 'jquery';
+
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
@@ -169,9 +171,12 @@ const HomeComponent = () => {
       };
   
       useEffect(()=>{
-       
-        axios.post(`http://localhost:3000/ai-client-app/id/${localStorage.getItem("userId")}`).then(res=>{
+        console.log( localStorage.getItem('algoAi'));
+        axios.post(`http://localhost:3000/ai-client-app/id/${localStorage.getItem("userId")}`,{
+          algorithm: localStorage.getItem('algoAi')??'k-nn'
+        }).then(res=>{
            setTastBook(res.data.books);
+           console.log();
                   
        }).catch(err=>{
          console.log(err);
@@ -207,8 +212,15 @@ const HomeComponent = () => {
 
       },[])
 
+
     return (
+
+     
+
         <div className="container my-4">
+
+
+
             <h6 className='my-3'>Books Based On Your Taste</h6>
         <Carousel
         centerMode={true}
@@ -219,7 +231,7 @@ const HomeComponent = () => {
        {tasteBooks.map((item)=>(
       <div className={styles.bookCard} key={item.id}>
       <div className={styles.titleWrapper}>
-      <h6>{item.bookTitle}</h6>
+      <h6>{item.title}</h6>
       </div>
       <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
       <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>

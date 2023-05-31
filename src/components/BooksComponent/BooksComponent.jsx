@@ -150,7 +150,9 @@ const {userBook,updateBookname}=useContext(UserContext)
 
 
       useEffect(()=>{
-        axios.post(`http://localhost:3000/ai-client-app/id/${localStorage.getItem("userId")}`).then(res=>{
+        axios.post(`http://localhost:3000/ai-client-app/id/${localStorage.getItem("userId")}`,{
+          // algorithm: "k-nn"
+      }).then(res=>{
           // setTasBook(res.data.books);
                  
       }).catch(err=>{

@@ -7,6 +7,9 @@ import { Edit } from "@mui/icons-material";
 
  
  const AddUserCompoonent = () => {
+  
+  const adminRole=localStorage.getItem('role');
+
 
    const onSubmit=(values,actions)=>{
            console.log(values);
@@ -322,7 +325,11 @@ import { Edit } from "@mui/icons-material";
            <option  label="SelectRole">
         Select Role
        </option>
-       <option selected={(values.roles == "SuperAdmin" )?"selected":''}   value="SuperAdmin">Super Admin</option>
+       { adminRole!== "Admin" &&
+       <option 
+       selected={(values.roles == "SuperAdmin" )?"selected":''}   value="SuperAdmin">Super Admin
+       </option>
+       }
        <option selected={(values.roles == "Admin" )?"selected":''} value="Admin">Admin</option>
        <option selected={(values.roles == "User" )?"selected":''} value="User">User</option>
      </select>

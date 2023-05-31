@@ -8,15 +8,31 @@ import AuditLogsComponet from '../AuditLogsComponent/AuditLogsComponet';
 import BookStockComponent from '../BookStockComponent/BookStockComponent';
 import AddPublisherComponent from '../AddPublisherComponent/AddPublisherComponent';
 import AddDistributorComponent from '../AddDistributorComponent/AddDistributorComponent';
+import axios from 'axios';
+
 const DashboardComponent = () => {
 
     const adminRole=localStorage.getItem('role');
-
+    const algorithmDetect =(e)=>{
+        
+        console.log(e.target.value);       
+        localStorage.setItem('algoAi',e.target.value)
+     }
 
     return (
         <>
+        
+   <select  onChange={algorithmDetect}>
+      <option  value="K-nn">K-nn</option>
+      <option value="decision-tree">decision-tree</option>
+      <option value="content-based">content-based</option>
+   </select>
+
          
         <div className={styles.dashboradItemWrapper}> 
+         
+       
+
             <NavLink className={styles.dashboradItem} to='adduser' >
             <i className="fa-solid fa-user-plus"></i>
             <p>Add User</p>
