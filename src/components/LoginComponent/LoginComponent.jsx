@@ -13,7 +13,6 @@ const Login = () => {
   const navigate=useNavigate();
   const onSubmit=(values,actions)=>{
     console.log(values);
-
     axios.post('http://localhost:3000/auth/login',{
       email:values.email,
       password:values.password
@@ -27,7 +26,7 @@ const Login = () => {
         localStorage.setItem('userId',sub);
         localStorage.setItem('role',roles);
         localStorage.setItem('adminId',sub);
-        navigate('/home');
+        document.location.assign('/home');
 
         console.log(roles);
 

@@ -1,0 +1,19 @@
+
+.TableContainer {
+    display: flex;
+    justify-content: center;
+    align-items:center ;
+    margin-top: 20px;
+   
+}
+.tableWrapper{
+    
+     width: 70% !important; 
+   border: 1px solid black; 
+     
+    
+}
+
+.row{
+    border-bottom: 2px solid black !important;
+}

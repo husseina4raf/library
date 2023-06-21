@@ -1,3 +1,4 @@
+import styles from './AddPublisher.module.css'
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import {useEffect ,useState} from 'react';
@@ -112,6 +113,7 @@ const AddPublisherComponent = () => {
     const records = publishers.slice(firstIndex,lastIndex);
     const npage = Math.ceil(publishers.length / recordsPerPage );
     const numbers = [...Array(npage + 1).keys()].slice(1);
+    const [search, setSearch] = useState('');
 
   return (
     <>
@@ -122,11 +124,21 @@ const AddPublisherComponent = () => {
  <div class="row ">
     
     <div class="col-sm-3 mt-5 mb-4 text-gred">
+    <div className="search">
+  <form class="form-inline">
+   <input class="form-control mr-sm-2" type="search" placeholder="Search " aria-label="Search"
+   onChange={(e)=> setSearch(e.target.value)}
+   
+
+   />
+  
+  </form>
+</div>
 
 </div>  
-<div class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" style={{color:"red"}}><h2><b>Publishers Details</b></h2></div>
+<div class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" id={styles.gg}><h2><b className={styles.Det}>Publishers Details</b></h2></div>
 <div class="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
-<Button variant="primary" onClick={handleShow}>
+<Button variant="secondary" onClick={handleShow}>
   Add New Publishers
 </Button>
       </div>
@@ -143,7 +155,13 @@ const AddPublisherComponent = () => {
       </thead>
   
       <tbody>
-      {records.map((item)=>(
+      {records
+      .filter((item) =>{
+        return search.toLowerCase() === ''
+        ? item
+        :item.publisherName.toLowerCase().includes(search);
+      })
+      .map((item)=>(
         // updateState === item.id ? <Edit item= {item} books={publishers} setbooks={setpublishers} /> : 
       <tr key={item.id}>
         <td>{item.id}</td>
@@ -151,8 +169,8 @@ const AddPublisherComponent = () => {
         
 
         <td>
-          <button onClick={()=>{deletepublisher(item.id)}} className="danger">Delete</button>
-          <button  onClick={()=>{updateDialog(item.id)}}  className="danger">Update</button>
+          <button  onClick={()=>{deletepublisher(item.id)}} className="btn btn-danger">Delete</button>
+          <button  onClick={()=>{updateDialog(item.id)}}  className="btn btn-outline-dark ">Update</button>
           
 
           </td>
@@ -187,7 +205,7 @@ const AddPublisherComponent = () => {
   </div>
   
   
-    <button type="submit" class="btn btn-success mt-4">Add </button>
+  <button  type="submit" class="btn btn-outline-dark ">Add </button>
   </form>
      </Modal.Body>
  

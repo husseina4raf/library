@@ -22,32 +22,29 @@ const customStyles = {
     transform: 'translate(-50%,-50%)',
   },
 };
-Modal.setAppElement('#root');
+// Modal.setAppElement('#root');
 const HomeComponent = () => {
-
-
-
      const onSubmit=(values,actions)=>{
             reservedBook(values);
         
 
         }
         
-        const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
-            initialValues: {
-              reservationDate:'', 
-              dueDate:''  ,
-              userId:localStorage.getItem('userId')
-            },
-            validationSchema:'',
-            onSubmit
-          });
+      const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
+          initialValues: {
+            reservationDate:'', 
+            dueDate:''  ,
+            userId:localStorage.getItem('userId')
+          },
+          validationSchema:'',
+          onSubmit
+        });
         
 
   let subtitle;
 
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [bookId,setBookId]=useState()
+  const [bookId,setBookId]=useState('')
   function openModal(id) {
     setBookId(id);
   
@@ -61,6 +58,7 @@ const HomeComponent = () => {
 
   function closeModal() {
     setIsOpen(false);
+    setBookId("");
   }
     const borrowBook=(bookStockId)=>{
       axios.post('http://localhost:3000/reservations/',{
@@ -146,6 +144,8 @@ const HomeComponent = () => {
     }
 
     const [computerBooks,compSetState]=useState([]);
+    const [mostBooks,mostStat]=useState([]);
+
     const [langBooks,langSetState]=useState([]);
     const [archBooks,archSetState]=useState([]);
     const [PhysBooks,PhysState]=useState([]);
@@ -207,7 +207,11 @@ const HomeComponent = () => {
      console.log(err);
    })
 
-   
+   axios.get('http://localhost:3000/books/home/MBB').then(res=>{
+          mostStat(res.data);
+       }).catch(err=>{
+         console.log(err);
+       })
 
 
       },[])
@@ -231,7 +235,7 @@ const HomeComponent = () => {
        {tasteBooks.map((item)=>(
       <div className={styles.bookCard} key={item.id}>
       <div className={styles.titleWrapper}>
-      <h6>{item.title}</h6>
+      <h6 className='heading__book'>{item.title}</h6>
       </div>
       <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
       <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
@@ -246,13 +250,72 @@ const HomeComponent = () => {
         itemClass="carousel-item-padding-40-px"
         responsive={responsive}>
     
-       {books.map((item)=>(
+       {mostBooks.map((item)=>(
         <div className={styles.bookCard} key={item.id}>
-            <h5>{item.name}</h5>
-            <img className='img-fluid' src={item.imgURL} alt="book Cover" />
-            <button className={styles.btnBorrow} >Borrow</button>
+                    <div className={styles.titleWrapper}>
+
+            <h5 className='heading__book'>{item.bookTitle}</h5>
+            </div>
+            <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
+            <button className={styles.btnBorrow} onClick={()=>{openModal(item.id)}}>Borrow</button>
+            
+            
         </div>
        ))}
+        <Modal
+          isOpen={modalIsOpen}
+          onAfterOpen={afterOpenModal}
+          onRequestClose={closeModal}
+          style={customStyles}  
+        >
+          <button onClick={closeModal} className="btn-close"></button>
+          <form type="submit" onSubmit={handleSubmit}>
+            
+            <div className="col-md-12 my-3">
+              <input
+                  value={bookId}
+                  name="reservationDate"
+                  //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
+                  type="hidden"/>
+
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1">Reservation Date</label>
+                <input
+                  onChange={handleChange}
+                  value={values.reservationDate}
+                  name="reservationDate"
+                //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
+                type="datetime-local" class="form-control js-daterangepicker"/>
+              </div>
+            </div>
+
+            <div className="col-md-12 my-3">
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1">Due Date</label>
+                <input
+                  onChange={handleChange}
+                  value={values.dueDate}
+                  name="dueDate"
+                //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
+                type="datetime-local" class="form-control js-daterangepicker"/>
+              </div>
+            </div>
+            <div className="col-md-12 my-3">
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1">Return Date</label>
+                <input
+                  onChange={handleChange}
+                  value={values.returnDate}
+                  name="dueDate"
+                //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
+                type="datetime-local" class="form-control js-daterangepicker"/>
+              </div>
+            </div>
+
+            <button className="btn--submit">Submit</button>
+          
+          </form>
+        </Modal>
         
       </Carousel> 
 
@@ -268,7 +331,7 @@ const HomeComponent = () => {
        computerBooks.map((item)=>(
         <div className={styles.bookCard} key={item.id}>
           <div className={styles.titleWrapper}>
-            <h6>{item.bookTitle}</h6>
+            <h6  className='heading__book'>{item.bookTitle}</h6>
             </div>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
             <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
@@ -290,7 +353,7 @@ const HomeComponent = () => {
        {langBooks.map((item)=>(
         <div className={styles.bookCard} key={item.id}>
             <div className={styles.titleWrapper}>
-            <h6>{item.bookTitle}</h6>
+            <h6 className='heading__book'>{item.bookTitle}</h6>
             </div>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
             <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
@@ -310,7 +373,7 @@ const HomeComponent = () => {
        {archBooks.map((item)=>(
         <div className={styles.bookCard} key={item.id}>
             <div className={styles.titleWrapper}>
-            <h6>{item.bookTitle}</h6>
+            <h6 className='heading__book'>{item.bookTitle}</h6>
             </div>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
             <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
@@ -328,7 +391,7 @@ const HomeComponent = () => {
        {PhysBooks.map((item)=>(
         <div className={styles.bookCard} key={item.id}>
             <div className={styles.titleWrapper}>
-            <h6>{item.bookTitle}</h6>
+            <h6 className='heading__book' >{item.bookTitle}</h6>
             </div>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
 
@@ -385,7 +448,7 @@ const HomeComponent = () => {
                  </div>
                 </div>
  
-                <button>Submit</button>
+                <button cl>Submit</button>
            
          </form>
                

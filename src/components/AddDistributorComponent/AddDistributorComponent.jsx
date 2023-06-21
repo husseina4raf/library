@@ -1,3 +1,4 @@
+import styles from './AddDistributor.module.css'
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import {useEffect ,useState} from 'react';
@@ -111,6 +112,9 @@ const AddDistributorComponent = () => {
     const npage = Math.ceil(distributors.length / recordsPerPage );
     const numbers = [...Array(npage + 1).keys()].slice(1);
 
+    
+    const [search, setSearch] = useState('');
+    console.log(search);
 
 
   return (
@@ -122,16 +126,20 @@ const AddDistributorComponent = () => {
  <div class="row ">
     
     <div class="col-sm-3 mt-5 mb-4 text-gred">
-{/* <div className="search">
+    <div className="search">
   <form class="form-inline">
-   <input class="form-control mr-sm-2" type="search" placeholder="Search Student" aria-label="Search"/>
+   <input class="form-control mr-sm-2" type="search" placeholder="Search " aria-label="Search"
+   onChange={(e)=> setSearch(e.target.value)}
+   
+
+   />
   
   </form>
-</div>     */}
+</div> 
 </div>  
-<div class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" style={{color:"red"}}><h2><b>distributors Details</b></h2></div>
+<div id={styles.gg} class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" ><h2><b>distributors Details</b></h2></div>
 <div class="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
-<Button variant="primary" onClick={handleShow}>
+<Button variant="secondary" onClick={handleShow}>
   Add New distributors
 </Button>
       </div>
@@ -149,7 +157,14 @@ const AddDistributorComponent = () => {
   
       <tbody>
   
-{records.map((item)=>(
+{records
+.filter((item) =>{
+  return search.toLowerCase() === ''
+  ? item
+  :item.distributorName.toLowerCase().includes(search);
+})
+
+.map((item)=>(
         // updateState === item.id ? <Edit item= {item} books={distributors} setbooks={setdistributors} /> : 
       <tr key={item.id}>
         <td>{item.id}</td>
@@ -157,10 +172,9 @@ const AddDistributorComponent = () => {
         
 
         <td>
-          <button onClick={()=>{deletedistributor(item.id)}} className="danger">Delete</button>
-          <button  onClick={()=>{updateDialog(item.id)}}  className="danger">Update</button>
+        <button  onClick={()=>{deletedistributor(item.id)}} className="btn btn-danger">Delete</button>
+          <button  onClick={()=>{updateDialog(item.id)}}  className="btn btn-outline-dark ">Update</button>
           
-
           </td>
       </tr>
    ))}
@@ -193,7 +207,7 @@ const AddDistributorComponent = () => {
   </div>
   
   
-    <button type="submit" class="btn btn-success mt-4">Add </button>
+  <button  type="submit" class="btn btn-outline-dark ">Add </button>
   </form>
      </Modal.Body>
  

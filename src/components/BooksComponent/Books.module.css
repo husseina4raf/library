@@ -26,3 +26,11 @@
     min-width: 85px;
     min-height: 10px;
 }
+
+.btnSplit{
+    padding: 5px 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    border: none;
+    margin-top: 25px;
+}

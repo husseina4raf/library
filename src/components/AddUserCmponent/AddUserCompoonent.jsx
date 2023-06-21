@@ -1,9 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import {useEffect, useState} from 'react';
 import { Button,Modal,Input } from 'react-bootstrap';
+import styles from './AddUser.module.css'
+
  import { useFormik } from "formik";
  import axios from 'axios';
-import { Edit } from "@mui/icons-material";
 
  
  const AddUserCompoonent = () => {
@@ -121,25 +122,31 @@ import { Edit } from "@mui/icons-material";
     const npage = Math.ceil(users.length / recordsPerPage );
     const numbers = [...Array(npage + 1).keys()].slice(1);
 
+    const [search, setSearch] = useState('');
+
   return (
     <>
  
-       <div class="container ">
+       <div className="container ">
           <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded"> 
   
  <div class="row ">
     
     <div class="col-sm-3 mt-5 mb-4 text-gred">
-{/* <div className="search">
+    <div className="search">
   <form class="form-inline">
-   <input class="form-control mr-sm-2" type="search" placeholder="Search Author" aria-label="Search"/>
+   <input class="form-control mr-sm-2" type="search" placeholder="Search " aria-label="Search"
+   onChange={(e)=> setSearch(e.target.value)}
+   
+
+   />
   
   </form>
-</div>     */}
+</div> 
 </div>  
-<div class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" style={{color:"green"}}><h2><b>Users Details</b></h2></div>
+<div class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" id={styles.gg}><h2><b>Users Details</b></h2></div>
 <div class="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
-<Button variant="primary" onClick={handleShow}>
+<Button variant="secondary" onClick={handleShow} id={styles.dd}>
   Add New Users
 </Button>
       </div>
@@ -158,8 +165,11 @@ import { Edit } from "@mui/icons-material";
    </tr>
       </thead>
       <tbody>
-    {records.map((item)=>(
-        // updateState === item.id ? <Edit item= {item} books={users} setbooks={setUsers} /> : 
+    {records
+    .filter((item) =>{
+      return search.toLowerCase() === '' ? item :item.fullName.toLowerCase().includes(search)
+    })
+    .map((item)=>(
       <tr key={item.id}>
         <td>{item.id}</td>
         <td>{item.fullName}</td>
@@ -168,11 +178,10 @@ import { Edit } from "@mui/icons-material";
         <td>{item.roles}</td>
         
 
-        <td>
-          <button onClick={()=>{deleteUser(item.id)}} className="danger">Delete</button>
-          <button  onClick={()=>{updateDialog(item.id)}}  className="danger">Update</button>
+        <td >
+        <button  onClick={()=>{deleteUser(item.id)}} className="btn btn-danger">Delete</button>
+          <button  onClick={()=>{updateDialog(item.id)}}  className="btn btn-outline-dark ">Update</button>
           
-
           </td>
       </tr>
    ))}
@@ -183,7 +192,7 @@ import { Edit } from "@mui/icons-material";
  
  {/* <!--- Model Box ---> */}
  <div className="model_box">
-      <Modal
+      <Modal className={styles.MM}
  show={show}
  onHide={handleClose}
  backdrop="static"
@@ -192,16 +201,16 @@ import { Edit } from "@mui/icons-material";
  <Modal.Header closeButton>
    <Modal.Title>Add Record</Modal.Title>
  </Modal.Header>
-     <Modal.Body>
-     <form type="submit" onSubmit={handleSubmit}>
-  <div class="form-group">
- <input
+     <Modal.Body className={styles.Modal}> 
+     <form type="submit" onSubmit={handleSubmit} >
+  <div class="form-group" >
+ <input 
                    name="fullname"
                   onChange={handleChange}
                   value={values.fullname}
                  onBlur={handleBlur}
                  
- type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Full Name"/>
+ type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Full Name" className="kk"/>
  
   </div>
   <div class="form-group">
@@ -210,7 +219,7 @@ import { Edit } from "@mui/icons-material";
                   value={values.email}
                  onBlur={handleBlur}
  
- type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email"/>
+ type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email" className="kk"/>
   </div>
   <div class="form-group">
  <input
@@ -218,7 +227,7 @@ import { Edit } from "@mui/icons-material";
   onChange={handleChange}
   value={values.password}
  onBlur={handleBlur}
-  type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="password"/>
+  type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="password" className="kk"/>
   </div>
   <div class="form-group">
  <input
@@ -226,7 +235,7 @@ import { Edit } from "@mui/icons-material";
   onChange={handleChange}
   value={values.phone}
  onBlur={handleBlur}
-   type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="phone"/>
+   type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="phone" className="kk"/>
   </div>
   <div className="col-md-12 my-3">
   <div className="form-group">
@@ -252,7 +261,7 @@ import { Edit } from "@mui/icons-material";
   
   
   
-    <button type="submit" class="btn btn-success mt-4">Add </button>
+<button  type="submit" class="btn btn-outline-dark ">Add </button>
   </form>
      </Modal.Body>
  
@@ -297,14 +306,7 @@ import { Edit } from "@mui/icons-material";
  
  type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email"/>
   </div>
-  {/* <div class="form-group">
- <input
-  name="password"
-  onChange={handleChange}
-  value={values.password}
- onBlur={handleBlur}
-  type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="password"/>
-  </div> */}
+  
   <div class="form-group">
  <input
   name="phone"

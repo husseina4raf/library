@@ -1,4 +1,5 @@
 
+import styles from './AddBook.module.css';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import  { useEffect,useState} from 'react';
@@ -181,6 +182,9 @@ import { Button,Modal,Input } from 'react-bootstrap';
     const npage = Math.ceil(books.length / recordsPerPage );
     const numbers = [...Array(npage + 1).keys()].slice(1);
 
+    const [search, setSearch] = useState('');
+    console.log(search);
+
   return (
     <>
  
@@ -190,11 +194,21 @@ import { Button,Modal,Input } from 'react-bootstrap';
  <div class="row ">
     
     <div class="col-sm-3 mt-5 mb-4 text-gred">
+    <div className="search">
+  <form class="form-inline">
+   <input class="form-control mr-sm-2" type="search" placeholder="Search " aria-label="Search"
+   onChange={(e)=> setSearch(e.target.value)}
+   
+
+   />
+  
+  </form>
+</div> 
 
 </div>  
-<div class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" style={{color:"green"}}><h2><b>Books Details</b></h2></div>
+<div id={styles.gg} class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" ><h2><b>Books Details</b></h2></div>
 <div class="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
-<Button variant="primary" onClick={handleShow}>
+<Button variant="secondary" onClick={handleShow}>
   Add New Books
 </Button>
       </div>
@@ -214,7 +228,13 @@ import { Button,Modal,Input } from 'react-bootstrap';
    </tr>
       </thead>
       <tbody>
-      {records.map((item)=>(
+      {records
+      .filter((item) =>{
+        return search.toLowerCase() === ''
+        ? item
+        :item.bookTitle.toLowerCase().includes(search);
+      })
+      .map((item)=>(
         // updateState === item.id ? <Edit item= {item} books={books} setbooks={setbooks} /> : 
       <tr key={item.id}>
         <td>{item.id}</td>
@@ -225,8 +245,8 @@ import { Button,Modal,Input } from 'react-bootstrap';
         <td>{item.numberOfPages}</td>
 
         <td>
-          <button onClick={()=>{deleteBooks(item.id)}} className="danger">Delete</button>
-          <button  onClick={()=>{updateDialog(item.id)}}  className="danger">Update</button>
+        <button  onClick={()=>{deleteBooks(item.id)}} className="btn btn-danger">Delete</button>
+          <button  onClick={()=>{updateDialog(item.id)}}  className="btn btn-outline-dark ">Update</button>
           
 
           </td>
@@ -258,7 +278,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
      <div className="row my-5">
              <div className="col-md-12">
 
-     <div className="form-group my-3">
+     <div className="form-group ">
              <label htmlFor="exampleInputEmail1">Book Title</label>
              <input
              name="bookTitle"
@@ -269,7 +289,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
 
                   </div>
 
-                  <div className="form-group my-3">
+                  <div className="form-group ">
              <label htmlFor="exampleInputEmail1"> Subject </label>
              <input
                name="subject"
@@ -281,7 +301,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
 
                   </div>
 
-                  <div className="form-group my-3">
+                  <div className="form-group ">
              <label htmlFor="exampleInputEmail1"> Edition Number </label>
              <input
                name="editionNumber"
@@ -292,7 +312,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
              type="number" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
 
                   </div>
-                  <div className="form-group my-3">
+                  <div className="form-group ">
              <label htmlFor="exampleInputEmail1">Copy Write Year</label>
              <input
                name="copyWriteYear"
@@ -304,7 +324,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
 
                   </div>
 
-                  <div className="form-group my-3">
+                  <div className="form-group ">
              <label htmlFor="exampleInputEmail1">Number Of Pages</label>
              <input
                name="numberOfPages"
@@ -316,7 +336,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
 
                   </div>
              
-                  <div className="form-group my-3">
+                  <div className="form-group ">
              <label htmlFor="exampleInputEmail1"> Publisher </label>
             <select
                       name='publisherIds'
@@ -334,7 +354,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
                       </select>
                   </div>
 
-                  <div className="form-group my-3">
+                  <div className="form-group ">
              <label htmlFor="exampleInputEmail1"> author </label>
              
             <select
@@ -354,7 +374,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
                   </div>
 
 
-                  <div className="form-group my-3">
+                  <div className="form-group ">
              <label htmlFor="exampleInputEmail1" > Genre </label>
             <select
                       name='genreIds'
@@ -376,7 +396,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
   
   
   
-    <button type="submit" class="btn btn-success mt-4">Add </button>
+                  <button  type="submit" class="btn btn-outline-dark ">Add </button>
   </form>
      </Modal.Body>
  
@@ -411,7 +431,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
      <div className="row my-5">
              <div className="col-md-12">
 
-     <div className="form-group my-3">
+     <div className="form-group ">
              <label htmlFor="exampleInputEmail1">Book Title</label>
              <input
              name="bookTitle"
@@ -422,7 +442,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
 
                   </div>
 
-                  <div className="form-group my-3">
+                  <div className="form-group ">
              <label htmlFor="exampleInputEmail1"> Subject </label>
              <input
                name="subject"
@@ -434,7 +454,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
 
                   </div>
 
-                  <div className="form-group my-3">
+                  <div className="form-group ">
              <label htmlFor="exampleInputEmail1"> Edition Number </label>
              <input
                name="editionNumber"
@@ -445,7 +465,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
              type="number" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
 
                   </div>
-                  <div className="form-group my-3">
+                  <div className="form-group ">
              <label htmlFor="exampleInputEmail1">Copy Write Year</label>
              <input
                name="copyWriteYear"
@@ -457,7 +477,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
 
                   </div>
 
-                  <div className="form-group my-3">
+                  <div className="form-group ">
              <label htmlFor="exampleInputEmail1">Number Of Pages</label>
              <input
                name="numberOfPages"
@@ -469,7 +489,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
 
                   </div>
              
-                  <div className="form-group my-3">
+                  <div className="form-group ">
              <label htmlFor="exampleInputEmail1"> Publisher </label>
             <select
                       name='publisherIds'
@@ -487,7 +507,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
                       </select>
                   </div>
 
-                  <div className="form-group my-3">
+                  <div className="form-group ">
              <label htmlFor="exampleInputEmail1"> author </label>
              
             <select
@@ -507,7 +527,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
                   </div>
 
 
-                  <div className="form-group my-3">
+                  <div className="form-group ">
              <label htmlFor="exampleInputEmail1" > Genre </label>
             <select
                       name='genreIds'

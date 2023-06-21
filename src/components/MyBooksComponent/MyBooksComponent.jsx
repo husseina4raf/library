@@ -100,7 +100,7 @@ const MyBooksComponent = () => {
     
        {books.map((item)=>(
         <div className={styles.bookCard} key={item.id}>
-            <h5>{item.bookTitle}</h5>
+            <h5 className='heading__book'>{item.bookTitle}</h5>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
            
         </div>

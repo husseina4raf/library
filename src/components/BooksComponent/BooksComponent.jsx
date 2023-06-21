@@ -23,9 +23,7 @@ const BooksComponent = () => {
 
   const onSubmit=(values,actions)=>{
     reservedBook(values);
-
-
-}
+  }
 
 const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
     initialValues: {
@@ -113,7 +111,7 @@ const {userBook,updateBookname}=useContext(UserContext)
     const reservedBook=(data)=>{
       console.log(bookId);
         axios.post('http://localhost:3000/reservations/',{
-         reservationDate:data.reservationDate,
+        reservationDate:data.reservationDate,
         dueDate: data.dueDate,
         returnDate:data.returnDate,
         reservationStatus: "pending",
@@ -169,9 +167,28 @@ const {userBook,updateBookname}=useContext(UserContext)
       },[])
      const sortedBooks=(param)=>{
       axios.get(`http://localhost:3000/books/showby/${param}`).then(res=>{
-        updateBookname(res.data);
+        let newData = [];
+        if(param === "atoz"){
+          newData = res.data.sort(function(a, b){return a.bookTitle - b.bookTitle})
+          updateBookname(newData);
+        }else if(param === "ztoa"){
+          newData = res.data.sort(function(a, b){return b.bookTitle - a.bookTitle})
+          updateBookname(newData);
+
+        }else if(param === "genre"){
+          res.data.forEach(ele => {
+            let filter = res.data.filter(filt => filt.subject === ele.subject)
+            filter.forEach(book => newData= newData.concat(book.books))
+          })
+          updateBookname(newData)
+        }else if(param === "copyyear"){
+          let sortArr = res.data.sort(function(a,b){return b.copyWriteYear - a.copyWriteYear})
+          sortArr.forEach(book => newData=newData.concat(book.books))
+
+          updateBookname(newData);
+        }
+
       })
-       console.log(param);
      }
 
     
@@ -235,7 +252,7 @@ const {userBook,updateBookname}=useContext(UserContext)
                   <div className={styles.bookCard} key={item.id}>
 
 
-                    <h5>{item.bookTitle}</h5>
+                    <h5 className='heading__book'>{item.bookTitle}</h5>
                     <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
                     <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
                   </div>
@@ -270,56 +287,52 @@ const {userBook,updateBookname}=useContext(UserContext)
           
             </nav>
             <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}  
-      >
-        <button onClick={closeModal}>close</button>
-         <form type="submit" onSubmit={handleSubmit}>
+              isOpen={modalIsOpen}
+              onAfterOpen={afterOpenModal}
+              onRequestClose={closeModal}
+              style={customStyles}  
+             >
+                <button onClick={closeModal}>close</button>
+                <form type="submit" onSubmit={handleSubmit}>
+                      <div className="col-md-12 my-3">
+                        <div className="form-group">
+                          <label htmlFor="exampleInputEmail1">Reservation Date</label>
+                          <input
+                            onChange={handleChange}
+                            value={values.reservationDate}
+                            name="reservationDate"
+                          //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
+                          type="datetime-local" class="form-control js-daterangepicker"/>
+                        </div>
+                      </div>
 
-         <div className="col-md-12 my-3">
-                  <div className="form-group">
-                     <label htmlFor="exampleInputEmail1">Reservation Date</label>
-                     <input
-                       onChange={handleChange}
-                       value={values.reservationDate}
-                       name="reservationDate"
-                    //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
-                    type="datetime-local" class="form-control js-daterangepicker"/>
-                 </div>
-                </div>
-
+                      <div className="col-md-12 my-3">
+                        <div className="form-group">
+                          <label htmlFor="exampleInputEmail1">Due Date</label>
+                          <input
+                            onChange={handleChange}
+                            value={values.dueDate}
+                            name="dueDate"
+                          //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
+                          type="datetime-local" class="form-control js-daterangepicker"/>
+                        </div>
+                      </div>
+                      <div className="col-md-12 my-3">
+                        <div className="form-group">
+                          <label htmlFor="exampleInputEmail1">Return Date</label>
+                          <input
+                            onChange={handleChange}
+                            value={values.returnDate}
+                            name="dueDate"
+                          //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
+                          type="datetime-local" class="form-control js-daterangepicker"/>
+                        </div>
+                      </div>
+      
+                      <button>Submit</button>
                 
-         <div className="col-md-12 my-3">
-                  <div className="form-group">
-                     <label htmlFor="exampleInputEmail1">Due Date</label>
-                     <input
-                       onChange={handleChange}
-                       value={values.dueDate}
-                       name="dueDate"
-                    //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
-                    type="datetime-local" class="form-control js-daterangepicker"/>
-                 </div>
-                </div>
-                <div className="col-md-12 my-3">
-                  <div className="form-group">
-                     <label htmlFor="exampleInputEmail1">Return Date</label>
-                     <input
-                       onChange={handleChange}
-                       value={values.returnDate}
-                       name="dueDate"
-                    //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
-                    type="datetime-local" class="form-control js-daterangepicker"/>
-                 </div>
-                </div>
- 
-                <button>Submit</button>
-           
-         </form>
-               
-        
-      </Modal>
+                </form>
+              </Modal>
              </div>
     )}
       </UserConsumer>      

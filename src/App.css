@@ -53,3 +53,85 @@ input.input-error,select.input-error{
   color: brown !important;
 }
 
+.resultSearchNav{
+  position: absolute;
+  width: 100%;
+  list-style: none;
+  background-color: white;
+  border-radius: .5rem;
+  max-height: 70vh;
+  overflow-y: auto;
+  z-index: 1000;
+}
+.resultSearchNav li{
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+}
+.resultSearchNav img{
+  width: 25%;
+  height: 150px;
+}
+.resultSearchNav .title-booking{
+  width: 75%;
+  padding: 1rem 2rem;
+}
+.resultSearchNav div h4, .resultSearchNav div div{
+  width: 100%;
+  padding: .5rem 0;
+}
+.resultSearchNav h4{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.resultSearchNav div button{
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  background-color: crimson;
+  color: white;
+  padding: 5px 15px;
+}
+/* .form-borrow{
+  z-index: 1010;
+} */
+
+.ReactModal__Overlay.ReactModal__Overlay--after-open{
+  z-index: 1010;
+}
+.ReactModal__Overlay.ReactModal__Overlay--after-open .btn--submit{
+  border-radius: .5rem;
+  padding: 0.5rem 1rem;
+  color: white;
+  border: 1px solid;
+  background: seagreen;
+}
+
+.heading__book{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.heading__book:hover{
+  white-space: pre-wrap;
+  overflow: visible;
+}
+
+.kk{
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  appearance: none;
+  border-radius: 0.375rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  margin: 14px;
+}
+

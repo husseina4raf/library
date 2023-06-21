@@ -12,3 +12,37 @@
 label{
     color: black;
 }
+
+.container{
+    background-color: aliceblue;
+    width: 25px;
+}
+
+
+
+.MM{
+    color:  darkslategrey;
+    text-align: center;
+}
+.btn{
+    background-color: #535C58;
+    color: #fff;
+    padding: 17px ;
+    border-radius: 10px;
+    text-transform: uppercase;
+    font-size: 20px;
+    line-height: 14px;
+    letter-spacing: 1px;
+    border: none;
+    /* text-align: left; */
+}
+#btnup{
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px;
+    
+}
+
+#gg{
+    color: #E1DCC5;
+}

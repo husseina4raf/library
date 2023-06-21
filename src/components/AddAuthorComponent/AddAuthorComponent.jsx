@@ -1,3 +1,4 @@
+import styles from './AddAuthor.module.css';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import {useEffect ,useState} from 'react';
@@ -5,6 +6,7 @@ import {useEffect ,useState} from 'react';
 import { Button,Modal,Input } from 'react-bootstrap';
   import { useFormik } from "formik";
 import { Delete, Edit } from "@mui/icons-material";
+import { object } from "yup";
 const AddAuthorComponent = () => {
   const [item,setItem]=useState([]);
 
@@ -114,6 +116,11 @@ const AddAuthorComponent = () => {
     const records = authors.slice(firstIndex,lastIndex);
     const npage = Math.ceil(authors.length / recordsPerPage );
     const numbers = [...Array(npage + 1).keys()].slice(1);
+
+    
+    const [search, setSearch] = useState('');
+    console.log(search);
+
   return (
     <>
  
@@ -123,16 +130,20 @@ const AddAuthorComponent = () => {
  <div class="row ">
     
     <div class="col-sm-3 mt-5 mb-4 text-gred">
-{/* <div className="search">
+<div className="search">
   <form class="form-inline">
-   <input class="form-control mr-sm-2" type="search" placeholder="Search Student" aria-label="Search"/>
+   <input class="form-control mr-sm-2" type="search" placeholder="Search " aria-label="Search"
+   onChange={(e)=> setSearch(e.target.value)}
+   
+
+   />
   
   </form>
-</div>     */}
+</div>    
 </div>  
-<div class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" style={{color:"red"}}><h2><b>Authors Details</b></h2></div>
+<div id={styles.gg} class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" ><h2><b>Authors Details</b></h2></div>
 <div class="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
-<Button variant="primary" onClick={handleShow}>
+<Button variant="secondary" onClick={handleShow}>
   Add New Authors
 </Button>
       </div>
@@ -151,7 +162,13 @@ const AddAuthorComponent = () => {
       <tbody>
    
 
-{records.map((item)=>(
+{records
+.filter((item) =>{
+  return search.toLowerCase() === ''
+  ? item
+  :item.authorName.toLowerCase().includes(search);
+})
+.map((item)=>(
         // updateState === item.id ? <Edit item= {item} books={authors} setbooks={setAuthors} /> : 
       <tr key={item.id}>
         <td>{item.id}</td>
@@ -159,8 +176,8 @@ const AddAuthorComponent = () => {
         
 
         <td>
-          <Delete onClick={()=>{deleteAuthor(item.id)}} className="danger"/>
-          <Edit  onClick={()=>{updateDialog(item.id)}}  className="danger"/>
+        <button  onClick={()=>{deleteAuthor(item.id)}} className="btn btn-danger">Delete</button>
+          <button  onClick={()=>{updateDialog(item.id)}}  className="btn btn-outline-dark ">Update</button>
           
 
           </td>
@@ -196,7 +213,7 @@ const AddAuthorComponent = () => {
   </div>
   
   
-    <button type="submit" class="btn btn-success mt-4">Add </button>
+    <button  type="submit" class="btn btn-outline-dark ">Add </button>
   </form>
      </Modal.Body>
  

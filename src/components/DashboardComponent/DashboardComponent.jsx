@@ -8,6 +8,7 @@ import AuditLogsComponet from '../AuditLogsComponent/AuditLogsComponet';
 import BookStockComponent from '../BookStockComponent/BookStockComponent';
 import AddPublisherComponent from '../AddPublisherComponent/AddPublisherComponent';
 import AddDistributorComponent from '../AddDistributorComponent/AddDistributorComponent';
+import ReportsComponent from '../ReportsComponent/ReportsComponent';
 import axios from 'axios';
 
 const DashboardComponent = () => {
@@ -22,7 +23,7 @@ const DashboardComponent = () => {
     return (
         <>
         
-   <select  onChange={algorithmDetect}>
+   <select  onChange={algorithmDetect} className={styles.btnBorrow}> 
       <option  value="K-nn">K-nn</option>
       <option value="decision-tree">decision-tree</option>
       <option value="content-based">content-based</option>
@@ -72,6 +73,11 @@ const DashboardComponent = () => {
             <i class="fa-solid fa-user-plus"></i>
             <p>Book Stock</p>
             </NavLink> 
+
+            <NavLink className={styles.dashboradItem} to='reports' >
+            <i className="fa-solid fa-user-plus"></i>
+            <p>Reports</p>
+            </NavLink>
             
         </div>
          < Outlet />
@@ -85,6 +91,9 @@ const DashboardComponent = () => {
         <Route path="bookstock" element={<BookStockComponent/>} />
         <Route path="addpublisher" element={<AddPublisherComponent/>} />
         <Route path="adddistributor" element={<AddDistributorComponent/>} />
+        <Route path="reports/*" element={<ReportsComponent/>} />
+
+
 
 
 

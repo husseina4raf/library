@@ -127,20 +127,20 @@ const Reservations = () => {
     return (
         <>
         <div class="container ">
-          <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded"> 
+          <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded"id={styles.res}> 
   
  <div class="row ">
     
     <div class="col-sm-3 mt-5 mb-4 text-gred">
 
 </div>  
-<div class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" style={{color:"green"}}><h2><b>Reservations Details</b></h2></div>
+<div class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" id={styles.LL}><h2><b>Reservations Details</b></h2></div>
 <div class="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
       </div>
     </div>  
      <div class="row">
   <div class="table-responsive " >
-   <table class="table table-striped table-hover table-bordered">
+   <table class="table table-striped table-hover table-bordered" id={styles.TT}>
       <thead>
    <tr>
 <th>ID</th>
@@ -160,7 +160,7 @@ const Reservations = () => {
                 <td>{ moment.utc(item.returnDate).format("DD-MM-YYYY") }</td> 
                <td>{item.reservationStatus}</td>
             
-               <td>    <button  onClick={()=>{updateDialog(item.id)}}  className="danger">Update</button>
+               <td>    <button  onClick={()=>{updateDialog(item.id)}}  className="btn btn-outline-dark">Update</button>
                </td>
         
                </tr>
