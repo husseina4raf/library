@@ -6,6 +6,7 @@ import {useEffect ,useState} from 'react';
 import { Button,Modal,Input } from 'react-bootstrap';
   import { useFormik } from "formik";
 import { Edit } from "@mui/icons-material";
+import { AddDistributorsSchema } from '../schema';
 const AddDistributorComponent = () => {
 
     const onSubmit=(values,actions)=>{
@@ -55,7 +56,7 @@ const AddDistributorComponent = () => {
          distributorName:'',   
               
             },
-            validationSchema:'',
+            validationSchema:AddDistributorsSchema,
             enableReinitialize:true,
             onSubmit
           });
@@ -203,7 +204,11 @@ const AddDistributorComponent = () => {
                 onChange={handleChange}
                 value={values.distributorName}
                 onBlur={handleBlur}
+                className={errors.distributorName && touched.distributorName ?"form-control input-error":"form-control"}
+
  type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="distributor Name"/>
+                              {errors.distributorName && touched.distributorName && <p className="errors">{errors.distributorName}</p>}
+
   </div>
   
   

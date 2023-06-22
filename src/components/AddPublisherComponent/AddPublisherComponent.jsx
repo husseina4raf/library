@@ -6,6 +6,8 @@ import {useEffect ,useState} from 'react';
 import { Button,Modal,Input } from 'react-bootstrap';
   import { useFormik } from "formik";
 import { Edit } from "@mui/icons-material";
+import { AddPublisherSchema } from "../schema";
+
 const AddPublisherComponent = () => {
 
     const onSubmit=(values,actions)=>{
@@ -55,7 +57,7 @@ const AddPublisherComponent = () => {
          publishersName:'',   
               
             },
-            validationSchema:'',
+            validationSchema:AddPublisherSchema,
             enableReinitialize:true,
             onSubmit
           });
@@ -201,7 +203,11 @@ const AddPublisherComponent = () => {
                 onChange={handleChange}
                 value={values.publisherName}
                 onBlur={handleBlur}
+                className={errors.publisherName && touched.publisherName ?"form-control input-error":"form-control"}
+
  type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="publishers Name"/>
+                             {errors.publisherName && touched.publisherName && <p className="errors">{errors.publisherName}</p>}
+
   </div>
   
   

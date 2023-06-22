@@ -2,6 +2,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import {useEffect, useState} from 'react';
 import { Button,Modal,Input } from 'react-bootstrap';
 import styles from './AddUser.module.css'
+import { AddUserSchema } from "../schema";
+
+
 
  import { useFormik } from "formik";
  import axios from 'axios';
@@ -60,7 +63,7 @@ import styles from './AddUser.module.css'
              password:'',
              roles:''
            },
-           validationSchema:'',
+           validationSchema:AddUserSchema,
            enableReinitialize:true,
            onSubmit
          });
@@ -209,17 +212,24 @@ import styles from './AddUser.module.css'
                   onChange={handleChange}
                   value={values.fullname}
                  onBlur={handleBlur}
+                 className={errors.fullName && touched.fullName ?"form-control input-error":"form-control"}
+
                  
- type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Full Name" className="kk"/>
- 
+ type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Full Name" />
+                             {errors.fullName && touched.fullName && <p className="errors">{errors.fullName}</p>}
+
   </div>
   <div class="form-group">
  <input  name="email"
                   onChange={handleChange}
                   value={values.email}
                  onBlur={handleBlur}
- 
- type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email" className="kk"/>
+
+                 className={errors.email && touched.email ?"form-control input-error":"form-control"}
+
+ type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email" />
+                             {errors.email && touched.email && <p className="errors">{errors.email}</p>}
+
   </div>
   <div class="form-group">
  <input
@@ -227,7 +237,11 @@ import styles from './AddUser.module.css'
   onChange={handleChange}
   value={values.password}
  onBlur={handleBlur}
-  type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="password" className="kk"/>
+ className={errors.password && touched.password ?"form-control input-error":"form-control"}
+
+  type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="password" />
+                             {errors.password && touched.password && <p className="errors">{errors.password}</p>}
+
   </div>
   <div class="form-group">
  <input
@@ -235,7 +249,11 @@ import styles from './AddUser.module.css'
   onChange={handleChange}
   value={values.phone}
  onBlur={handleBlur}
-   type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="phone" className="kk"/>
+ className={errors.phone && touched.phone ?"form-control input-error":"form-control"}
+
+   type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="phone" />
+                               {errors.phone && touched.phone && <p className="errors">{errors.phone}</p>}
+
   </div>
   <div className="col-md-12 my-3">
   <div className="form-group">

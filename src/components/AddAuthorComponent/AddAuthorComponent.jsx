@@ -6,7 +6,7 @@ import {useEffect ,useState} from 'react';
 import { Button,Modal,Input } from 'react-bootstrap';
   import { useFormik } from "formik";
 import { Delete, Edit } from "@mui/icons-material";
-import { object } from "yup";
+import { AddAuthorSchema } from "../schema";
 const AddAuthorComponent = () => {
   const [item,setItem]=useState([]);
 
@@ -58,7 +58,7 @@ const AddAuthorComponent = () => {
               authorName:'',   
               
             },
-            validationSchema:'',
+            validationSchema:AddAuthorSchema,
             enableReinitialize:true,
             onSubmit
           });
@@ -209,7 +209,11 @@ const AddAuthorComponent = () => {
                 onChange={handleChange}
                 value={values.authorName}
                 onBlur={handleBlur}
+                className={errors.authorName && touched.authorName ?"form-control input-error":"form-control"}
+
  type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Author Name"/>
+                            {errors.authorName && touched.authorName && <p className="errors">{errors.authorName}</p>}
+
   </div>
   
   

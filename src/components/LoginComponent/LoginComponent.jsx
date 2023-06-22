@@ -1,11 +1,12 @@
 import styles from "./Login.module.css"; 
-import { memo, useEffect } from "react";
+// import { memo, useEffect } from "react";
 import { useFormik } from "formik";
 import { LoginSchema } from "../schema";
 import logo from "../../../src/assets/images/modernlogo.png"
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
+
 
 // import { style } from "@mui/system";
 
@@ -63,8 +64,10 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
                 onChange={handleChange}
                 value={values.email}
                 onBlur={handleBlur}
-              className={errors.firstName && touched.firstName ?"form-control input-error":"form-control"}
-                type="email" aria-describedby="emailHelp" placeholder="Enter email"/>
+              className={errors.email && touched.email ?"form-control input-error":"form-control"}
+                type="email" aria-describedby="emailHelp" placeholder="Enter email" />
+                                          {errors.email && touched.email && <p className="errors">{errors.email}</p>}
+
    
                      </div>
         
@@ -82,7 +85,9 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
                        onBlur={handleBlur}
                        name="password"
                      className={errors.password && touched.password ?"form-control input-error":"form-control"}
-                     type="password" aria-describedby="nameHelp" placeholder="Enter Password"/>
+                     type="password" aria-describedby="nameHelp" placeholder="Enter Password" />
+                                          {errors.password && touched.password && <p className="errors">{errors.password}</p>}
+
                  </div>
                 </div>
                 
@@ -105,4 +110,4 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
      );
 }
  
-export default memo(Login);
+export default Login;

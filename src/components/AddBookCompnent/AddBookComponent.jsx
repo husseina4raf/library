@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import  { useEffect,useState} from 'react';
 import { Button,Modal,Input } from 'react-bootstrap';
  import { useFormik } from "formik";
- import { Edit } from "@mui/icons-material";
+ import { AddBoookSchema } from "../schema";
  import axios from 'axios';
 
  
@@ -108,7 +108,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
                genreIds:''
 
           },
-           validationSchema:'',
+           validationSchema:AddBoookSchema,
             enableReinitialize:true,
           
           onSubmit
@@ -285,7 +285,10 @@ import { Button,Modal,Input } from 'react-bootstrap';
              onChange={handleChange}
              value={values.bookTitle}
              onBlur={handleBlur}
-             type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
+             className={errors.bookTitle && touched.bookTitle ?"form-control input-error":"form-control"}
+
+             type="text"  id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
+                          {errors.bookTitle && touched.bookTitle && <p className="errors">{errors.bookTitle}</p>}
 
                   </div>
 
@@ -296,8 +299,11 @@ import { Button,Modal,Input } from 'react-bootstrap';
                onChange={handleChange}
                value={values.subject}
                onBlur={handleBlur}
+               className={errors.subject && touched.subject ?"form-control input-error":"form-control"}
+
               
-             type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
+             type="text" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
+                          {errors.subject && touched.subject && <p className="errors">{errors.subject}</p>}
 
                   </div>
 
@@ -308,8 +314,11 @@ import { Button,Modal,Input } from 'react-bootstrap';
                onChange={handleChange}
                value={values.editionNumber}
                onBlur={handleBlur} 
+               className={errors.editionNumber && touched.editionNumber ?"form-control input-error":"form-control"}
+
              
-             type="number" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
+             type="number"  id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
+                          {errors.editionNumber && touched.editionNumber && <p className="errors">{errors.editionNumber}</p>}
 
                   </div>
                   <div className="form-group ">
@@ -319,8 +328,11 @@ import { Button,Modal,Input } from 'react-bootstrap';
                onChange={handleChange}
                value={values.copyWriteYear}
                onBlur={handleBlur} 
+               className={errors.copyWriteYear && touched.copyWriteYear ?"form-control input-error":"form-control"}
+
              
-             type="number" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
+             type="number"  id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
+                          {errors.copyWriteYear && touched.copyWriteYear && <p className="errors">{errors.copyWriteYear}</p>}
 
                   </div>
 
@@ -331,8 +343,10 @@ import { Button,Modal,Input } from 'react-bootstrap';
                onChange={handleChange}
                value={values.numberOfPages}
                onBlur={handleBlur} 
-             
-             type="number" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
+               className={errors.numberOfPages && touched.numberOfPages ?"form-control input-error":"form-control"}
+
+             type="number"  id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
+                          {errors.numberOfPages && touched.numberOfPages && <p className="errors">{errors.numberOfPages}</p>}
 
                   </div>
              
