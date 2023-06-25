@@ -116,13 +116,13 @@ const Reservations = () => {
  
   }
    const [resStatus,setresStatus]=useState(["pending","Active","Rejected","done"]);
-
+     const reverseArr=reservation.reverse();
     const [currentPage, setCurrentPage]= useState(1)
     const recordsPerPage = 5;
     const lastIndex = currentPage * recordsPerPage;
     const firstIndex = lastIndex - recordsPerPage;
-    const records = reservation.slice(firstIndex,lastIndex);
-    const npage = Math.ceil(reservation.length / recordsPerPage );
+    const records = reverseArr.slice(firstIndex,lastIndex);
+    const npage = Math.ceil(reverseArr.length / recordsPerPage );
     const numbers = [...Array(npage + 1).keys()].slice(1);
     return (
         <>

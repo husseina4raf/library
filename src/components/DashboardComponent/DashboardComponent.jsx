@@ -12,21 +12,22 @@ import ReportsComponent from '../ReportsComponent/ReportsComponent';
 import axios from 'axios';
 
 const DashboardComponent = () => {
-
+ 
     const adminRole=localStorage.getItem('role');
     const algorithmDetect =(e)=>{
-        
+         
         console.log(e.target.value);       
         localStorage.setItem('algoAi',e.target.value)
+   
      }
 
     return (
         <>
         
    <select  onChange={algorithmDetect} className={styles.btnBorrow}> 
-      <option  value="K-nn">K-nn</option>
-      <option value="decision-tree">decision-tree</option>
-      <option value="content-based">content-based</option>
+      <option selected={(localStorage.getItem('algoAi')=="k-nn")?true:false} value="K-nn">K-nn</option>
+      <option selected={(localStorage.getItem('algoAi')=="decision-tree")?true:false} value="decision-tree">decision-tree</option>
+      <option selected={(localStorage.getItem('algoAi')=="content-based")?true:false} value="content-based">content-based</option>
    </select>
 
          

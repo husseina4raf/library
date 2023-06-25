@@ -58,56 +58,9 @@ setIsOpen(false);
 
   
 const {userBook,updateBookname}=useContext(UserContext)
-    const [books,setBooks]=useState([
-        {
-            id:1,
-          name:"book1",
-          imgURL:"https://edit.org/images/cat/book-covers-big-2019101610.jpg",  
+    const [books,setBooks]=useState([]);
 
-        },
-        {
-            id:2,
-          name:"book2",
-          imgURL:"https://edit.org/images/cat/book-covers-big-2019101610.jpg",  
-
-        },
-        {
-            id:3,
-          name:"book3",
-          imgURL:"https://edit.org/images/cat/book-covers-big-2019101610.jpg",  
-
-        },
-        {
-            id:99,
-          name:"book99",
-          imgURL:"https://edit.org/images/cat/book-covers-big-2019101610.jpg",  
-
-        },
-        {
-            id:4,
-          name:"book1",
-          imgURL:"https://edit.org/images/cat/book-covers-big-2019101610.jpg",  
-
-        },
-        {
-            id:5,
-          name:"book1",
-          imgURL:"https://edit.org/images/cat/book-covers-big-2019101610.jpg",  
-
-        },
-        {
-            id:6,
-          name:"book1",
-          imgURL:"https://edit.org/images/cat/book-covers-big-2019101610.jpg",  
-
-        },
-        {
-            id:7,
-          name:"book1",
-          imgURL:"https://edit.org/images/cat/book-covers-big-2019101610.jpg",  
-
-        }
-    ]);
+    const [sort,setSort]=useState("")
     const reservedBook=(data)=>{
       console.log(bookId);
         axios.post('http://localhost:3000/reservations/',{
@@ -159,7 +112,7 @@ const {userBook,updateBookname}=useContext(UserContext)
  
         axios.get("http://localhost:3000/books/").then(res=>{
                 console.log(res.data);
-                updateBookname(res.data)
+                setBooks(res.data)
         }).catch(err=>{
           console.log(err);
         })
@@ -170,28 +123,30 @@ const {userBook,updateBookname}=useContext(UserContext)
         let newData = [];
         if(param === "atoz"){
           newData = res.data.sort(function(a, b){return a.bookTitle - b.bookTitle})
-          updateBookname(newData);
+          setBooks(newData);
+          setSort("atoz")
         }else if(param === "ztoa"){
           newData = res.data.sort(function(a, b){return b.bookTitle - a.bookTitle})
-          updateBookname(newData);
+          setBooks(newData);
+          setSort("ztoa")
 
         }else if(param === "genre"){
-          res.data.forEach(ele => {
-            let filter = res.data.filter(filt => filt.subject === ele.subject)
-            filter.forEach(book => newData= newData.concat(book.books))
-          })
-          updateBookname(newData)
+   
+          setBooks(res.data)
+          setSort("genre")
         }else if(param === "copyyear"){
-          let sortArr = res.data.sort(function(a,b){return b.copyWriteYear - a.copyWriteYear})
-          sortArr.forEach(book => newData=newData.concat(book.books))
-
-          updateBookname(newData);
+          // let sortArr = res.data.sort(function(a,b){return b.copyWriteYear - a.copyWriteYear})
+          // sortArr.forEach(book => newData=newData.concat(book.books))
+          setBooks(res.data);
+          setSort("copyyear")
         }
 
       })
      }
 
-    
+     
+  
+
     //  const {values,handleBlur,handleChange,handleSubmit,errors,touched,setValues} = useFormik({
     //   initialValues: {
     //    bookName:'',   
@@ -201,14 +156,104 @@ const {userBook,updateBookname}=useContext(UserContext)
     //   enableReinitialize:true,
     // });
 
+
+  
+
+
+    const renderCat=(items,sort)=>{
+        if(sort=="copyyear") {
+
+          return items.map((item) => (
+              
+            <>
+              <h3>{item.copyWriteYear}</h3>
+              <div className='row'>
+              <Carousel
+        centerMode={true}
+        itemClass="carousel-item-padding-40-px"
+        responsive={responsive}>
+              {item.books.map((bk, index) => {
+         return (
+           <div className="col-md-3">
+           <div className={styles.bookCard} key={bk.id}>
+  
+  
+            <h5 className='heading__book'>{bk.bookTitle}</h5>
+            <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
+            <button onClick={()=>{openModal(bk.id)}} className={styles.btnBorrow} >Borrow</button>
+          </div>
+        </div>
+         );
+      
+      }
+      
+      )}
+
+      </Carousel>
+            </div> 
+           </>
+         ))} else if (sort=="genre") {
+
+          return items.map((item) => (
+            <>
+            
+              <h3>{item.subject}</h3>
+              <div className='row'>
+              <Carousel
+        centerMode={true}
+        itemClass="carousel-item-padding-40-px"
+        responsive={responsive}>
+              {item.books.map((bk, index) => {
+         return (
+           <div className="col-md-3" key={index}>
+           <div className={styles.bookCard} key={bk.id}>
+  
+  
+            <h5 className='heading__book'>{bk.bookTitle}</h5>
+            <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
+            <button onClick={()=>{openModal(bk.id)}} className={styles.btnBorrow} >Borrow</button>
+          </div>
+        </div>
+    
+    );
+  }
+  
+  )} 
+         </Carousel>
+            </div> 
+           </>
+         ))}else {
+          return items.map((item)=>(
+            <>
+            <div className="col-md-3">
+                   <div className={styles.bookCard} key={item.id}>
+
+
+                    <h5 className='heading__book'>{item.bookTitle}</h5>
+                    <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
+                    <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
+                  </div>
+                </div>
+            </>
+          ))
+         }
+ 
+        } 
+      
+
+      
+
+    
+
+
+
      const [currentPage, setCurrentPage]= useState(1)
-     const recordsPerPage = 20;
+     const recordsPerPage = 10;
      const lastIndex = currentPage * recordsPerPage;
      const firstIndex = lastIndex - recordsPerPage;
-     const records = userBook.slice(firstIndex,lastIndex);
-     const npage = Math.ceil(userBook.length / recordsPerPage);
+     const records = books.slice(firstIndex,lastIndex);
+     const npage = Math.ceil(books.length / recordsPerPage);
      const numbers = [...Array(npage+1).keys()].slice(1);
-  console.log(UserConsumer);
 
 
     return (
@@ -244,20 +289,14 @@ const {userBook,updateBookname}=useContext(UserContext)
 
             </form> */}
             {/* {updateBookname(books)} */}
-            <h6 className='my-3'>Books Based On Your Taste</h6>
+            {/* <h6 className='my-3'>Books Based On Your Taste</h6> */}
              
             <div className="row my-5">
-              {records.map((item) => (
-                <div className="col-md-3">
-                  <div className={styles.bookCard} key={item.id}>
+             
+             {renderCat(records,sort)}
+              
 
 
-                    <h5 className='heading__book'>{item.bookTitle}</h5>
-                    <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
-                    <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
-                  </div>
-                </div>
-              ))}
             </div>
 
           

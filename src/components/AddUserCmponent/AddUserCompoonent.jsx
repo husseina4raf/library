@@ -11,6 +11,8 @@ import { AddUserSchema } from "../schema";
 
  
  const AddUserCompoonent = () => {
+  const superAdminRole=localStorage.getItem('role');
+
   
   const adminRole=localStorage.getItem('role');
 
@@ -19,7 +21,7 @@ import { AddUserSchema } from "../schema";
            console.log(values);
       
            axios.post('http://localhost:3000/users/signup',{
-             fullName:values.fullname,
+             fullName:values.fullName,
              email:values.email,
              phone:values.phone,
              password:values.password,
@@ -27,6 +29,9 @@ import { AddUserSchema } from "../schema";
            }).then(res=>{
               axios.get("http://localhost:3000/users").then(res=>{
                 setUsers(res.data)
+                setValues({fullName:'',email:'',password:'',phone:'',roles:''  })
+
+
               }).catch(err=>{
                 console.log(err);
               })
@@ -98,7 +103,7 @@ import { AddUserSchema } from "../schema";
     }
     const handleCloseUpdate=()=>{
       setShowUpdate(false);
-      setValues({fullname:'',email:'',password:'',phone:'',roles:''  })
+      setValues({fullName:'',email:'',password:'',phone:'',roles:''  })
     }
 
     const handleEdit=(e)=>{
@@ -206,11 +211,12 @@ import { AddUserSchema } from "../schema";
  </Modal.Header>
      <Modal.Body className={styles.Modal}> 
      <form type="submit" onSubmit={handleSubmit} >
+      <div className="container">
   <div class="form-group" >
  <input 
-                   name="fullname"
+                   name="fullName"
                   onChange={handleChange}
-                  value={values.fullname}
+                  value={values.fullName}
                  onBlur={handleBlur}
                  className={errors.fullName && touched.fullName ?"form-control input-error":"form-control"}
 
@@ -255,31 +261,37 @@ import { AddUserSchema } from "../schema";
                                {errors.phone && touched.phone && <p className="errors">{errors.phone}</p>}
 
   </div>
-  <div className="col-md-12 my-3">
   <div className="form-group">
-     <label htmlFor="exampleInputEmail1">Role</label>
+  <div className="form-group text-start">
+     <label htmlFor="exampleInputEmail1">Role :</label>
      <select
+     className="form-control w-25 d-inline-block"
      name='role'
      onChange={handleChange}
         value={values.role}
         onBlur={handleBlur}
-     >
+     > 
+     
+     
            <option value="" label="SelectRole">
         Select Role
        </option>
-       <option  value="SuperAdmin">Super Admin</option>
-       <option value="Admin">Admin</option>
+       {adminRole!== "Admin" &&
+        <option  value="SuperAdmin">Super Admin</option>
+        }
+       <option   value="Admin">Admin</option>
        <option value="User">User</option>
      </select>
                  
 </div>
 </div>
+</div>
   
+  <div className="from-control ">
+<button  type="submit" class="btn btn-outline-dark w-25 ">Add </button>
+
+  </div>
   
-  
-  
-  
-<button  type="submit" class="btn btn-outline-dark ">Add </button>
   </form>
      </Modal.Body>
  

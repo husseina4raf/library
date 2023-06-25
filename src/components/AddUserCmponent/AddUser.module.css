@@ -46,3 +46,6 @@ label{
 #gg{
     color: #E1DCC5;
 }
+.form-control{
+    margin: 0 !important;
+}

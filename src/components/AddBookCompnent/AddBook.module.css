@@ -11,12 +11,15 @@
 }
 
 
-button, input, optgroup, select, textarea {
-    margin: 10px;
+button, optgroup, select, textarea {
+     margin: 10px ;
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
     background-color: transparent;
+}
+input {
+  margin: 10px 0px;
 }
 
 label {

@@ -32,7 +32,7 @@ const Login = () => {
         console.log(roles);
 
     }).catch(err=>{
-        console.log(err);
+        console.log(err.message);
     })
 }
 const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({

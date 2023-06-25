@@ -244,7 +244,7 @@ const HomeComponent = () => {
         
       </Carousel> 
 
-      <h6 className='my-3'>Most Borrowed Books</h6>
+      <h6 className='my-3'>Most Popular Books</h6>
         <Carousel
         centerMode={true}
         itemClass="carousel-item-padding-40-px"
@@ -334,8 +334,8 @@ const HomeComponent = () => {
             <h6  className='heading__book'>{item.bookTitle}</h6>
             </div>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
+            <p> Number of Books : {item.editionNumber}</p>
             <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
-
 
 
         </div>

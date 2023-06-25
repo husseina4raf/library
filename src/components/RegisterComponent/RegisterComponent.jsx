@@ -4,6 +4,8 @@ import { useFormik } from "formik";
 import { basicSchema } from "../schema";
 import { NavLink } from "react-router-dom";
 import { DateRangePicker } from 'react-date-range';
+import axios from 'axios';
+
 
 const Register = () => {
    
@@ -11,7 +13,21 @@ const Register = () => {
     const onSubmit=(values,actions)=>{
         console.log(values);
         console.log(actions);
+        console.log(values);
         console.log("Submited");
+        axios.post(`http://localhost:3000/users/signup`,{
+          
+           fullName:values.firstName+values.lastName,
+            email: values.email,
+            phone:values.phone,
+            password:values.password,
+            roles: ["User"]
+          
+      }).then(res=>{
+                 
+      }).catch(err=>{
+        console.log(err);
+      })
     }
     const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
         initialValues: {
