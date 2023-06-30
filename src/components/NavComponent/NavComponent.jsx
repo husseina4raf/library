@@ -38,7 +38,7 @@ function NavComponent() {
   //   faData(value);
   // }
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [bookid, setBookid] = useState("")
+  const [bookId, setBookid] = useState("")
   function closeModal() {
     setIsOpen(false);
     setBookid('')
@@ -57,7 +57,7 @@ function NavComponent() {
     returnDate:data.returnDate,
     reservationStatus: "pending",
     userId:data.userId,
-    bookStockId:bookid
+    bookStockId:bookId
     }).then(res=>{
         console.log(res);
         closeModal()
@@ -146,7 +146,7 @@ function NavComponent() {
                   
                   <div className="col-md-12 my-3">
                     <input
-                        value={bookid}
+                        value={bookId}
                         name="bookStockId"
                         //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
                         type="hidden"/>

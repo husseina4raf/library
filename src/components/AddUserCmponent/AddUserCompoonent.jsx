@@ -3,6 +3,8 @@ import {useEffect, useState} from 'react';
 import { Button,Modal,Input } from 'react-bootstrap';
 import styles from './AddUser.module.css'
 import { AddUserSchema } from "../schema";
+import Alert from '@mui/material/Alert';
+
 
 
 
@@ -15,6 +17,7 @@ import { AddUserSchema } from "../schema";
 
   
   const adminRole=localStorage.getItem('role');
+  const [error, setErorr] = useState('');
 
 
    const onSubmit=(values,actions)=>{
@@ -27,6 +30,12 @@ import { AddUserSchema } from "../schema";
              password:values.password,
              roles:[values.role]
            }).then(res=>{
+handleClose()
+            setErorr("User Added");
+            setTimeout(()=>{
+              setErorr("")
+             }, 3000)
+
               axios.get("http://localhost:3000/users").then(res=>{
                 setUsers(res.data)
                 setValues({fullName:'',email:'',password:'',phone:'',roles:''  })
@@ -110,7 +119,6 @@ import { AddUserSchema } from "../schema";
       e.preventDefault();
       axios.put(`http://localhost:3000/users/${updateState}`,values).then(res=>{
         axios.get("http://localhost:3000/users/").then(res=>{
-          console.log("aaaaaaa");
           setUsers(res.data)
           setShowUpdate(false)
           setValues({fullname:'',email:'',password:'',phone:'',role:'' })
@@ -136,11 +144,15 @@ import { AddUserSchema } from "../schema";
     <>
  
        <div className="container ">
-          <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded"> 
+          <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded position-relative"> 
+{error && <Alert className={styles.alert} variant="filled" severity="success">
+                                                               {error}
+                                                          </Alert>}
   
  <div class="row ">
     
-    <div class="col-sm-3 mt-5 mb-4 text-gred">
+    <div class="col-sm-3 mt-5 mb-4 text-gred ">
+      
     <div className="search">
   <form class="form-inline">
    <input class="form-control mr-sm-2" type="search" placeholder="Search " aria-label="Search"
@@ -293,18 +305,22 @@ import { AddUserSchema } from "../schema";
   </div>
   
   </form>
+ 
      </Modal.Body>
  
  <Modal.Footer>
    <Button variant="secondary" onClick={handleClose}>
      Close
    </Button>
+
    
  </Modal.Footer>
       </Modal>
+
   
 {/* Model Box Finsihs */}
-</div> 
+</div>
+  
 
 <div className="model_box">
       <Modal
@@ -316,8 +332,11 @@ import { AddUserSchema } from "../schema";
  <Modal.Header closeButton>
    <Modal.Title>Update</Modal.Title>
  </Modal.Header>
-     <Modal.Body>
-     <form >
+     
+    
+ {adminRole!== "Admin" &&
+  <Modal.Body>
+      <form >
   <div class="form-group">
  <input
                    name="fullName"
@@ -349,6 +368,8 @@ import { AddUserSchema } from "../schema";
   <div className="form-group">
      <label htmlFor="exampleInputEmail1">Role</label>
      <select
+          className="form-control w-25 d-inline-block"
+
      name='roles'
      onChange={handleChange}
         value={values.roles}
@@ -357,11 +378,11 @@ import { AddUserSchema } from "../schema";
            <option  label="SelectRole">
         Select Role
        </option>
-       { adminRole!== "Admin" &&
+       
        <option 
        selected={(values.roles == "SuperAdmin" )?"selected":''}   value="SuperAdmin">Super Admin
        </option>
-       }
+       
        <option selected={(values.roles == "Admin" )?"selected":''} value="Admin">Admin</option>
        <option selected={(values.roles == "User" )?"selected":''} value="User">User</option>
      </select>
@@ -373,12 +394,12 @@ import { AddUserSchema } from "../schema";
   
   
   
-    <button type="submit" onClick={handleEdit} class="btn btn-success mt-4">Update </button>
-  </form>
-     </Modal.Body>
+    <button type="submit" onClick={handleEdit} class="btn btn-outline-dark mt-4">Update </button>
+  </form> 
+     </Modal.Body>}
  
  <Modal.Footer>
-   <Button variant="secondary" onClick={handleClose}>
+   <Button variant="secondary" onClick={handleCloseUpdate}>
      Close
    </Button>
    
@@ -389,6 +410,7 @@ import { AddUserSchema } from "../schema";
 </div> 
 
       </div>    
+    
       </div>  
       <nav>
       <ul className='pagination'>

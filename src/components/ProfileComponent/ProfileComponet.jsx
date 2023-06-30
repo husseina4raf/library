@@ -26,7 +26,7 @@ const ProfileComponet = () => {
                  <div className="col-md-12">
  
                  <div className="form-group my-3">
-                 <label htmlFor="exampleInputEmail1">User Email</label>
+                 <label className={styles.labe} htmlFor="exampleInputEmail1">User Email</label>
                  <input
 
                  type="text" value={Profile.username} disabled  className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
@@ -40,7 +40,7 @@ const ProfileComponet = () => {
 
                   <div className='col-md-12 my-3'>
                      <div className='form-group'>
-                     <label htmlFor="exampleInputEmail1">Role</label>
+                     <label className={styles.labe} htmlFor="exampleInputEmail1">Role</label>
                       <input type="text" disabled value={Profile.roles} className="form-control" id="exampleInputpassword1" aria-describedby="nameHelp" />
 
 
@@ -55,9 +55,7 @@ const ProfileComponet = () => {
                  </div>
                  <div>
                     
-                      {/* <div className="text-center mt-7 ">
-                         <button className={styles.SubmitBtn}>  Submit </button>
-                     </div>  */}
+                    
                  </div>
             
               </form>

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import  React , {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
@@ -116,7 +117,11 @@ function showBody(props){
 
 function Row(props) {
   const { row , updateDialog } = props;
+  // const { zz , deleteBookStock } = props;
+  
+
   const [open, setOpen] = React.useState(false);
+
 
 
   return (
@@ -137,7 +142,9 @@ function Row(props) {
         <TableCell align="right">{row.shelf}</TableCell>
         <TableCell align="right">
 
-        <button id={styles.btnup} onClick={()=>{updateDialog(row.id)}}  className="danger">Update</button>
+        <button  onClick={()=>{deleteBookStock(row.id)}} className="btn btn-danger" >Delete</button>
+        <button  onClick={()=>{updateDialog(row.id)}}  className="btn btn-outline-dark ">Update</button>
+
 
         </TableCell>
        
@@ -170,6 +177,19 @@ export default function CollapsibleTable() {
                setlogsData(res.data);
           })
      },[]);
+
+     const deleteBookStock=(id)=>{
+      axios.delete(`http://localhost:3000/book-stocks/${id}`).then(res=>{
+        axios.get("http://localhost:3000/book-stocks/").then(res=>{
+          setlogsData(res.data)
+     }).catch(err=>{
+       console.log(err);
+     })
+    
+      }).catch(err=>{
+        console.log(err);
+      })
+     }
 
      const [showUpdate,setShowUpdate]=useState(false);
 
@@ -252,13 +272,15 @@ export default function CollapsibleTable() {
  
   return (
     <>
+
+    
     <TableContainer  className={styles.TableContainer} >
       <Table className={styles.tableWrapper} aria-label="collapsible table">
         <TableHead>
           <TableRow className={styles.row} >
             <TableCell />
-            <TableCell>ID</TableCell>
-            <TableCell align="right">Shelf</TableCell>
+            <TableCell className={styles.tab} >ID</TableCell>
+            <TableCell className={styles.tab} align="right">Shelf</TableCell>
             <TableCell align="right">Action</TableCell>
 
           </TableRow>
@@ -279,6 +301,7 @@ export default function CollapsibleTable() {
       </Table>
      
     </TableContainer>
+    
 
 
     <div className="model_box">

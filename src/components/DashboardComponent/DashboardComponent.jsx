@@ -23,13 +23,13 @@ const DashboardComponent = () => {
 
     return (
         <>
-        
+        { adminRole!== "Admin" &&
    <select  onChange={algorithmDetect} className={styles.btnBorrow}> 
       <option selected={(localStorage.getItem('algoAi')=="k-nn")?true:false} value="K-nn">K-nn</option>
       <option selected={(localStorage.getItem('algoAi')=="decision-tree")?true:false} value="decision-tree">decision-tree</option>
       <option selected={(localStorage.getItem('algoAi')=="content-based")?true:false} value="content-based">content-based</option>
    </select>
-
+}
          
         <div className={styles.dashboradItemWrapper}> 
          

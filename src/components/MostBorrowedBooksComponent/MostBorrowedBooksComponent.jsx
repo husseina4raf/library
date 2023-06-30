@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-const MostBorrowedGenresComponent = () => {
-    const [genre,setGenre]=useState([]);
+
+const MostBorrowedBooksComponent = () => {
+    const [books,setBooks]=useState([]);
 
 
 
 
     useEffect(()=>{
 
-        axios.get(`http://localhost:3000/reservations/report/Genres`).then(res=>{
+        axios.get(`http://localhost:3000/reservations/report/MostBorrowedBooks`).then(res=>{
             console.log(res.data);
-            setGenre(res.data)
+            setBooks(res.data)
         }).catch(err=>{
             console.log(err);
         })
@@ -23,8 +24,8 @@ const MostBorrowedGenresComponent = () => {
     const recordsPerPage = 5;
     const lastIndex = currentPage * recordsPerPage;
     const firstIndex = lastIndex - recordsPerPage;
-    const records = genre.slice(firstIndex,lastIndex);
-    const npage = Math.ceil(genre.length / recordsPerPage );
+    const records = books.slice(firstIndex,lastIndex);
+    const npage = Math.ceil(books.length / recordsPerPage );
     const numbers = [...Array(npage + 1).keys()].slice(1);
     return (
         <>
@@ -46,7 +47,7 @@ const MostBorrowedGenresComponent = () => {
       <thead>
    <tr>
 
-<th> Genre Name </th>
+<th> Book Title </th>
 <th> Count </th>
 
    </tr>
@@ -54,7 +55,7 @@ const MostBorrowedGenresComponent = () => {
       <tbody>
         {records.map((item)=>(
             <tr key={item.id}>
-                              <td>{item.genreName}</td>
+                              <td>{item.bookTitle}</td>
 
                <td>{item.Count}</td>
         
@@ -123,4 +124,4 @@ const MostBorrowedGenresComponent = () => {
       }
 };
 
-export default MostBorrowedGenresComponent;
+export default MostBorrowedBooksComponent;

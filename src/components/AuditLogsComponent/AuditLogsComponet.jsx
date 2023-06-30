@@ -245,7 +245,6 @@ export default function CollapsibleTable() {
             <TableCell>ID</TableCell>
             <TableCell align="right">Type</TableCell>
             <TableCell align="right">Entity</TableCell>
-            <TableCell align="right">Action</TableCell>
 
           </TableRow>
         </TableHead>

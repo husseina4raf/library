@@ -1,5 +1,5 @@
 import styles from './AddPublisher.module.css'
-
+import Alert from '@mui/material/Alert';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {useEffect ,useState} from 'react';
  import axios from 'axios';
@@ -9,6 +9,7 @@ import { Edit } from "@mui/icons-material";
 import { AddPublisherSchema } from "../schema";
 
 const AddPublisherComponent = () => {
+  const [error, setErorr] = useState('');
 
     const onSubmit=(values,actions)=>{
             console.log(values);
@@ -17,6 +18,13 @@ const AddPublisherComponent = () => {
               
             publisherName:values.publisherName
             }).then(res=>{
+              handleClose()
+
+              setErorr("Publisher Added");
+              setTimeout(()=>{
+                setErorr("")
+               }, 3000)
+
               axios.get("http://localhost:3000/publishers").then(res=>{
                 setpublishers(res.data)
               }).catch(err=>{
@@ -121,7 +129,10 @@ const AddPublisherComponent = () => {
     <>
  
        <div class="container ">
-          <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded"> 
+          <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded position-relative"> 
+          {error && <Alert className={styles.alert} variant="filled" severity="success">
+                                                               {error}
+                                                          </Alert>}
   
  <div class="row ">
     
@@ -210,8 +221,8 @@ const AddPublisherComponent = () => {
 
   </div>
   
+  <button  type="submit" class="btn btn-outline-dark w-25 ">Add </button>
   
-  <button  type="submit" class="btn btn-outline-dark ">Add </button>
   </form>
      </Modal.Body>
  
@@ -249,12 +260,12 @@ const AddPublisherComponent = () => {
   </div>
   
   
-    <button type="submit" onClick={handleEdit} class="btn btn-success mt-4">Update </button>
+    <button type="submit" onClick={handleEdit} class="btn btn-outline-dark mt-4">Update </button>
   </form>
      </Modal.Body>
  
  <Modal.Footer>
-   <Button variant="secondary" onClick={handleClose}>
+   <Button variant="secondary" onClick={handleCloseUpdate}>
      Close
    </Button>
    

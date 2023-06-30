@@ -151,7 +151,7 @@ const Register = () => {
                  </div>
                 </div> 
                 <div>
-               +
+               
              <div className="text-center mt-3 " >
                         <button className={styles.SinBtn}>Sign Up</button>
                     </div>

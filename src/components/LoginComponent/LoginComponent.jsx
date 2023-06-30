@@ -6,18 +6,25 @@ import logo from "../../../src/assets/images/modernlogo.png"
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
+import { useState } from "react";
+import AlertTitle from '@mui/material/AlertTitle';
+import Alert from '@mui/material/Alert';
+
 
 
 // import { style } from "@mui/system";
 
 const Login = () => {
   const navigate=useNavigate();
+    const [error, setErorr] = useState('');
+
   const onSubmit=(values,actions)=>{
     console.log(values);
     axios.post('http://localhost:3000/auth/login',{
       email:values.email,
       password:values.password
     }).then(res=>{
+      console.log(res);
         const {access_token}=res.data;
         localStorage.setItem('token',access_token);
         var decoded = jwt_decode(access_token);
@@ -32,8 +39,12 @@ const Login = () => {
         console.log(roles);
 
     }).catch(err=>{
-        console.log(err.message);
+        setErorr(err.response.data.message.message);
+        setTimeout(()=>{
+          setErorr("")
+         }, 3000)
     })
+    
 }
 const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
     initialValues: {
@@ -47,16 +58,20 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
     return ( 
         
         <>
+        
         <div className="container my-4">
-            <div className="text-center">
+            <div className="text-center d-flex justify-content-center position-relative">
         <img src={logo}  alt="" ></img>
+        {error && <Alert className={styles.alert} variant="filled" severity="error">
+                                                               {error}
+                                                          </Alert>}
             </div>
-
+            
 
           <form type="submit" onSubmit={handleSubmit} >
              <div className="row">
                 <div className="col-md-12 my-3">
- 
+               
                 <div class="form-group my-3">
                 <label htmlFor="exampleInputEmail1">Email</label>
                 <input
@@ -87,7 +102,8 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
                      className={errors.password && touched.password ?"form-control input-error":"form-control"}
                      type="password" aria-describedby="nameHelp" placeholder="Enter Password" />
                                           {errors.password && touched.password && <p className="errors">{errors.password}</p>}
-
+                                          
+                   
                  </div>
                 </div>
                 

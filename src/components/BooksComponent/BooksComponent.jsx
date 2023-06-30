@@ -135,8 +135,7 @@ const {userBook,updateBookname}=useContext(UserContext)
           setBooks(res.data)
           setSort("genre")
         }else if(param === "copyyear"){
-          // let sortArr = res.data.sort(function(a,b){return b.copyWriteYear - a.copyWriteYear})
-          // sortArr.forEach(book => newData=newData.concat(book.books))
+          
           setBooks(res.data);
           setSort("copyyear")
         }
@@ -147,14 +146,6 @@ const {userBook,updateBookname}=useContext(UserContext)
      
   
 
-    //  const {values,handleBlur,handleChange,handleSubmit,errors,touched,setValues} = useFormik({
-    //   initialValues: {
-    //    bookName:'',   
-        
-    //   },
-    //   validationSchema:'',
-    //   enableReinitialize:true,
-    // });
 
 
   
@@ -264,9 +255,9 @@ const {userBook,updateBookname}=useContext(UserContext)
 
             <Dropdown as={styles.ButtonGroup}>
 
-              <Button variant="success">Split Button</Button>
+              <Button variant="secondary">Split Button</Button>
 
-              <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+              <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic" />
 
               <Dropdown.Menu>
 
@@ -331,8 +322,9 @@ const {userBook,updateBookname}=useContext(UserContext)
               onRequestClose={closeModal}
               style={customStyles}  
              >
-                <button onClick={closeModal}>close</button>
-                <form type="submit" onSubmit={handleSubmit}>
+<Button variant="secondary" onClick={closeModal}>
+     Close
+   </Button>                <form type="submit" onSubmit={handleSubmit}>
                       <div className="col-md-12 my-3">
                         <div className="form-group">
                           <label htmlFor="exampleInputEmail1">Reservation Date</label>
@@ -368,7 +360,7 @@ const {userBook,updateBookname}=useContext(UserContext)
                         </div>
                       </div>
       
-                      <button>Submit</button>
+                      <button className="btn btn-outline-dark ">Submit</button>
                 
                 </form>
               </Modal>

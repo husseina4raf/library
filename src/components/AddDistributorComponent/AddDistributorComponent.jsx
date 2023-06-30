@@ -1,5 +1,5 @@
 import styles from './AddDistributor.module.css'
-
+import Alert from '@mui/material/Alert';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {useEffect ,useState} from 'react';
  import axios from 'axios';
@@ -8,6 +8,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
 import { Edit } from "@mui/icons-material";
 import { AddDistributorsSchema } from '../schema';
 const AddDistributorComponent = () => {
+  const [error, setErorr] = useState('');
 
     const onSubmit=(values,actions)=>{
             console.log(values);
@@ -16,6 +17,12 @@ const AddDistributorComponent = () => {
               
             distributorName:values.distributorName
             }).then(res=>{
+              handleClose()
+
+              setErorr("Distributor Added");
+              setTimeout(()=>{
+                setErorr("")
+               }, 3000)
           axios.get("http://localhost:3000/distributors").then(res=>{
                 setdistributors(res.data)
               }).catch(err=>{
@@ -122,7 +129,11 @@ const AddDistributorComponent = () => {
     <>
  
        <div class="container ">
-          <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded"> 
+          <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded position-relative"> 
+          {error && <Alert className={styles.alert} variant="filled" severity="success">
+                                                               {error}
+                                                          </Alert>}
+
   
  <div class="row ">
     
@@ -138,7 +149,7 @@ const AddDistributorComponent = () => {
   </form>
 </div> 
 </div>  
-<div id={styles.gg} class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" ><h2><b>distributors Details</b></h2></div>
+<div id={styles.gg} class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" ><h2><b>Distributors Details</b></h2></div>
 <div class="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
 <Button variant="secondary" onClick={handleShow}>
   Add New distributors
@@ -211,8 +222,9 @@ const AddDistributorComponent = () => {
 
   </div>
   
-  
-  <button  type="submit" class="btn btn-outline-dark ">Add </button>
+  <div className="forrm-control">
+  <button  type="submit" class="btn btn-outline-dark w-25 ">Add </button>
+  </div>
   </form>
      </Modal.Body>
  
@@ -250,12 +262,12 @@ const AddDistributorComponent = () => {
   </div>
   
   
-    <button type="submit" onClick={handleEdit} class="btn btn-success mt-4">Add </button>
+    <button type="submit" onClick={handleEdit} class="btn btn-outline-dark mt-4">Update </button>
   </form>
      </Modal.Body>
  
  <Modal.Footer>
-   <Button variant="secondary" onClick={handleClose}>
+   <Button variant="secondary" onClick={handleCloseUpdate}>
      Close
    </Button>
    

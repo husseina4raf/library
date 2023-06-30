@@ -7,6 +7,7 @@ import moment from 'moment/moment';
 import Modal from 'react-modal';
 import { useFormik } from "formik";
 import $ from 'jquery';
+import Alert from '@mui/material/Alert';
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
@@ -24,6 +25,8 @@ const customStyles = {
 };
 // Modal.setAppElement('#root');
 const HomeComponent = () => {
+  const [error, setErorr] = useState('');
+
      const onSubmit=(values,actions)=>{
             reservedBook(values);
         
@@ -72,8 +75,8 @@ const HomeComponent = () => {
      
 
     }).catch(err=>{
-        console.log(err);
-    })
+        
+        })
     }           
     const [books,]=useState([
         {
@@ -139,8 +142,10 @@ const HomeComponent = () => {
         closeModal()
 
     }).catch(err=>{
-        console.log(err);
-    })
+      setErorr(err.response.data.message.message);
+      setTimeout(()=>{
+        setErorr("")
+       }, 3000)    })
     }
 
     const [computerBooks,compSetState]=useState([]);
@@ -224,8 +229,8 @@ const HomeComponent = () => {
         <div className="container my-4">
 
 
-
-            <h6 className='my-3'>Books Based On Your Taste</h6>
+<br></br>
+            <h3 className='my-3'>Books Based On Your Taste</h3>
         <Carousel
         centerMode={true}
         itemClass="carousel-item-padding-40-px"
@@ -237,14 +242,18 @@ const HomeComponent = () => {
       <div className={styles.titleWrapper}>
       <h6 className='heading__book'>{item.title}</h6>
       </div>
-      <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
+      <img className='img-fluid' src="https://m.media-amazon.com/images/I/61z0E89xowL._AC_UF1000,1000_QL80_.jpg" alt="book Cover" />
+      <br></br>
+            <br></br>
+
+            <p> Number of Books : {item.editionNumber}</p>
       <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
        </div>
        ))}
         
       </Carousel> 
 
-      <h6 className='my-3'>Most Popular Books</h6>
+      <h3 className='my-3'>- Most Popular Books</h3>
         <Carousel
         centerMode={true}
         itemClass="carousel-item-padding-40-px"
@@ -254,9 +263,13 @@ const HomeComponent = () => {
         <div className={styles.bookCard} key={item.id}>
                     <div className={styles.titleWrapper}>
 
-            <h5 className='heading__book'>{item.bookTitle}</h5>
+            <h6 className='heading__book'>{item.bookTitle}</h6>
             </div>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
+            <br></br>
+            <br></br>
+
+            <p> Number of Books : {item.editionNumber}</p>
             <button className={styles.btnBorrow} onClick={()=>{openModal(item.id)}}>Borrow</button>
             
             
@@ -275,7 +288,6 @@ const HomeComponent = () => {
               <input
                   value={bookId}
                   name="reservationDate"
-                  //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
                   type="hidden"/>
 
               <div className="form-group">
@@ -284,7 +296,6 @@ const HomeComponent = () => {
                   onChange={handleChange}
                   value={values.reservationDate}
                   name="reservationDate"
-                //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
                 type="datetime-local" class="form-control js-daterangepicker"/>
               </div>
             </div>
@@ -296,7 +307,6 @@ const HomeComponent = () => {
                   onChange={handleChange}
                   value={values.dueDate}
                   name="dueDate"
-                //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
                 type="datetime-local" class="form-control js-daterangepicker"/>
               </div>
             </div>
@@ -307,21 +317,23 @@ const HomeComponent = () => {
                   onChange={handleChange}
                   value={values.returnDate}
                   name="dueDate"
-                //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
                 type="datetime-local" class="form-control js-daterangepicker"/>
               </div>
             </div>
 
-            <button className="btn--submit">Submit</button>
-          
+            <button className="btn btn-outline-dark ">Submit</button>
+            {error && <Alert className={styles.alert} variant="filled" severity="error">
+                                                               {error}
+                                                          </Alert>}
           </form>
         </Modal>
         
       </Carousel> 
 
 
-
-      <h6 className='my-3'>Computer Science</h6>
+<br></br>
+      <h3 className='my-3'>- Computer Science</h3>
+      <br></br>
         <Carousel
         centerMode={true}
         itemClass="carousel-item-padding-40-px"
@@ -334,6 +346,10 @@ const HomeComponent = () => {
             <h6  className='heading__book'>{item.bookTitle}</h6>
             </div>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
+            
+            <br></br>
+            <br></br>
+
             <p> Number of Books : {item.editionNumber}</p>
             <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
 
@@ -343,8 +359,9 @@ const HomeComponent = () => {
         
       </Carousel> 
 
-
-      <h6 className='my-3'>Language</h6>
+<br></br>
+      <h3 className='my-3'>- Language</h3>
+      <br></br>
         <Carousel
         centerMode={true}
         itemClass="carousel-item-padding-40-px"
@@ -356,6 +373,12 @@ const HomeComponent = () => {
             <h6 className='heading__book'>{item.bookTitle}</h6>
             </div>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
+            
+            <br></br>
+            <br></br>
+
+            <p> Number of Books : {item.editionNumber}</p>
+
             <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
 
             
@@ -363,8 +386,9 @@ const HomeComponent = () => {
        ))}
         
       </Carousel>   
-
-      <h6 className='my-3'>Arch.</h6>
+<br></br>
+      <h3 className='my-3'>- Arch.</h3>
+      <br></br>
         <Carousel
         centerMode={true}
         itemClass="carousel-item-padding-40-px"
@@ -376,13 +400,18 @@ const HomeComponent = () => {
             <h6 className='heading__book'>{item.bookTitle}</h6>
             </div>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
+            <br></br>
+            <br></br>
+
+            <p> Number of Books : {item.editionNumber}</p>
             <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
         </div>
        ))}
         
       </Carousel>   
-
-      <h6 className='my-3'>Phys.</h6>
+<br></br>
+      <h3 className='my-3'>- Phys.</h3>
+      <br></br>
         <Carousel
         centerMode={true}
         itemClass="carousel-item-padding-40-px"
@@ -394,7 +423,10 @@ const HomeComponent = () => {
             <h6 className='heading__book' >{item.bookTitle}</h6>
             </div>
             <img className='img-fluid' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book Cover" />
+            <br></br>
+            <br></br>
 
+            <p> Number of Books : {item.editionNumber}</p>
             <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
         
         </div>
@@ -419,7 +451,6 @@ const HomeComponent = () => {
                        onChange={handleChange}
                        value={values.reservationDate}
                        name="reservationDate"
-                    //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
                     type="datetime-local" class="form-control js-daterangepicker"/>
                  </div>
                 </div>
@@ -432,7 +463,6 @@ const HomeComponent = () => {
                        onChange={handleChange}
                        value={values.dueDate}
                        name="dueDate"
-                    //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
                     type="datetime-local" class="form-control js-daterangepicker"/>
                  </div>
                 </div>
@@ -443,7 +473,6 @@ const HomeComponent = () => {
                        onChange={handleChange}
                        value={values.returnDate}
                        name="dueDate"
-                    //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
                     type="datetime-local" class="form-control js-daterangepicker"/>
                  </div>
                 </div>

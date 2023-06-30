@@ -92,7 +92,8 @@ const MyBooksComponent = () => {
       
     return (
         <div className="container my-4">
-            <h6 className='my-3'>My Borrowed Books</h6>
+            <h3 className='my-3'>My Borrowed Books</h3>
+            <br></br>
         <Carousel
         centerMode={true}
         itemClass="carousel-item-padding-40-px"
@@ -107,57 +108,7 @@ const MyBooksComponent = () => {
        ))}
         
       </Carousel> 
-{/* 
-      <h6 className='my-3'>Most Borrowed Books</h6>
-        <Carousel
-        centerMode={true}
-        itemClass="carousel-item-padding-40-px"
-        responsive={responsive}>
-    
-       {books.map((item)=>(
-        <div className={styles.bookCard} key={item.id}>
-            <h5>{item.name}</h5>
-            <img className='img-fluid' src={item.imgURL} alt="book Cover" />
-            <button className={styles.btnBorrow} >Borrow</button>
-        </div>
-       ))}
-        
-      </Carousel>  */}
 
-
-
-      {/* <h6 className='my-3'>Compuuter Science</h6>
-        <Carousel
-        centerMode={true}
-        itemClass="carousel-item-padding-40-px"
-        responsive={responsive}>
-    
-       {books.map((item)=>(
-        <div className={styles.bookCard} key={item.id}>
-            <h5>{item.name}</h5>
-            <img className='img-fluid' src={item.imgURL} alt="book Cover" />
-            <button className={styles.btnBorrow} >Borrow</button>
-        </div>
-       ))}
-        
-      </Carousel> 
-
-
-      <h6 className='my-3'>Marketing</h6>
-        <Carousel
-        centerMode={true}
-        itemClass="carousel-item-padding-40-px"
-        responsive={responsive}>
-    
-       {books.map((item)=>(
-        <div className={styles.bookCard} key={item.id}>
-            <h5>{item.name}</h5>
-            <img className='img-fluid' src={item.imgURL} alt="book Cover" />
-            <button className={styles.btnBorrow} >Borrow</button>
-        </div>
-       ))}
-        
-      </Carousel>  */}
 
       </div>
     )

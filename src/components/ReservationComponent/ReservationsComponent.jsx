@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react';
  import { Button,Modal,Input } from 'react-bootstrap';
  import { useFormik } from "formik";
  import moment from 'moment/moment';
-
+ import Alert from '@mui/material/Alert';
 import axios from 'axios';
 
 
 
 const Reservations = () => {
     const [reservation,setReservation]=useState([]);
+    const [error, setErorr] = useState('');
 
     const onSubmit=(values,actions)=>{
       console.log(values);
@@ -25,7 +26,11 @@ const Reservations = () => {
         })
    console.log(res);
       }).catch(err=>{
-   console.log(err);
+        setErorr(err.response.data.message.message);
+        setTimeout(()=>{
+          setErorr("")
+         }, 3000)
+
       })
    
   }
@@ -103,7 +108,6 @@ const Reservations = () => {
     
     }).then(res=>{
       axios.get("http://localhost:3000/reservations/").then(res=>{
-        console.log("aaaaaaa");
         setReservation(res.data)
         setShowUpdate(false)
         // setValues({publishersName:''})
@@ -227,6 +231,8 @@ const Reservations = () => {
        <div className="form-group my-3">
              <label htmlFor="exampleInputEmail1" > Status </label>
             <select
+                 className="form-control w-25 d-inline-block"
+
                       name='reservationStatus'
                       onChange={handleChange}
                          value={values.reservationStatus}
@@ -240,9 +246,8 @@ const Reservations = () => {
                       </select>
                   </div>
 
+   <button  type="submit" class="btn btn-outline-dark w-25 " onClick={handleEdit}>Submit</button>
 
-       <button onClick={handleEdit}>Submit</button>
-  
 </form>
      </Modal.Body>
  

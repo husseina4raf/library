@@ -1,6 +1,5 @@
-
 import styles from './AddBook.module.css';
-
+import Alert from '@mui/material/Alert';
 import "bootstrap/dist/css/bootstrap.min.css";
 import  { useEffect,useState} from 'react';
 import { Button,Modal,Input } from 'react-bootstrap';
@@ -61,7 +60,7 @@ import { Button,Modal,Input } from 'react-bootstrap';
        })
           
      },[])
-
+const [error, setErorr] = useState('');
      const onSubmit=(values,actions)=>{
           console.log(values);
       
@@ -77,7 +76,10 @@ import { Button,Modal,Input } from 'react-bootstrap';
 
 
           }).then(res=>{
-              console.log(res);
+            setErorr("Book Added");
+            setTimeout(()=>{
+              setErorr("")
+             }, 3000)              
           }).catch(err=>{
               console.log(err);
           })
@@ -162,7 +164,6 @@ import { Button,Modal,Input } from 'react-bootstrap';
       e.preventDefault();
       axios.put(`http://localhost:3000/books/${updateState}`,values).then(res=>{
         axios.get("http://localhost:3000/books/").then(res=>{
-          console.log("aaaaaaa");
           setbooks(res.data)
           setShowUpdate(false)
           setValues({authorIds:'',bookTitle:'',copyWriteYear:'',editionNumber:'',genreIds:'',numberOfPages:'',publisherIds:'',subject:'' })
@@ -272,11 +273,11 @@ import { Button,Modal,Input } from 'react-bootstrap';
  <Modal.Header closeButton>
    <Modal.Title>Add Record</Modal.Title>
  </Modal.Header>
-     <Modal.Body>
+     <Modal.Body className={styles.Modal}>
 
      <form type="submit" onSubmit={handleSubmit}>
-     <div className="row my-5">
-             <div className="col-md-12">
+      <div className="container">
+     
 
      <div className="form-group ">
              <label htmlFor="exampleInputEmail1">Book Title</label>
@@ -353,6 +354,8 @@ import { Button,Modal,Input } from 'react-bootstrap';
                   <div className="form-group ">
              <label htmlFor="exampleInputEmail1"> Publisher </label>
             <select
+                 className="form-control w-30 d-inline-block"
+
                       name='publisherIds'
                       onChange={handleChange}
                          value={values.publisherIds}
@@ -372,6 +375,8 @@ import { Button,Modal,Input } from 'react-bootstrap';
              <label htmlFor="exampleInputEmail1"> author </label>
              
             <select
+                 className="form-control w-30 d-inline-block"
+
                       name='authorIds'
                       onChange={handleChange}
                          value={values.authorIds}
@@ -391,6 +396,8 @@ import { Button,Modal,Input } from 'react-bootstrap';
                   <div className="form-group ">
              <label htmlFor="exampleInputEmail1" > Genre </label>
             <select
+                 className="form-control w-30 d-inline-block"
+
                       name='genreIds'
                       onChange={handleChange}
                          value={values.genreIds}
@@ -406,12 +413,20 @@ import { Button,Modal,Input } from 'react-bootstrap';
                       </select>
                   </div>
                   </div>
-                  </div>
+                  
   
   
   
-                  <button  type="submit" class="btn btn-outline-dark ">Add </button>
+                  <div className="from-control ">
+
+                 <button  type="submit" class="btn btn-outline-dark w-25 ">Add </button>
+                 </div>
+                 {error && <Alert className={styles.alert} variant="filled" severity="success">
+                                                               {error}
+                                                          </Alert>}
   </form>
+
+
      </Modal.Body>
  
  <Modal.Footer>
@@ -433,8 +448,6 @@ import { Button,Modal,Input } from 'react-bootstrap';
  onHide={handleCloseUpdate}
  backdrop="static"
  keyboard={false}
-
- 
       >
  <Modal.Header closeButton>
    <Modal.Title>Update</Modal.Title>
@@ -506,6 +519,8 @@ import { Button,Modal,Input } from 'react-bootstrap';
                   <div className="form-group ">
              <label htmlFor="exampleInputEmail1"> Publisher </label>
             <select
+                                  className="form-control w-28 d-inline-block"
+
                       name='publisherIds'
                       onChange={handleChange}
                          value={values.publisherIds}
@@ -522,9 +537,11 @@ import { Button,Modal,Input } from 'react-bootstrap';
                   </div>
 
                   <div className="form-group ">
-             <label htmlFor="exampleInputEmail1"> author </label>
+             <label htmlFor="exampleInputEmail1"> Author </label>
              
             <select
+                      className="form-control w-28 d-inline-block"
+
                       name='authorIds'
                       onChange={handleChange}
                          value={values.authorIds}
@@ -544,6 +561,8 @@ import { Button,Modal,Input } from 'react-bootstrap';
                   <div className="form-group ">
              <label htmlFor="exampleInputEmail1" > Genre </label>
             <select
+                                  className="form-control w-28 d-inline-block"
+
                       name='genreIds'
                       onChange={handleChange}
                          value={values.genreIds}
@@ -565,12 +584,12 @@ import { Button,Modal,Input } from 'react-bootstrap';
   
   
   
-    <button  onClick={handleEdit} class="btn btn-success mt-4">Update </button>
+    <button  onClick={handleEdit} class="btn btn-outline-dark mt-4">Update </button>
   </form>
      </Modal.Body>
  
  <Modal.Footer>
-   <Button variant="secondary" onClick={handleClose}>
+   <Button variant="secondary" onClick={handleCloseUpdate}>
      Close
    </Button>
    

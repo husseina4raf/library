@@ -5,7 +5,7 @@
 
 #LL{
     text-align: center;
-    color:beige;
+    color:tan;
 
 }
 #TT{
@@ -17,4 +17,7 @@
     border-radius: 5px;
     color: aqua;
     background-color: black;
+}
+.form-control{
+    margin: 0 !important;
 }

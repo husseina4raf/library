@@ -17,3 +17,7 @@
 .row{
     border-bottom: 2px solid black !important;
 }
+
+.tab{
+    font-size: 50px;
+}
