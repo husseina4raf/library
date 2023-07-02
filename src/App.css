@@ -134,7 +134,3 @@ input.input-error,select.input-error{
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   margin: 14px;
 }
-
-#gg{
-  color: tan;
-}

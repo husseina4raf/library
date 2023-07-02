@@ -6,6 +6,8 @@ import styles from "./Nav.module.css";
 import { NavLink, useNavigate } from 'react-router-dom';
 import { UserConsumer } from '../../context';
 import Modal from 'react-modal';
+import Alert from '@mui/material/Alert';
+
 import { useFormik } from 'formik';
 const customStyles = {
   content: {
@@ -26,6 +28,8 @@ function NavComponent() {
 
   const [input, setInput] = useState("");
   const [resultSearch, setResultSearch] = useState([])
+  const [error, setErorr] = useState('');
+
   const navigate= useNavigate()
   // const faData =(value) =>{
   //   axios.get("http://localhost:3000/books/search/Art") .then(response =>response.json().then(json =>{
@@ -38,15 +42,21 @@ function NavComponent() {
   //   faData(value);
   // }
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [bookId, setBookid] = useState("")
+  const [bookId, setBookId] = useState("")
+  function openModal(id) {
+    setBookId(id);
+    console.log(id);
+    setIsOpen(true);
+  }
   function closeModal() {
     setIsOpen(false);
-    setBookid('')
+    setBookId('')
   }
   let subtitle;
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
+    
     subtitle.style.color = '#f00';
   }
      
@@ -63,8 +73,10 @@ function NavComponent() {
         closeModal()
 
     }).catch(err=>{
-        console.log(err);
-    })
+      setErorr(err.response.data.message.message);
+      setTimeout(()=>{
+        setErorr("")
+       }, 3000)    })
   }
 
   const onSubmit=(values,actions)=>{
@@ -80,10 +92,10 @@ function NavComponent() {
     onSubmit
   });
 
-  const handleBookId = (val)=>{
-    setIsOpen(true);
-    setBookid(val)
-  }
+  // const handleBookId = (val)=>{
+  //   setIsOpen(true);
+  //   setBookid(val)
+  // }
   
   return (
 
@@ -109,12 +121,12 @@ function NavComponent() {
                     {resultSearch.length > 0 &&
                       <ul className='resultSearchNav'>
                         {resultSearch.map(ele => 
-                          <li key={ele.bookTitle} title={ele.bookTitle}>
+                          <li key={ele.id} title={ele.bookTitle}>
                             <img src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="image" />
                             <div className='title-booking'>
                               <h4>{ele.bookTitle}</h4>
                               <div>
-                                <button onClick={()=>handleBookId(ele.bookId)}>Borrow</button>
+                                <button onClick={()=>openModal(ele.id)}>Borrow</button>
                               </div>
                             </div>
                           </li>
@@ -148,7 +160,6 @@ function NavComponent() {
                     <input
                         value={bookId}
                         name="bookStockId"
-                        //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
                         type="hidden"/>
 
                     <div className="form-group">
@@ -157,7 +168,6 @@ function NavComponent() {
                         onChange={handleChange}
                         value={values.reservationDate}
                         name="reservationDate"
-                      //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
                       type="datetime-local" class="form-control js-daterangepicker"/>
                     </div>
                   </div>
@@ -169,7 +179,6 @@ function NavComponent() {
                         onChange={handleChange}
                         value={values.dueDate}
                         name="dueDate"
-                      //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
                       type="datetime-local" class="form-control js-daterangepicker"/>
                     </div>
                   </div>
@@ -180,13 +189,14 @@ function NavComponent() {
                         onChange={handleChange}
                         value={values.returnDate}
                         name="dueDate"
-                      //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
                       type="datetime-local" class="form-control js-daterangepicker"/>
                     </div>
                   </div>
   
-                  <button className="btn--submit">Submit</button>
-                
+                  <button className="btn btn-outline-dark">Submit</button>
+                  {error && <Alert className={styles.alert} variant="filled" severity="error">
+                                                               {error}
+                                                          </Alert>}
                 </form>
               </Modal>
 

@@ -61,6 +61,8 @@ import { Button,Modal,Input } from 'react-bootstrap';
           
      },[])
 const [error, setErorr] = useState('');
+const [done, setDone] = useState('');
+
      const onSubmit=(values,actions)=>{
           console.log(values);
       
@@ -76,13 +78,16 @@ const [error, setErorr] = useState('');
 
 
           }).then(res=>{
-            setErorr("Book Added");
+            handleClose()
+            setDone("Book Added");
             setTimeout(()=>{
-              setErorr("")
+              setDone("")
              }, 3000)              
-          }).catch(err=>{
-              console.log(err);
-          })
+            }).catch(err=>{
+              setErorr(err.response.data.message.message);
+              setTimeout(()=>{
+                setErorr("")
+               }, 5000)})
       }
       const deleteBooks=(id)=>{
         axios.delete(`http://localhost:3000/books/${id}`).then(res=>{
@@ -129,6 +134,7 @@ const [error, setErorr] = useState('');
     const updateDialog=(id)=>{
       setUpdateState(id);
     axios.get(`http://localhost:3000/books/${id}`).then(res=>{
+      console.log(res.data);
       const{
         bookTitle,   
         copyWriteYear,
@@ -138,7 +144,7 @@ const [error, setErorr] = useState('');
         publishers,
         authors,
         genres,
-         }=res.data[0]  
+         }=res.data
     setValues({bookTitle,   
       copyWriteYear,
       subject,
@@ -167,7 +173,13 @@ const [error, setErorr] = useState('');
           setbooks(res.data)
           setShowUpdate(false)
           setValues({authorIds:'',bookTitle:'',copyWriteYear:'',editionNumber:'',genreIds:'',numberOfPages:'',publisherIds:'',subject:'' })
-     }).catch(err=>{
+        }).then(res=>{
+          handleClose()
+          setDone("Book Updated");
+          setTimeout(()=>{
+            setDone("")
+           }, 3000) 
+        }).catch(err=>{
        console.log(err);
      })
       }).catch(err=>{
@@ -189,8 +201,11 @@ const [error, setErorr] = useState('');
   return (
     <>
  
-       <div class="container ">
-          <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded"> 
+       <div class="container-fluid ">
+          <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded position-relative"> 
+          {done && <Alert className={styles.alert} variant="filled" severity="success">
+                                                               {done}
+                                                          </Alert>}
   
  <div class="row ">
     
@@ -225,12 +240,11 @@ const [error, setErorr] = useState('');
 <th> Copy Write Year </th>
 <th> editionNumber </th>
 <th> Number Of Pages </th>
-<th>Actions</th>
+<th colSpan={2} className='text-center'>Actions</th>
    </tr>
       </thead>
       <tbody>
-      {records
-      .filter((item) =>{
+      {records.filter((item) =>{
         return search.toLowerCase() === ''
         ? item
         :item.bookTitle.toLowerCase().includes(search);
@@ -246,10 +260,9 @@ const [error, setErorr] = useState('');
         <td>{item.numberOfPages}</td>
 
         <td>
-        <button  onClick={()=>{deleteBooks(item.id)}} className="btn btn-danger">Delete</button>
-          <button  onClick={()=>{updateDialog(item.id)}}  className="btn btn-outline-dark ">Update</button>
-          
-
+        <button  onClick={()=>{deleteBooks(item.id)}} className="btn btn-danger ">Delete</button>
+          </td>
+          <td><button  onClick={()=>{updateDialog(item.id)}}  className="btn btn-outline-dark  ">Update</button>
           </td>
       </tr>
    ))}
@@ -421,7 +434,7 @@ const [error, setErorr] = useState('');
 
                  <button  type="submit" class="btn btn-outline-dark w-25 ">Add </button>
                  </div>
-                 {error && <Alert className={styles.alert} variant="filled" severity="success">
+                 {error && <Alert className={styles.alert2} variant="filled" severity="error">
                                                                {error}
                                                           </Alert>}
   </form>

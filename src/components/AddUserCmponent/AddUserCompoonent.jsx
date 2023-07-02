@@ -4,10 +4,6 @@ import { Button,Modal,Input } from 'react-bootstrap';
 import styles from './AddUser.module.css'
 import { AddUserSchema } from "../schema";
 import Alert from '@mui/material/Alert';
-
-
-
-
  import { useFormik } from "formik";
  import axios from 'axios';
 
@@ -18,6 +14,7 @@ import Alert from '@mui/material/Alert';
   
   const adminRole=localStorage.getItem('role');
   const [error, setErorr] = useState('');
+  const [done, setDone] = useState('');
 
 
    const onSubmit=(values,actions)=>{
@@ -30,11 +27,16 @@ import Alert from '@mui/material/Alert';
              password:values.password,
              roles:[values.role]
            }).then(res=>{
-handleClose()
-            setErorr("User Added");
+              handleClose()
+              setDone("User Added");
             setTimeout(()=>{
-              setErorr("")
+              setDone("")
              }, 3000)
+            }).catch(err=>{
+              setErorr(err.response.data.message.message);
+              setTimeout(()=>{
+                setErorr("")
+               }, 3000)
 
               axios.get("http://localhost:3000/users").then(res=>{
                 setUsers(res.data)
@@ -44,7 +46,6 @@ handleClose()
               }).catch(err=>{
                 console.log(err);
               })
-         console.log(res);
             }).catch(err=>{
          console.log(err);
             })
@@ -61,13 +62,21 @@ handleClose()
   axios.delete(`http://localhost:3000/users/${id}`).then(res=>{
     axios.get("http://localhost:3000/users").then(res=>{
       setUsers(res.data)
+    }).then(res=>{
+      setDone("User Deleted");
+    setTimeout(()=>{
+      setDone("")
+     }, 3000)
+
+    
+}).catch(err=>{setErorr("nnnnn");
+  setTimeout(()=>{
+    setErorr("")
+   }, 3000)
+})
  }).catch(err=>{
    console.log(err);
  })
-
-  }).catch(err=>{
-    console.log(err);
-  })
  }
       const {values,handleBlur,handleChange,handleSubmit,errors,touched,setValues} = useFormik({
            initialValues: {
@@ -122,6 +131,12 @@ handleClose()
           setUsers(res.data)
           setShowUpdate(false)
           setValues({fullname:'',email:'',password:'',phone:'',role:'' })
+        }).then(res=>{
+          handleClose()
+          setDone("User Updated");
+        setTimeout(()=>{
+          setDone("")
+         }, 3000)
      }).catch(err=>{
        console.log(err);
      })
@@ -145,10 +160,14 @@ handleClose()
  
        <div className="container ">
           <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded position-relative"> 
-{error && <Alert className={styles.alert} variant="filled" severity="success">
-                                                               {error}
-                                                          </Alert>}
-  
+{done && <Alert className={styles.alert} variant="filled" severity="success">
+        {done}
+  </Alert>}
+
+{error && <Alert className={styles.alert2} variant="filled" severity="error">
+      {error}
+  </Alert>}
+      
  <div class="row ">
     
     <div class="col-sm-3 mt-5 mb-4 text-gred ">
@@ -285,7 +304,7 @@ handleClose()
      > 
      
      
-           <option value="" label="SelectRole">
+           <option value="" label="Select Role">
         Select Role
        </option>
        {adminRole!== "Admin" &&
@@ -303,6 +322,9 @@ handleClose()
 <button  type="submit" class="btn btn-outline-dark w-25 ">Add </button>
 
   </div>
+  {error && <Alert className={styles.alert2} variant="filled" severity="error">
+                                                               {error}
+                                                          </Alert>}
   
   </form>
  
@@ -334,7 +356,7 @@ handleClose()
  </Modal.Header>
      
     
- {adminRole!== "Admin" &&
+ 
   <Modal.Body>
       <form >
   <div class="form-group">
@@ -379,10 +401,10 @@ handleClose()
         Select Role
        </option>
        
-       <option 
+      {adminRole!== "Admin" && <option 
        selected={(values.roles == "SuperAdmin" )?"selected":''}   value="SuperAdmin">Super Admin
        </option>
-       
+       }
        <option selected={(values.roles == "Admin" )?"selected":''} value="Admin">Admin</option>
        <option selected={(values.roles == "User" )?"selected":''} value="User">User</option>
      </select>
@@ -396,7 +418,7 @@ handleClose()
   
     <button type="submit" onClick={handleEdit} class="btn btn-outline-dark mt-4">Update </button>
   </form> 
-     </Modal.Body>}
+     </Modal.Body>
  
  <Modal.Footer>
    <Button variant="secondary" onClick={handleCloseUpdate}>

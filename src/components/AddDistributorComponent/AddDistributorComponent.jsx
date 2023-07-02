@@ -9,6 +9,7 @@ import { Edit } from "@mui/icons-material";
 import { AddDistributorsSchema } from '../schema';
 const AddDistributorComponent = () => {
   const [error, setErorr] = useState('');
+  const [done, setDone] = useState('');
 
     const onSubmit=(values,actions)=>{
             console.log(values);
@@ -19,16 +20,21 @@ const AddDistributorComponent = () => {
             }).then(res=>{
               handleClose()
 
-              setErorr("Distributor Added");
+              setDone("Distributor Added");
               setTimeout(()=>{
-                setErorr("")
+                setDone("")
                }, 3000)
+              }).catch(err=>{
+                setErorr(err.response.data.message.message);
+                setTimeout(()=>{
+                  setErorr("")
+                 }, 3000)
+               
           axios.get("http://localhost:3000/distributors").then(res=>{
                 setdistributors(res.data)
               }).catch(err=>{
                 console.log(err);
               })
-         console.log(res);
             }).catch(err=>{
          console.log(err);
             })
@@ -104,6 +110,13 @@ const AddDistributorComponent = () => {
         setdistributors(res.data)
         setShowUpdate(false)
         setValues({distributorName:''})
+      }).then(res=>{
+        handleClose()
+        setDone("Distributor Updated");
+        setTimeout(()=>{
+          setDone("")
+        }, 3000)
+        
    }).catch(err=>{
      console.log(err);
    })
@@ -130,8 +143,8 @@ const AddDistributorComponent = () => {
  
        <div class="container ">
           <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded position-relative"> 
-          {error && <Alert className={styles.alert} variant="filled" severity="success">
-                                                               {error}
+          {done && <Alert className={styles.alert} variant="filled" severity="success">
+                                                               {done}
                                                           </Alert>}
 
   
@@ -152,7 +165,7 @@ const AddDistributorComponent = () => {
 <div id={styles.gg} class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" ><h2><b>Distributors Details</b></h2></div>
 <div class="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
 <Button variant="secondary" onClick={handleShow}>
-  Add New distributors
+  Add New Distributors
 </Button>
       </div>
     </div>  
@@ -162,7 +175,7 @@ const AddDistributorComponent = () => {
       <thead>
    <tr>
 <th>ID</th>
-<th>distributor Name </th>
+<th>Distributor Name </th>
 <th>Actions</th>
    </tr>
       </thead>
@@ -217,7 +230,7 @@ const AddDistributorComponent = () => {
                 onBlur={handleBlur}
                 className={errors.distributorName && touched.distributorName ?"form-control input-error":"form-control"}
 
- type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="distributor Name"/>
+ type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Distributor Name"/>
                               {errors.distributorName && touched.distributorName && <p className="errors">{errors.distributorName}</p>}
 
   </div>
@@ -225,6 +238,9 @@ const AddDistributorComponent = () => {
   <div className="forrm-control">
   <button  type="submit" class="btn btn-outline-dark w-25 ">Add </button>
   </div>
+  {error && <Alert className={styles.alert2} variant="filled" severity="error">
+                                                               {error}
+                                                          </Alert>}
   </form>
      </Modal.Body>
  
@@ -263,6 +279,9 @@ const AddDistributorComponent = () => {
   
   
     <button type="submit" onClick={handleEdit} class="btn btn-outline-dark mt-4">Update </button>
+    {error && <Alert className={styles.alert2} variant="filled" severity="error">
+                                                               {error}
+                                                          </Alert>}
   </form>
      </Modal.Body>
  

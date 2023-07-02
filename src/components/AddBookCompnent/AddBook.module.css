@@ -11,7 +11,7 @@
 }
 
 
-button, optgroup, select, textarea {
+button, optgroup, textarea {
      margin: 10px ;
     font-family: inherit;
     font-size: inherit;
@@ -42,4 +42,11 @@ label {
 }
 .form-control{
     margin: 0 !important;
+}
+
+.alert{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20%;
 }

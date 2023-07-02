@@ -3,12 +3,17 @@ import logo from "../../../src/assets/images/modernlogo.png"
 import { useFormik } from "formik";
 import { basicSchema } from "../schema";
 import { NavLink } from "react-router-dom";
-import { DateRangePicker } from 'react-date-range';
+import {useEffect, useState} from 'react';
+import Alert from '@mui/material/Alert';
+
 import axios from 'axios';
 
 
 const Register = () => {
    
+  const [done, setDone] = useState('');
+  const [error, setErorr] = useState('');
+
 
     const onSubmit=(values,actions)=>{
         console.log(values);
@@ -24,10 +29,18 @@ const Register = () => {
             roles: ["User"]
           
       }).then(res=>{
+              setDone("Success");
+            setTimeout(()=>{
+              setDone("")
+             }, 3000)
                  
       }).catch(err=>{
-        console.log(err);
-      })
+        setErorr(err.response.data.message.message);
+        setTimeout(()=>{
+          setErorr("")
+         }, 3000)
+              })
+              
     }
     const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
         initialValues: {
@@ -151,6 +164,12 @@ const Register = () => {
                  </div>
                 </div> 
                 <div>
+                {done && <Alert className={styles.alert2} variant="filled" severity="success">
+                                                               {done}
+                                                          </Alert>}
+  {error && <Alert className={styles.alert2} variant="filled" severity="error">
+    {error}
+       </Alert>}
                
              <div className="text-center mt-3 " >
                         <button className={styles.SinBtn}>Sign Up</button>

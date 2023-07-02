@@ -117,7 +117,6 @@ function showBody(props){
 
 function Row(props) {
   const { row , updateDialog } = props;
-  // const { zz , deleteBookStock } = props;
   
 
   const [open, setOpen] = React.useState(false);
@@ -170,11 +169,23 @@ function Row(props) {
 
 export default function CollapsibleTable() {
     const [logsData,setlogsData]=useState([]);
+    const [distributors,setDistributors]=useState([]);
+    const [Books,setBooks]=useState([]);
 
      useEffect(()=>{
           axios.get('http://localhost:3000/book-stocks/').then(res=>{
                console.log(res.data);
                setlogsData(res.data);
+          })
+          
+
+          axios.get('http://localhost:3000/distributors/').then(res=>{
+               console.log(res.data);
+               setDistributors(res.data);
+          })
+          axios.get('http://localhost:3000/books/').then(res=>{
+               console.log(res.data);
+               setBooks(res.data);
           })
      },[]);
 
@@ -191,24 +202,48 @@ export default function CollapsibleTable() {
       })
      }
 
+     const onSubmit=(values,actions)=>{
+      console.log(values);
+  
+      axios.post('http://localhost:3000/book-stocks/',{
+           shelf:values.shelf,
+           distributorId:values.distributorId,
+           bookId:values.bookId,
+      
+
+      }).then(res=>{
+        axios.get('http://localhost:3000/book-stocks/').then(res=>{
+          console.log(res.data);
+          setlogsData(res.data);
+     })
+     
+        handleClose()
+        setDone("Book Added");
+        setTimeout(()=>{
+          setDone("")
+         }, 3000)              
+        }).catch(err=>{
+          setErorr(err.response.data.message.message);
+          setTimeout(()=>{
+            setErorr("")
+           }, 5000)})
+  }
+
      const [showUpdate,setShowUpdate]=useState(false);
 
+     const handleShow = () => setShow(true);
      const {values,handleBlur,handleChange,handleSubmit,errors,touched,setValues} = useFormik({
       initialValues: {
-           bookTitle:'',   
-           copyWriteYear: '',
-           subject:'',
-           editionNumber:'',
-           numberOfPages:'',
-           publisherIds:'',
-           authorIds:'',
-           genreIds:''
+           shelf:'',   
+           distributorId: '',
+           bookId:'',
+           
 
       },
        validationSchema:'',
         enableReinitialize:true,
       
-      // onSubmit
+       onSubmit
 
 
     });
@@ -219,15 +254,9 @@ export default function CollapsibleTable() {
       setUpdateState(id);
     axios.get(`http://localhost:3000/book-stocks/${id}`).then(res=>{
              console.log(res.data);
-    // setValues({bookTitle,   
-    //   copyWriteYear,
-    //   subject,
-    //   editionNumber,
-    //   numberOfPages,
-    //   publisherIds:[publishers[0].id],
-    //   authorIds:[authors[0].id],
-    //   genreIds:[genres[0].id]
-    //   ,})     
+           setValues({bookId:res.data[0].book.id,shelf:res.data[0].shelf,distributorId:res.data[0].distributor.id})
+             
+        
     }).catch(err=>{
       console.log(err);
     })
@@ -243,15 +272,16 @@ export default function CollapsibleTable() {
 
     const handleCloseUpdate=()=>{
       setShowUpdate(false);
-      setValues({authorIds:'',bookTitle:'',copyWriteYear:'',editionNumber:'',genreIds:'',numberOfPages:'',publisherIds:'',subject:''})
+      setValues({bookId:'',shelf:'',distributorId:''})
     }
 
     const handleEdit=(e)=>{
       e.preventDefault();
-      axios.put(`http://localhost:3000/books/${updateState}`,values).then(res=>{
-        axios.get("http://localhost:3000/books/").then(res=>{
+      axios.put(`http://localhost:3000/book-stocks/${updateState}`,values).then(res=>{
+        axios.get("http://localhost:3000/book-stocks/").then(res=>{
           console.log("aaaaaaa");
-          // setbooks(res.data)
+          setlogsData(res.data);
+
           setShowUpdate(false)
           setValues({authorIds:'',bookTitle:'',copyWriteYear:'',editionNumber:'',genreIds:'',numberOfPages:'',publisherIds:'',subject:'' })
      }).catch(err=>{
@@ -273,6 +303,9 @@ export default function CollapsibleTable() {
   return (
     <>
 
+<Button variant="secondary" onClick={handleShow}>
+  Add New Book Stock
+</Button>
     
     <TableContainer  className={styles.TableContainer} >
       <Table className={styles.tableWrapper} aria-label="collapsible table">
@@ -301,7 +334,126 @@ export default function CollapsibleTable() {
       </Table>
      
     </TableContainer>
-    
+
+
+
+
+
+
+    <div className="model_box">
+      <Modal
+ show={show}
+ onHide={handleClose}
+ backdrop="static"
+ keyboard={false}
+      >
+ <Modal.Header closeButton>
+   <Modal.Title>Add Record</Modal.Title>
+ </Modal.Header>
+     <Modal.Body className={styles.Modal}>
+
+     <form type="submit" onSubmit={handleSubmit}>
+      <div className="container">
+     
+
+     <div className="form-group ">
+             <label htmlFor="exampleInputEmail1">Shelf</label>
+             <input
+             name="shelf"
+             onChange={handleChange}
+             value={values.shelf}
+             onBlur={handleBlur}
+             className={errors.bookTitle && touched.bookTitle ?"form-control input-error":"form-control"}
+
+             type="text"  id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
+                          {errors.bookTitle && touched.bookTitle && <p className="errors">{errors.bookTitle}</p>}
+
+                  </div>
+
+           
+
+              
+
+                  
+             
+                  <div className="form-group " id={styles.diss}>
+             <label htmlFor="exampleInputEmail1"> Book Name </label>
+            <select
+                 className="form-control w-30 d-inline-block"
+
+                      name='bookId'
+                      onChange={handleChange}
+                         value={values.bookId}
+                         onBlur={handleBlur}
+                      >
+                      <option value="" label="Book Name">
+                      Book Name
+                        </option>
+                        {Books.map((item)=>(
+                         <option  value={item.id}>{item.bookTitle}</option>
+                    ))}
+                        
+                      </select>
+                  </div>
+
+                  <div className="form-group " id={styles.diss}>
+             <label htmlFor="exampleInputEmail1"> Distributor Name </label>
+             
+            <select
+                 className="form-control w-30 d-inline-block"
+
+                      name='DistributorId'
+                      onChange={handleChange}
+                         value={values.distributorId}
+                         onBlur={handleBlur}
+                      >
+                      <option value="" label="Distributors Name">
+                      distributors Name
+                        </option>
+                        {distributors.map((item)=>(
+                         <option  value={item.id}>{item.distributorName}</option>
+                    ))}
+                        
+                      </select>
+                  </div>
+
+
+             
+                  </div>
+                  
+  
+  
+  
+                  <div className="from-control " id={styles.btg}>
+
+                 <button  type="submit" class="btn btn-outline-dark w-25 ">Add </button>
+                 </div>
+           
+  </form>
+
+
+     </Modal.Body>
+ 
+ <Modal.Footer>
+   <Button variant="secondary" onClick={handleClose}>
+     Close
+   </Button>
+   
+ </Modal.Footer>
+      </Modal>
+  
+{/* Model Box Finsihs */}
+</div>  
+
+
+
+
+
+
+
+
+
+{/*  */}
 
 
     <div className="model_box">
@@ -320,85 +472,72 @@ export default function CollapsibleTable() {
      <Modal.Body>
 
      <form >
-     <div className="row my-5">
+     <div className="row">
              <div className="col-md-12">
 
-     <div className="form-group my-3">
-             <label htmlFor="exampleInputEmail1">Book Title</label>
+     <div className="form-group my-1">
+             <label htmlFor="exampleInputEmail1">Shelf</label>
              <input
-             name="bookTitle"
+             name="shelf"
              onChange={handleChange}
-             value={values.bookTitle}
+             value={values.shelf}
              onBlur={handleBlur}
              type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
 
                   </div>
 
                   <div className="form-group my-3">
-             <label htmlFor="exampleInputEmail1"> Subject </label>
-             <input
-               name="subject"
-               onChange={handleChange}
-               value={values.subject}
-               onBlur={handleBlur}
-              
-             type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
+             <label htmlFor="exampleInputEmail1"> Book Name</label>
+                        <select
+                       className="form-control  d-inline-block"
+
+                      name='bookId'
+                      onChange={handleChange}
+                         value={values.bookId}
+                         onBlur={handleBlur}
+                      >
+                      <option value="" label="Distributor Name">
+                      Book Name
+                        </option>
+                        {Books.map((item)=>(
+                         <option selected={(values.bookId == item.id)?"selected":''}  value={item.id}>{item.bookTitle}</option>
+                    ))}
+                        
+                      </select>
 
                   </div>
 
                   <div className="form-group my-3">
-             <label htmlFor="exampleInputEmail1"> Edition Number </label>
-             <input
-               name="editionNumber"
-               onChange={handleChange}
-               value={values.editionNumber}
-               onBlur={handleBlur} 
-             
-             type="number" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
+             <label htmlFor="exampleInputEmail1"> distributor Name </label>
+                       <select
+                       className="form-control  d-inline-block"
 
+                      name='distributorId'
+                      onChange={handleChange}
+                         value={values.distributorId}
+                         onBlur={handleBlur}
+                      >
+                      <option value="" label="Distributor Name">
+                      Distributor Name
+                        </option>
+                        {distributors.map((item)=>(
+                         <option selected={(values.distributorId == item.id)?"selected":''}  value={item.id}>{item.distributorName}</option>
+                    ))}
+                        
+                      </select>
                   </div>
-                  <div className="form-group my-3">
-             <label htmlFor="exampleInputEmail1">Copy Write Year</label>
-             <input
-               name="copyWriteYear"
-               onChange={handleChange}
-               value={values.copyWriteYear}
-               onBlur={handleBlur} 
-             
-             type="number" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
-
-                  </div>
-
-                  <div className="form-group my-3">
-             <label htmlFor="exampleInputEmail1">Number Of Pages</label>
-             <input
-               name="numberOfPages"
-               onChange={handleChange}
-               value={values.numberOfPages}
-               onBlur={handleBlur} 
-             
-             type="number" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' />
-
-                  </div>
-             
-            
-
-              
-
-
-            
-                  
+                                 
                   </div>
                   </div>
   
   
   
-    <button  onClick={handleEdit} class="btn btn-success mt-4">Update </button>
+    <button  onClick={handleEdit} class="btn btn-outline-dark m-4">Update </button>
   </form>
      </Modal.Body>
  
  <Modal.Footer>
-   <Button variant="secondary" onClick={handleClose}>
+   <Button variant="secondary" onClick={handleCloseUpdate}>
      Close
    </Button>
    

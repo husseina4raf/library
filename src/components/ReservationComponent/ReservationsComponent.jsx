@@ -10,6 +10,7 @@ import axios from 'axios';
 
 const Reservations = () => {
     const [reservation,setReservation]=useState([]);
+    const [Users,setUsers]=useState([]);
     const [error, setErorr] = useState('');
 
     const onSubmit=(values,actions)=>{
@@ -39,12 +40,19 @@ const Reservations = () => {
 
     useEffect(()=>{
 
-        axios.get("http://localhost:3000/reservations/").then(res=>{
+        axios.get("http://localhost:3000/reservations/getReservations").then(res=>{
             console.log(res.data);
             setReservation(res.data)
         }).catch(err=>{
             console.log(err);
         })
+
+
+        axios.get("http://localhost:3000/users").then(res=>{
+          setUsers(res.data)
+     }).catch(err=>{
+       console.log(err);
+     })
 
 
     },[]);
@@ -92,6 +100,12 @@ const Reservations = () => {
   const handleCloseUpdate=()=>{
     setShowUpdate(false);
     // setValues({publisherName:''})
+    axios.get("http://localhost:3000/reservations/getReservations").then(res=>{
+      console.log(res.data);
+      setReservation(res.data)
+  }).catch(err=>{
+      console.log(err);
+  })  
   }
 
   const handleEdit=(e)=>{
@@ -107,7 +121,7 @@ const Reservations = () => {
       bookStockId:bookStockId.id
     
     }).then(res=>{
-      axios.get("http://localhost:3000/reservations/").then(res=>{
+      axios.get("http://localhost:3000/reservations/getReservations").then(res=>{
         setReservation(res.data)
         setShowUpdate(false)
         // setValues({publishersName:''})
@@ -119,6 +133,21 @@ const Reservations = () => {
     })
  
   }
+
+
+  const deleteReservations=(id)=>{
+    axios.delete(`http://localhost:3000/reservations/${id}`).then(res=>{
+      axios.get("http://localhost:3000/reservations").then(res=>{
+        setUsers(res.data)
+   }).catch(err=>{
+     console.log(err);
+   })
+  
+    }).catch(err=>{
+      console.log(err);
+    })
+   }
+
    const [resStatus,setresStatus]=useState(["pending","Active","Rejected","done"]);
      const reverseArr=reservation.reverse();
     const [currentPage, setCurrentPage]= useState(1)
@@ -128,6 +157,35 @@ const Reservations = () => {
     const records = reverseArr.slice(firstIndex,lastIndex);
     const npage = Math.ceil(reverseArr.length / recordsPerPage );
     const numbers = [...Array(npage + 1).keys()].slice(1);
+
+
+    const filterValue=(e)=>{
+      if(e.target.name ==="reservationDate" || e.target.name=== "dueDate"){
+const data=e.target.value;
+const formatt=data;
+console.log(formatt);
+axios.get(`http://localhost:3000/reservations/getReservations?${e.target.name}=${formatt}`).then(res=>{
+  console.log(res.data);
+  setReservation(res.data)
+}).catch(err=>{
+  console.log(err);
+})
+}else{
+  console.log(e.target.name);
+  console.log(e.target.value);
+console.log("Hellooo");
+
+  axios.get(`http://localhost:3000/reservations/getReservations?${e.target.name}=${e.target.value}`).then(res=>{
+   console.log(res.data);
+   setReservation(res.data)
+}).catch(err=>{
+   console.log(err);
+})
+}
+    
+    
+
+    }
     return (
         <>
         <div class="container ">
@@ -148,10 +206,139 @@ const Reservations = () => {
       <thead>
    <tr>
 <th>ID</th>
-<th> Reservarion Date </th>
-<th> Due Date </th>
-<th> Return Date </th>
-<th> Status </th>
+<th>Reservation Date
+<div className="col-md-12 my-3">
+             
+
+             <div className="form-group">
+               <input
+                 onChange={filterValue}
+               
+                 name="reservationDate"
+               type="date" class="form-control js-daterangepicker"/>
+             </div>
+           </div>
+
+   </th>
+<th> Due Date
+<div className="col-md-12 my-3">
+             
+
+             <div className="form-group">
+               <input
+                 onChange={filterValue}
+               
+                 name="reservationDate"
+               type="date" class="form-control js-daterangepicker"/>
+             </div>
+           </div>
+   </th>
+
+<th> Return Date 
+<div className="col-md-12 my-3">
+             
+
+             <div className="form-group">
+               <input
+                 onChange={filterValue}
+               
+                 name="reservationDate"
+               type="date" class="form-control js-daterangepicker"/>
+             </div>
+           </div>
+
+</th>
+<th> Status
+
+           <div className="col-md-12">
+             
+
+             <div className="form-group w-75">
+
+
+                <select
+                className="form-control "
+
+                     name='reservationStatus'
+                     onChange={filterValue}
+                      
+                     >
+                         <option value='' >Filter</option>
+                         <option  value="Rejected">Rejected</option>
+                         <option  value="pending">pending</option>
+                         <option  value="Active">Active</option>
+                         <option  value="Done">done</option>
+                       
+                       
+                       
+                     </select>
+
+
+             </div>
+           </div>
+   </th>
+<th>User Name
+
+<div className="col-md-12">
+             
+
+             <div className="form-group w-75">
+
+
+                <select
+                className="form-control "
+
+                     name='userId'
+                     onChange={filterValue}
+                      
+                     >
+                       <option value='' >Filter</option>
+                         {Users.map(u=>(
+                          <option value={u.id} >{u.fullName}</option>
+                         ))}
+                       
+                       
+                       
+                     </select>
+
+
+             </div>
+           </div>
+
+
+</th>
+
+{/* <th>User Name
+
+<div className="col-md-12">
+             
+
+             <div className="form-group w-75">
+
+
+                <select
+                className="form-control "
+
+                     name='userId'
+                     onChange={filterValue}
+                      
+                     >
+                       <option value='' >Filter</option>
+                         {Users.map(u=>(
+                          <option value={u.id} >{u.fullName}</option>
+                         ))}
+                       
+                       
+                       
+                     </select>
+
+
+             </div>
+           </div>
+
+
+</th> */}
+
 <th>Actions</th>
    </tr>
       </thead>
@@ -163,9 +350,16 @@ const Reservations = () => {
                <td>{ moment.utc(item.dueDate).format("DD-MM-YYYY") }</td>
                 <td>{ moment.utc(item.returnDate).format("DD-MM-YYYY") }</td> 
                <td>{item.reservationStatus}</td>
+               <td>{item.userId?.fullName}</td>
             
-               <td>    <button  onClick={()=>{updateDialog(item.id)}}  className="btn btn-outline-dark">Update</button>
-               </td>
+               <td >
+        <button  onClick={()=>{deleteReservations(item.id)}} className="btn btn-danger">Delete</button>
+        </td>
+        <td >
+
+          <button  onClick={()=>{updateDialog(item.id)}}  className="btn btn-outline-dark ">Update</button>
+          
+          </td>
         
                </tr>
         ))}

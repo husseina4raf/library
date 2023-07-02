@@ -20,18 +20,18 @@ export const LoginSchema=yup.object().shape({
 
 
 export const AddUserSchema =yup.object().shape({
-  fullName:yup.string().min(3).max(15).required("Required"),
+  fullName:yup.string().min(3).max(50).required("Required"),
   email:yup.string().email("Please Enter Valid Email").required("Required"),
   phone:yup.number().integer().positive().required("Required"),
   password:yup.string().min(6, 'Password must be at least 6 charaters' ).max(25).required("Password is Required"),
 });
 
 export const AddAuthorSchema =yup.object().shape({
-  authorName:yup.string().min(3).max(15).required("Required"),
+  authorName:yup.string().min(3).max(50).required("Required"),
 });
 
 export const AddBoookSchema =yup.object().shape({
-  bookTitle:yup.string().min(3).max(15).required("Required"),
+  bookTitle:yup.string().min(3).max(50).required("Required"),
   copyWriteYear:yup.number().integer().positive().required("Required"),
   subject:yup.string().min(3).max(15).required("Required"),
   editionNumber:yup.number().integer().positive().required("Required"),
@@ -42,10 +42,10 @@ export const AddBoookSchema =yup.object().shape({
 
 
 export const AddPublisherSchema =yup.object().shape({
-  publisherName:yup.string().min(3).max(15).required("Required"),
+  publisherName:yup.string().min(3).max(50).required("Required"),
 });
 
 
 export const AddDistributorsSchema =yup.object().shape({
-  distributorName:yup.string().min(3).max(15).required("Required"),
+  distributorName:yup.string().min(3).max(50).required("Required"),
 });

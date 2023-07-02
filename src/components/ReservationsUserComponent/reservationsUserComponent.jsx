@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment/moment';
 import axios from 'axios';
 import { Button,Modal,Input } from 'react-bootstrap';
+import styles from './ReservationUser.module.css'
+
 const ReservationsUserComponent = () => {
     const [reservation,setReservation]=useState([]);
 
@@ -38,7 +40,7 @@ const ReservationsUserComponent = () => {
     <div class="col-sm-3 mt-5 mb-4 text-gred">
 
 </div>  
-<div class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" style={{color:"green"}}><h2><b>Reservations Details</b></h2></div>
+<div class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" ><h2><b className={styles.cc}>Reservations Details</b></h2></div>
 <div class="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
       </div>
     </div>  

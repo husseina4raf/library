@@ -253,6 +253,7 @@ const {userBook,updateBookname}=useContext(UserContext)
 <UserConsumer>
 {({ userBook ,updateBookname}) =>(<div className="container">
 
+
             <Dropdown as={styles.ButtonGroup}>
 
               <Button variant="secondary">Split Button</Button>
@@ -349,15 +350,7 @@ const {userBook,updateBookname}=useContext(UserContext)
                         </div>
                       </div>
                       <div className="col-md-12 my-3">
-                        <div className="form-group">
-                          <label htmlFor="exampleInputEmail1">Return Date</label>
-                          <input
-                            onChange={handleChange}
-                            value={values.returnDate}
-                            name="dueDate"
-                          //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
-                          type="datetime-local" class="form-control js-daterangepicker"/>
-                        </div>
+                        
                       </div>
       
                       <button className="btn btn-outline-dark ">Submit</button>

@@ -10,6 +10,7 @@ import { AddPublisherSchema } from "../schema";
 
 const AddPublisherComponent = () => {
   const [error, setErorr] = useState('');
+  const [done, setDone] = useState('');
 
     const onSubmit=(values,actions)=>{
             console.log(values);
@@ -20,17 +21,21 @@ const AddPublisherComponent = () => {
             }).then(res=>{
               handleClose()
 
-              setErorr("Publisher Added");
+              setDone("Publisher Added");
               setTimeout(()=>{
-                setErorr("")
+                setDone("")
                }, 3000)
+              }).catch(err=>{
+                setErorr(err.response.data.message.message);
+                setTimeout(()=>{
+                  setErorr("")
+                 }, 3000)
 
               axios.get("http://localhost:3000/publishers").then(res=>{
                 setpublishers(res.data)
               }).catch(err=>{
                 console.log(err);
               })
-         console.log(res);
             }).catch(err=>{
          console.log(err);
             })
@@ -103,10 +108,17 @@ const AddPublisherComponent = () => {
       e.preventDefault();
       axios.put(`http://localhost:3000/publishers/${updateState}`,values).then(res=>{
         axios.get("http://localhost:3000/publishers/").then(res=>{
-          console.log("aaaaaaa");
           setpublishers(res.data)
           setShowUpdate(false)
           setValues({publishersName:''})
+        }).then(res=>{
+          handleClose()
+
+          setDone("Publisher Updated");
+          setTimeout(()=>{
+            setDone("")
+           }, 3000)
+          
      }).catch(err=>{
        console.log(err);
      })
@@ -130,8 +142,8 @@ const AddPublisherComponent = () => {
  
        <div class="container ">
           <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded position-relative"> 
-          {error && <Alert className={styles.alert} variant="filled" severity="success">
-                                                               {error}
+          {done && <Alert className={styles.alert} variant="filled" severity="success">
+                                                               {done}
                                                           </Alert>}
   
  <div class="row ">
@@ -162,8 +174,8 @@ const AddPublisherComponent = () => {
       <thead>
    <tr>
 <th>ID</th>
-<th>publishers Name </th>
-<th>Actions</th>
+<th>Publishers Name </th>
+<th >Actions</th>
    </tr>
       </thead>
   
@@ -222,7 +234,9 @@ const AddPublisherComponent = () => {
   </div>
   
   <button  type="submit" class="btn btn-outline-dark w-25 ">Add </button>
-  
+  {error && <Alert className={styles.alert2} variant="filled" severity="error">
+                                                               {error}
+                                                          </Alert>}
   </form>
      </Modal.Body>
  

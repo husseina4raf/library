@@ -10,6 +10,8 @@ import { AddAuthorSchema } from "../schema";
 const AddAuthorComponent = () => {
   const [item,setItem]=useState([]);
   const [error, setErorr] = useState('');
+  const [done, setDone] = useState('');
+
 
     const onSubmit=(values,actions)=>{
             
@@ -19,21 +21,29 @@ const AddAuthorComponent = () => {
             authorName:values.authorName
             }).then(res=>{
               handleClose()
+              setDone("Author Added");
+              setTimeout(()=>{
+                setDone("")
+              }, 3000)
 
-              setErorr("Author Added");
-        setTimeout(()=>{
-          setErorr("")
-         }, 3000)
+        }).catch(err=>{
+          setErorr(err.response.data.message.message);
+          setTimeout(()=>{
+            setErorr("")
+           }, 3000)
+      
 
               axios.get("http://localhost:3000/authors").then(res=>{
                 setAuthors(res.data)
               }).catch(err=>{
                 console.log(err);
               })
-         console.log(res);
             }).catch(err=>{
          console.log(err);
             })
+
+
+
         }
          const [authors,setAuthors]=useState([]);
          useEffect(()=>{
@@ -104,10 +114,16 @@ const AddAuthorComponent = () => {
       e.preventDefault();
       axios.put(`http://localhost:3000/authors/${updateState}`,values).then(res=>{
         axios.get("http://localhost:3000/authors/").then(res=>{
-          console.log("aaaaaaa");
           setAuthors(res.data)
           setShowUpdate(false)
           setValues({authorName:''})
+
+        }).then(res=>{
+          handleClose()
+          setDone("Author Updated");
+          setTimeout(()=>{
+            setDone("")
+          }, 3000)
      }).catch(err=>{
        console.log(err);
      })
@@ -133,8 +149,8 @@ const AddAuthorComponent = () => {
  
        <div class="container ">
           <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded position-relative" > 
-          {error && <Alert className={styles.alert} variant="filled" severity="success">
-                                                               {error}
+          {done && <Alert className={styles.alert} variant="filled" severity="success">
+                                                               {done}
                                                           </Alert>}
   
  <div class="row ">
@@ -149,6 +165,7 @@ const AddAuthorComponent = () => {
    />
   
   </form>
+ 
 </div>    
 </div>  
 <div id={styles.gg} class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" ><h2><b>Authors Details</b></h2></div>
@@ -230,7 +247,9 @@ const AddAuthorComponent = () => {
 
     <button  type="submit" class="btn btn-outline-dark w-25 ">Add </button>
     </div>
-   
+    {error && <Alert className={styles.alert2} variant="filled" severity="error">
+                                                               {error}
+                                                          </Alert>}
   </form>
      </Modal.Body>
  
