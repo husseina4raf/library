@@ -116,7 +116,7 @@ function showBody(props){
    
 
 function Row(props) {
-  const { row , updateDialog } = props;
+  const { row , updateDialog , deleteBookStock } = props;
   
 
   const [open, setOpen] = React.useState(false);
@@ -189,18 +189,7 @@ export default function CollapsibleTable() {
           })
      },[]);
 
-     const deleteBookStock=(id)=>{
-      axios.delete(`http://localhost:3000/book-stocks/${id}`).then(res=>{
-        axios.get("http://localhost:3000/book-stocks/").then(res=>{
-          setlogsData(res.data)
-     }).catch(err=>{
-       console.log(err);
-     })
     
-      }).catch(err=>{
-        console.log(err);
-      })
-     }
 
      const onSubmit=(values,actions)=>{
       console.log(values);
@@ -209,6 +198,7 @@ export default function CollapsibleTable() {
            shelf:values.shelf,
            distributorId:values.distributorId,
            bookId:values.bookId,
+           bookStock:0
       
 
       }).then(res=>{
@@ -248,7 +238,22 @@ export default function CollapsibleTable() {
 
     });
 
-
+    const deleteBookStock=(id)=>{
+      console.log(id);
+      axios.delete(`http://localhost:3000/book-stocks/${id}`).then(res=>{
+        axios.get("http://localhost:3000/book-stocks/").then(res=>{
+          console.log(res.data);
+          setlogsData(res.data)
+  
+     }).catch(err=>{
+       console.log(err);
+     })
+    
+      }).catch(err=>{
+        console.log(err);
+      })
+     }
+   
 
     const updateDialog=(id)=>{
       setUpdateState(id);
@@ -302,11 +307,12 @@ export default function CollapsibleTable() {
  
   return (
     <>
-
-<Button variant="secondary" onClick={handleShow}>
+<div className="w-100 d-flex justify-content-end " >
+  <Button id={styles.st} variant="secondary" onClick={handleShow}>
   Add New Book Stock
 </Button>
-    
+</div>
+
     <TableContainer  className={styles.TableContainer} >
       <Table className={styles.tableWrapper} aria-label="collapsible table">
         <TableHead>
@@ -320,7 +326,7 @@ export default function CollapsibleTable() {
         </TableHead>
         <TableBody>
           {records.map((logData) => (
-            <Row  key={logData.id} row={logData} updateDialog={updateDialog}  />
+            <Row  key={logData.id} row={logData} updateDialog={updateDialog}  deleteBookStock={deleteBookStock}  />
              
             
           ))}
@@ -402,7 +408,7 @@ export default function CollapsibleTable() {
             <select
                  className="form-control w-30 d-inline-block"
 
-                      name='DistributorId'
+                      name='distributorId'
                       onChange={handleChange}
                          value={values.distributorId}
                          onBlur={handleBlur}

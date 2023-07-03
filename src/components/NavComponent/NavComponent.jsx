@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {useEffect ,useState} from 'react';
 import axios from 'axios';
 import logo from "../../../src/assets/images/modernlogo.png"
@@ -9,6 +9,7 @@ import Modal from 'react-modal';
 import Alert from '@mui/material/Alert';
 
 import { useFormik } from 'formik';
+import { event } from 'jquery';
 const customStyles = {
   content: {
     top: '50%',
@@ -31,16 +32,7 @@ function NavComponent() {
   const [error, setErorr] = useState('');
 
   const navigate= useNavigate()
-  // const faData =(value) =>{
-  //   axios.get("http://localhost:3000/books/search/Art") .then(response =>response.json().then(json =>{
-  //   console.log(json);
-  //   }))
-  // }
-
-  // const handleChange = (value) =>{
-  //   setInput(value);
-  //   faData(value);
-  // }
+  
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [bookId, setBookId] = useState("")
   function openModal(id) {
@@ -92,20 +84,31 @@ function NavComponent() {
     onSubmit
   });
 
-  // const handleBookId = (val)=>{
-  //   setIsOpen(true);
-  //   setBookid(val)
-  // }
+  const inputRef = useRef(null);
+  const [image, setImage] = useState("");
+
+  const handleImageClick = () =>{
+    inputRef.current.click();
+  };
+
+  const handleImageChange = (event) =>{
+    const files = event.target.files[0];
+    console.log(files);
+    setImage(event.target.files[0]);
+
+  };
   
   return (
 
     <UserConsumer>
       {({ updateBookname }) => (
           <nav>
-              <div className={` ${styles.containerNav}`}>
-                  <img className={styles.logo} src={logo}  alt="" ></img>
+            
+              <div onClick={handleImageClick} className={` ${styles.containerNav}`}>
+                  {image ? <img className={styles.logo} src={URL.createObjectURL(image)}  alt="" /> :<img className={styles.logo} src={logo}  alt="" />}
+                  <input type="file" ref={inputRef} onChange={handleImageChange} style={{display: "none"}}/>
+                  {/* </div> */}
                   <div className={styles.searchWrapper} style={{position: "relative"}}>
-                    {/* <i className="fa-sharp fa-solid fa-magnifying-glass"></i> */}
                     <input type="search" placeholder='search' 
                       onChange={event => {
                         console.log(event.target.value);

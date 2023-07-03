@@ -49,10 +49,11 @@ const ReservationsUserComponent = () => {
    <table class="table table-striped table-hover table-bordered">
       <thead>
    <tr>
-<th>ID</th>
 <th> Reservarion Date </th>
 <th> Due Date </th>
 <th> Return Date </th>
+<th> Shelf </th>
+<th> Boook Title </th>
 <th> Status </th>
 
    </tr>
@@ -60,10 +61,11 @@ const ReservationsUserComponent = () => {
       <tbody>
         {records.map((item)=>(
             <tr key={item.id}>
-               <td>{item.id}</td>
                <td>{ moment.utc(item.reservationDate).format("DD-MM-YYYY") }</td>
                <td>{ moment.utc(item.dueDate).format("DD-MM-YYYY") }</td>
                 <td>{ moment.utc(item.returnDate).format("DD-MM-YYYY") }</td> 
+               <td>{item.bookStockId?.shelf}</td>
+               <td>{item.book?.bookTitle}</td>
                <td>{item.reservationStatus}</td>
         
                </tr>

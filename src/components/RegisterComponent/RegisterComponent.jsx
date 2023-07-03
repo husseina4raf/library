@@ -30,7 +30,9 @@ const Register = () => {
           
       }).then(res=>{
               setDone("Success");
-            setTimeout(()=>{
+              setTimeout(()=>{
+              setValues({firstName:'',lastName:'',email:'',phone:'',password:'',confirmpassword:''})
+              setErrors({firstName:'',lastName:'',email:'',phone:'',password:'',confirmpassword:''})
               setDone("")
              }, 3000)
                  
@@ -42,7 +44,7 @@ const Register = () => {
               })
               
     }
-    const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
+    const {values,handleBlur,handleChange,handleSubmit,errors,touched,setValues,setErrors} = useFormik({
         initialValues: {
           firstName: '',
           lastName: '',

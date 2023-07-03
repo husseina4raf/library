@@ -256,9 +256,9 @@ const {userBook,updateBookname}=useContext(UserContext)
 
             <Dropdown as={styles.ButtonGroup}>
 
-              <Button variant="secondary">Split Button</Button>
+              <Button className={styles.bg_gray} >Split Button</Button>
 
-              <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic" />
+              <Dropdown.Toggle split className={styles.bg_gray} id="dropdown-split-basic" />
 
               <Dropdown.Menu>
 

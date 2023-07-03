@@ -12,7 +12,8 @@ const Reservations = () => {
     const [reservation,setReservation]=useState([]);
     const [Users,setUsers]=useState([]);
     const [error, setErorr] = useState('');
-
+    const [shelf,setShelf]=useState([]);
+    const [book,setBook]=useState([]);
     const onSubmit=(values,actions)=>{
       console.log(values);
   
@@ -50,6 +51,17 @@ const Reservations = () => {
 
         axios.get("http://localhost:3000/users").then(res=>{
           setUsers(res.data)
+     }).catch(err=>{
+       console.log(err);
+     })
+        axios.get("http://localhost:3000/book-stocks/").then(res=>{
+          setShelf(res.data)
+     }).catch(err=>{
+       console.log(err);
+     })
+
+        axios.get("http://localhost:3000/books/").then(res=>{
+          setBook(res.data)
      }).catch(err=>{
        console.log(err);
      })
@@ -137,8 +149,9 @@ const Reservations = () => {
 
   const deleteReservations=(id)=>{
     axios.delete(`http://localhost:3000/reservations/${id}`).then(res=>{
-      axios.get("http://localhost:3000/reservations").then(res=>{
-        setUsers(res.data)
+      axios.get("http://localhost:3000/reservations/getReservations").then(res=>{
+        setReservation(res.data)
+       
    }).catch(err=>{
      console.log(err);
    })
@@ -149,13 +162,12 @@ const Reservations = () => {
    }
 
    const [resStatus,setresStatus]=useState(["pending","Active","Rejected","done"]);
-     const reverseArr=reservation.reverse();
     const [currentPage, setCurrentPage]= useState(1)
     const recordsPerPage = 5;
     const lastIndex = currentPage * recordsPerPage;
     const firstIndex = lastIndex - recordsPerPage;
-    const records = reverseArr.slice(firstIndex,lastIndex);
-    const npage = Math.ceil(reverseArr.length / recordsPerPage );
+    const records = reservation.slice(firstIndex,lastIndex);
+    const npage = Math.ceil(reservation.length / recordsPerPage );
     const numbers = [...Array(npage + 1).keys()].slice(1);
 
 
@@ -188,7 +200,7 @@ console.log("Hellooo");
     }
     return (
         <>
-        <div class="container ">
+        <div class="container-fluid ">
           <div className="crud shadow-lg p-3 mb-5 mt-5 bg-body rounded"id={styles.res}> 
   
  <div class="row ">
@@ -228,7 +240,7 @@ console.log("Hellooo");
                <input
                  onChange={filterValue}
                
-                 name="reservationDate"
+                 name="dueDate"
                type="date" class="form-control js-daterangepicker"/>
              </div>
            </div>
@@ -242,7 +254,7 @@ console.log("Hellooo");
                <input
                  onChange={filterValue}
                
-                 name="reservationDate"
+                 name="returnDate"
                type="date" class="form-control js-daterangepicker"/>
              </div>
            </div>
@@ -308,7 +320,7 @@ console.log("Hellooo");
 
 </th>
 
-{/* <th>User Name
+<th>Shelf
 
 <div className="col-md-12">
              
@@ -319,13 +331,13 @@ console.log("Hellooo");
                 <select
                 className="form-control "
 
-                     name='userId'
+                     name='bookStockId'
                      onChange={filterValue}
                       
                      >
                        <option value='' >Filter</option>
-                         {Users.map(u=>(
-                          <option value={u.id} >{u.fullName}</option>
+                         {shelf.map(u=>(
+                          <option value={u.id} >{u.shelf}</option>
                          ))}
                        
                        
@@ -337,20 +349,54 @@ console.log("Hellooo");
            </div>
 
 
-</th> */}
+</th>
+
+<th>Book Title 
+
+<div className="col-md-12">
+             
+
+             <div className="form-group w-75">
+
+
+                <select
+                className="form-control "
+
+                     name='book'
+                     onChange={filterValue}
+                      
+                     >
+                       <option value='' >Filter</option>
+                         {book.map(u=>(
+                          <option value={u.id} >{u.bookTitle}</option>
+                         ))}
+                       
+                       
+                       
+                     </select>
+
+
+             </div>
+           </div>
+
+
+</th>
 
 <th>Actions</th>
    </tr>
       </thead>
       <tbody>
+   
         {records.map((item)=>(
             <tr key={item.id}>
                <td>{item.id}</td>
-               <td>{ moment.utc(item.reservationDate).format("DD-MM-YYYY") }</td>
-               <td>{ moment.utc(item.dueDate).format("DD-MM-YYYY") }</td>
-                <td>{ moment.utc(item.returnDate).format("DD-MM-YYYY") }</td> 
+               <td>{ moment.utc(item.reservationDate).format("MM-DD-YYYY") }</td>
+               <td>{ moment.utc(item.dueDate).format("MM-DD-YYYY") }</td>
+                <td>{ moment.utc(item.returnDate).format("MM-DD-YYYY") }</td> 
                <td>{item.reservationStatus}</td>
                <td>{item.userId?.fullName}</td>
+               <td>{item.bookStockId?.shelf}</td>
+               <td>{item.book?.bookTitle}</td>
             
                <td >
         <button  onClick={()=>{deleteReservations(item.id)}} className="btn btn-danger">Delete</button>

@@ -246,7 +246,7 @@ const HomeComponent = () => {
       <br></br>
             <br></br>
 
-            <p> Number of Books : {item.editionNumber}</p>
+            
       <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
        </div>
        ))}
@@ -269,7 +269,7 @@ const HomeComponent = () => {
             <br></br>
             <br></br>
 
-            <p> Number of Books : {item.editionNumber}</p>
+            
             <button className={styles.btnBorrow} onClick={()=>{openModal(item.id)}}>Borrow</button>
             
             
@@ -350,7 +350,7 @@ const HomeComponent = () => {
             <br></br>
             <br></br>
 
-            <p> Number of Books : {item.editionNumber}</p>
+            
             <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
 
 
@@ -377,7 +377,7 @@ const HomeComponent = () => {
             <br></br>
             <br></br>
 
-            <p> Number of Books : {item.editionNumber}</p>
+            
 
             <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
 
@@ -403,7 +403,7 @@ const HomeComponent = () => {
             <br></br>
             <br></br>
 
-            <p> Number of Books : {item.editionNumber}</p>
+            
             <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
         </div>
        ))}
@@ -426,7 +426,7 @@ const HomeComponent = () => {
             <br></br>
             <br></br>
 
-            <p> Number of Books : {item.editionNumber}</p>
+            
             <button onClick={()=>{openModal(item.id)}} className={styles.btnBorrow} >Borrow</button>
         
         </div>
