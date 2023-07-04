@@ -439,7 +439,7 @@ const Reservations = () => {
           </td>
         
                </tr>
-        ))}
+        )).reverse()}
      <tr>
 
      </tr>

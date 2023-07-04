@@ -23,63 +23,6 @@ import styles from "./BookStock.module.css"
 function showBody(props){
     console.log(props);
 
-  //  switch(props.shelf)  {
-  //       case "Books" : 
-  //        return (
-  //         <Table size="small" aria-label="purchases">
-  //         <TableHead>
-  //           <TableRow className={styles.row}>
-  //             <TableCell>Subject</TableCell>
-  //             <TableCell>bookTitle</TableCell>
-  //             <TableCell align="right">copyWriteYear</TableCell>
-  //             <TableCell align="right">editionNumber</TableCell>
-  //           </TableRow>
-  //         </TableHead>
-  //         <TableBody>
-  //         <TableRow className={styles.row} key={props.id}>
-  //                     <TableCell component="th" scope="row">
-  //                       {props.body.subject} 
-  //                     </TableCell>
-  //                     <TableCell>{props.body.bookTitle}</TableCell>
-  //                     <TableCell align="right">{props.body.copyWriteYear}</TableCell>
-  //                     <TableCell align="right">
-  //                       {props.body.editionNumber}
-  //                     </TableCell>
-  //                   </TableRow>
-  //         </TableBody>
-  //       </Table>
-
-        
-  //        )
-  //        break;
-
-  //        case "distributor": 
-  //        console.log("heere");
-  //        return (
-  //         <Table size="small" aria-label="purchases">
-  //         <TableHead>
-  //           <TableRow className={styles.row}>
-  //             <TableCell>distributorName</TableCell>
-  //           </TableRow>
-  //         </TableHead>
-  //         <TableBody>
-  //         <TableRow className={styles.row} key={props.id}>
-  //                     <TableCell component="th" scope="row">
-  //                       {props.body.distributorName} 
-  //                     </TableCell>
-  //                   </TableRow>
-  //         </TableBody>
-  //       </Table>
-
-        
-  //        )
-  //        break;
-
-         
-         
-         
-        
-  //  }
 
 
   return (
@@ -297,13 +240,13 @@ export default function CollapsibleTable() {
       })
      }
 
-     const [currentPage, setCurrentPage]= useState(1)
-  const recordsPerPage = 5;
-  const lastIndex = currentPage * recordsPerPage;
-  const firstIndex = lastIndex - recordsPerPage;
-  const records = logsData.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(logsData.length / recordsPerPage )
-  const numbers = [...Array(npage + 1).keys()].slice(1)
+  //    const [currentPage, setCurrentPage]= useState(1)
+  // const recordsPerPage = 5;
+  // const lastIndex = currentPage * recordsPerPage;
+  // const firstIndex = lastIndex - recordsPerPage;
+  // const records = logsData.slice(firstIndex, lastIndex);
+  // const npage = Math.ceil(logsData.length / recordsPerPage )
+  // const numbers = [...Array(npage + 1).keys()].slice(1)
  
   return (
     <>
@@ -325,11 +268,11 @@ export default function CollapsibleTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {records.map((logData) => (
+          {logsData.map((logData) => (
             <Row  key={logData.id} row={logData} updateDialog={updateDialog}  deleteBookStock={deleteBookStock}  />
              
             
-          ))}
+          )).reverse()}
           
 
 
@@ -554,7 +497,7 @@ export default function CollapsibleTable() {
 </div> 
 
 
-    <nav>
+    {/* <nav>
         <ul className='pagination'>
           <li className='page-item'>
             <a  className='page-link'
@@ -579,26 +522,26 @@ export default function CollapsibleTable() {
 
 
         </ul>
-      </nav>
+      </nav> */}
     </>
   );
 
   
-  function prePage(){
-    if(currentPage !== 1){
-      setCurrentPage(currentPage - 1)
-    }
+  // function prePage(){
+  //   if(currentPage !== 1){
+  //     setCurrentPage(currentPage - 1)
+  //   }
     
-  }
-  function changeCPage(id){
-    setCurrentPage(id)
+  // }
+  // function changeCPage(id){
+  //   setCurrentPage(id)
     
-  }
-  function nextPage(){
-    if(currentPage !== npage){
-      setCurrentPage(currentPage + 1)
-    }
+  // }
+  // function nextPage(){
+  //   if(currentPage !== npage){
+  //     setCurrentPage(currentPage + 1)
+  //   }
 
-  }
+  // }
   
 }

@@ -187,13 +187,13 @@ const [done, setDone] = useState('');
       })
      }
 
-     const [currentPage, setCurrentPage]= useState(1)
-    const recordsPerPage = 5;
-    const lastIndex = currentPage * recordsPerPage;
-    const firstIndex = lastIndex - recordsPerPage;
-    const records = books.slice(firstIndex,lastIndex);
-    const npage = Math.ceil(books.length / recordsPerPage );
-    const numbers = [...Array(npage + 1).keys()].slice(1);
+    //  const [currentPage, setCurrentPage]= useState(1)
+    // const recordsPerPage = 5;
+    // const lastIndex = currentPage * recordsPerPage;
+    // const firstIndex = lastIndex - recordsPerPage;
+    // const records = books.slice(firstIndex,lastIndex);
+    // const npage = Math.ceil(books.length / recordsPerPage );
+    // const numbers = [...Array(npage + 1).keys()].slice(1);
 
     const [search, setSearch] = useState('');
     console.log(search);
@@ -244,7 +244,7 @@ const [done, setDone] = useState('');
    </tr>
       </thead>
       <tbody>
-      {records.filter((item) =>{
+      {books.filter((item) =>{
         return search.toLowerCase() === ''
         ? item
         :item.bookTitle.toLowerCase().includes(search);
@@ -643,22 +643,22 @@ const [done, setDone] = useState('');
 </nav>  */}
 </>
   );
-  function prePage(){
-    if(currentPage !== 1){
-      setCurrentPage(currentPage - 1)
-    }
+  // function prePage(){
+  //   if(currentPage !== 1){
+  //     setCurrentPage(currentPage - 1)
+  //   }
     
-  }
-  function changeCPage(id){
-    setCurrentPage(id)
+  // }
+  // function changeCPage(id){
+  //   setCurrentPage(id)
     
-  }
-  function nextPage(){
-    if(currentPage !== npage){
-      setCurrentPage(currentPage + 1)
-    }
+  // }
+  // function nextPage(){
+  //   if(currentPage !== npage){
+  //     setCurrentPage(currentPage + 1)
+  //   }
   
-  }
+  // }
   
 }
  
