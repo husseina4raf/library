@@ -113,9 +113,10 @@ const Reservations = () => {
       setUpdateState(id);
     axios.get(`http://localhost:3000/reservations/${id}`).then(res=>{
       const{reservationDate,dueDate,returnDate,reservationStatus,userId,bookStockId}=res.data[0] 
+
+      console.log(reservationDate,reservationStatus);
       setValues({reservationDate,dueDate,returnDate,reservationStatus,userId,bookStockId});
 
-      // console.log(reservationDate,moment.utc(reservationDate).format('dd-MM-yyyy HH:mm:ss'));
     }).catch(err=>{
       console.log(err);
     })
@@ -466,7 +467,7 @@ const Reservations = () => {
             <label htmlFor="exampleInputEmail1">Reservation Date</label>
             <input
               onChange={handleChange}
-              value={moment.utc(values.reservationDate).format('yyyy-MM-DD')}            
+              value={moment.utc(values.reservationDate).format('YYYY-MM-DDTkk:mm')}            
             name="reservationDate"
            //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
            type="datetime-local" class="form-control js-daterangepicker"/>
@@ -479,7 +480,7 @@ const Reservations = () => {
             <label htmlFor="exampleInputEmail1">Due Date</label>
             <input
               onChange={handleChange}
-              value={moment.utc(values.dueDate).format('yyyy-MM-DD')}
+              value={moment.utc(values.dueDate).format('YYYY-MM-DDTkk:mm')}
               name="dueDate"
            //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
            type="datetime-local" class="form-control js-daterangepicker"/>
@@ -492,7 +493,7 @@ const Reservations = () => {
             <label htmlFor="exampleInputEmail1">Return Date</label>
             <input
               onChange={handleChange}
-              value={moment.utc(values.returnDate).format('yyyy-MM-DD')}
+              value={moment.utc(values.returnDate).format('YYYY-MM-DDTkk:mm')}
               name="returnDate"
            //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
            type="datetime-local" class="form-control js-daterangepicker"/>
@@ -537,53 +538,12 @@ const Reservations = () => {
       </div>    
       </div>  
 
-{/* <nav>
-<ul className='pagination'>
-  <li className='page-item'>
-    <a  className='page-link'
-    onClick={prePage}> Prev </a>
 
-  </li>
-  {
-    numbers.map((n, i)=>{
-      <li className={`page-item ${currentPage === n ? 'active' : '' }` } key={i}>
-        <a  className='page-link' 
-        onClick={ ()=> changeCPage(n)}>{n}</a>
-      </li>
-      
-
-    })
-  }
-   <li className='page-item'>
-    <a className='page-link'
-    onClick={nextPage}> Next </a>
-
-  </li>
-
-
-</ul>
-</nav> */}
 </>
 
        
     );
 
-    // function prePage(){
-    //     if(currentPage !== 1){
-    //       setCurrentPage(currentPage - 1)
-    //     }
-        
-    //   }
-    //   function changeCPage(id){
-    //     setCurrentPage(id)
-        
-    //   }
-    //   function nextPage(){
-    //     if(currentPage !== npage){
-    //       setCurrentPage(currentPage + 1)
-    //     }
-      
-    //   }
 };
 
 export default Reservations;
