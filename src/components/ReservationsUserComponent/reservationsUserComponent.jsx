@@ -23,13 +23,13 @@ const ReservationsUserComponent = () => {
     },[]);
 
 
-    const [currentPage, setCurrentPage]= useState(1)
-    const recordsPerPage = 5;
-    const lastIndex = currentPage * recordsPerPage;
-    const firstIndex = lastIndex - recordsPerPage;
-    const records = reservation.slice(firstIndex,lastIndex);
-    const npage = Math.ceil(reservation.length / recordsPerPage );
-    const numbers = [...Array(npage + 1).keys()].slice(1);
+    // const [currentPage, setCurrentPage]= useState(1)
+    // const recordsPerPage = 5;
+    // const lastIndex = currentPage * recordsPerPage;
+    // const firstIndex = lastIndex - recordsPerPage;
+    // const records = reservation.slice(firstIndex,lastIndex);
+    // const npage = Math.ceil(reservation.length / recordsPerPage );
+    // const numbers = [...Array(npage + 1).keys()].slice(1);
     return (
         <>
         <div class="container ">
@@ -59,13 +59,13 @@ const ReservationsUserComponent = () => {
    </tr>
       </thead>
       <tbody>
-        {records.map((item)=>(
+        {reservation.map((item)=>(
             <tr key={item.id}>
                <td>{ moment.utc(item.reservationDate).format("DD-MM-YYYY") }</td>
                <td>{ moment.utc(item.dueDate).format("DD-MM-YYYY") }</td>
                 <td>{ moment.utc(item.returnDate).format("DD-MM-YYYY") }</td> 
                <td>{item.bookStockId?.shelf}</td>
-               <td>{item.book?.bookTitle}</td>
+               <td>{item.bookStockId.book?.bookTitle}</td>
                <td>{item.reservationStatus}</td>
         
                </tr>
@@ -83,7 +83,7 @@ const ReservationsUserComponent = () => {
 
       </div>    
       </div>  
-
+{/* 
 <nav>
 <ul className='pagination'>
   <li className='page-item'>
@@ -109,27 +109,27 @@ const ReservationsUserComponent = () => {
 
 
 </ul>
-</nav>
+</nav> */}
 </>
 
        
     );
 
-    function prePage(){
-        if(currentPage !== 1){
-          setCurrentPage(currentPage - 1)
-        }
+    // function prePage(){
+    //     if(currentPage !== 1){
+    //       setCurrentPage(currentPage - 1)
+    //     }
         
-      }
-      function changeCPage(id){
-        setCurrentPage(id)
+    //   }
+    //   function changeCPage(id){
+    //     setCurrentPage(id)
         
-      }
-      function nextPage(){
-        if(currentPage !== npage){
-          setCurrentPage(currentPage + 1)
-        }
+    //   }
+    //   function nextPage(){
+    //     if(currentPage !== npage){
+    //       setCurrentPage(currentPage + 1)
+    //     }
       
-      }
+    //   }
 };
 export default ReservationsUserComponent;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
- import styles from "./Reservation.module.css"; 
+ import styles from "./ReportGenerator.module.css"; 
  import { Button,Modal,Input } from 'react-bootstrap';
  import { useFormik } from "formik";
  import moment from 'moment/moment';
@@ -8,28 +8,28 @@ import axios from 'axios';
 
 
 
-const Reservations = () => {
+const ReportGeneratorComponent = () => {
     const [reservation,setReservation]=useState([]);
     const [Users,setUsers]=useState([]);
     const [error, setErorr] = useState('');
     const [shelf,setShelf]=useState([]);
     const [book,setBook]=useState([]);
-    const [theArray, setTheArray] = useState([]);
+    const [genres,setGenre]=useState([]);
     const onSubmit=(values,actions)=>{
       console.log(values);
   
 
    
   }
-  const [params,setParams]=useState({});
 
+  const [params,setParams]=useState({});
+ 
 
 
     useEffect(()=>{
 
-        axios.get("http://localhost:3000/reservations/getReservations").then(res=>{
+        axios.get("http://localhost:3000/reservations/report/ReportGenerator").then(res=>{
             console.log(res.data);
-
             setReservation(res.data)
         }).catch(err=>{
             console.log(err);
@@ -53,37 +53,16 @@ const Reservations = () => {
        console.log(err);
      })
 
-     
-
+     axios.get("http://localhost:3000/genres/").then(res=>{
+      setGenre(res.data)
+ }).catch(err=>{
+   console.log(err);
+ })
 
 
     },[]);
 
-    useEffect(()=>{
-      
-      for(var i=0;i<reservation.length;i++){
-        axios.get(`http://localhost:3000/books/stock/${reservation[i].id}`).then(res=>{
-         
-          setTheArray(oldarr=>[...oldarr,res.data])
-           console.log(theArray);
-         }).catch(err=>{
-           console.log(err);
-         })
-      }
-
-
-    },[reservation])
-
-  const [bookstocks,setBookStocks]=useState([]);
  
-    const  getBookStock=  (id)=> 
-        axios.get(`http://localhost:3000/books/stock/${id}`).then(res=>{
-           console.log(res.data);
-          }).catch(err=>{
-            console.log(err);
-          })
-
-  
     
      const [updateState, setUpdateState] = useState(-1)
 
@@ -108,122 +87,97 @@ const Reservations = () => {
       enableReinitialize:true,
       onSubmit
     });
-    const updateDialog=(id)=>{
-      console.log(id);
-      setUpdateState(id);
-    axios.get(`http://localhost:3000/reservations/${id}`).then(res=>{
-      const{reservationDate,dueDate,returnDate,reservationStatus,userId,bookStockId}=res.data[0] 
-      setValues({reservationDate,dueDate,returnDate,reservationStatus,userId,bookStockId});
+//     const updateDialog=(id)=>{
+//       console.log(id);
+//       setUpdateState(id);
+//     axios.get(`http://localhost:3000/reservations/${id}`).then(res=>{
+//       const{reservationDate,dueDate,returnDate,reservationStatus,userId,bookStockId}=res.data[0] 
+//       setValues({reservationDate,dueDate,returnDate,reservationStatus,userId,bookStockId});
 
-      // console.log(reservationDate,moment.utc(reservationDate).format('dd-MM-yyyy HH:mm:ss'));
-    }).catch(err=>{
-      console.log(err);
-    })
+//       // console.log(reservationDate,moment.utc(reservationDate).format('dd-MM-yyyy HH:mm:ss'));
+//     }).catch(err=>{
+//       console.log(err);
+//     })
 
-    setShowUpdate(true);
-    console.log(id);
-  }
-  const handleCloseUpdate=()=>{
-    setShowUpdate(false);
-    // setValues({publisherName:''})
-    axios.get("http://localhost:3000/reservations/getReservations").then(res=>{
-      console.log(res.data);
-      setReservation(res.data)
-  }).catch(err=>{
-      console.log(err);
-  })  
-  }
+//     setShowUpdate(true);
+//     console.log(id);
+//   }
+//   const handleCloseUpdate=()=>{
+//     setShowUpdate(false);
+//     // setValues({publisherName:''})
+//     axios.get("http://localhost:3000/reservations/getReservations").then(res=>{
+//       console.log(res.data);
+//       setReservation(res.data)
+//   }).catch(err=>{
+//       console.log(err);
+//   })  
+//   }
 
-  const handleEdit=(e)=>{
-    const {bookStockId,dueDate,reservationDate,reservationStatus,returnDate,userId}=values;
-    e.preventDefault();
-    console.log(values);
-    axios.put(`http://localhost:3000/reservations/${updateState}`,{
-      reservationDate,
-      dueDate,
-      reservationStatus,
-      returnDate,
-      userId:userId.id,
-      bookStockId:bookStockId.id,
+//   const handleEdit=(e)=>{
+//     const {bookStockId,dueDate,reservationDate,reservationStatus,returnDate,userId}=values;
+//     e.preventDefault();
+//     console.log(values);
+//     axios.put(`http://localhost:3000/reservations/${updateState}`,{
+//       reservationDate,
+//       dueDate,
+//       reservationStatus,
+//       returnDate,
+//       userId:userId.id,
+//       bookStockId:bookStockId.id,
     
-    }).then(res=>{
-      axios.get("http://localhost:3000/reservations/getReservations").then(res=>{
-        setReservation(res.data)
-        setShowUpdate(false)
-        // setValues({publishersName:''})
-   }).catch(err=>{
-     console.log(err);
-   })
-    }).catch(err=>{
-      console.log(err);
-    })
+//     }).then(res=>{
+//       axios.get("http://localhost:3000/reservations/getReservations").then(res=>{
+//         setReservation(res.data)
+//         setShowUpdate(false)
+//         // setValues({publishersName:''})
+//    }).catch(err=>{
+//      console.log(err);
+//    })
+//     }).catch(err=>{
+//       console.log(err);
+//     })
  
-  }
+//   }
 
 
-  const deleteReservations=(id)=>{
-    axios.delete(`http://localhost:3000/reservations/${id}`).then(res=>{
-      axios.get("http://localhost:3000/reservations/getReservations").then(res=>{
-        setReservation(res.data)
+//   const deleteReservations=(id)=>{
+//     axios.delete(`http://localhost:3000/reservations/${id}`).then(res=>{
+//       axios.get("http://localhost:3000/reservations/getReservations").then(res=>{
+//         setReservation(res.data)
        
-   }).catch(err=>{
-     console.log(err);
-   })
+//    }).catch(err=>{
+//      console.log(err);
+//    })
   
-    }).catch(err=>{
-      console.log(err);
-    })
-   }
+//     }).catch(err=>{
+//       console.log(err);
+//     })
+//    }
 
-   const [resStatus,setresStatus]=useState(["pending","Active","Rejected","done","Accepted","Late"]);
-    
-   const filterValue=(e)=>{
+   const [resStatus,setresStatus]=useState(["pending","Active","Rejected","done"]);
+  
+    const filterValue=(e)=>{
     //  console.log("hello");
      let prop=e.target.name
     // params[prop]=e.target.value
     // const {name,value}=e.target
     console.log(params);
     setParams({...params, [e.target.name]:e.target.value})  
+    
+     
+
 
     }
 
 
     useEffect(()=>{
-      axios.get(`http://localhost:3000/reservations/getReservations`,{params}).then(res=>{
+      axios.get(`http://localhost:3000/reservations/report/ReportGenerator`,{params}).then(res=>{
         console.log(res.data);
         setReservation(res.data)
      }).catch(err=>{
         console.log(err);
      })
     },[params])
-
-
-//     const filterValue=(e)=>{
-//       if(e.target.name ==="reservationDate" || e.target.name=== "dueDate"){
-// const data=e.target.value;
-// const formatt=data;
-// console.log(formatt);
-// axios.get(`http://localhost:3000/reservations/getReservations?${e.target.name}=${formatt}`).then(res=>{
-//   console.log(res.data);
-//   setReservation(res.data)
-// }).catch(err=>{
-//   console.log(err);
-// })
-// }else{
-//   // console.log(e.target.name);
-//   // console.log(e.target.value);
-
-//   axios.get(`http://localhost:3000/reservations/getReservations?${e.target.name}=${e.target.value}`).then(res=>{
-//    console.log(res.data);
-//    setReservation(res.data)
-// }).catch(err=>{
-//    console.log(err);
-// })
-// }
-    
-    
-
-//     }
     return (
         <>
         <div class="container-fluid ">
@@ -234,7 +188,7 @@ const Reservations = () => {
     <div class="col-sm-3 mt-5 mb-4 text-gred">
 
 </div>  
-<div class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" id={styles.LL}><h2><b>Reservations Details</b></h2></div>
+<div class="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" id={styles.LL}><h2><b>Report Generator</b></h2></div>
 <div class="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
       </div>
     </div>  
@@ -306,8 +260,6 @@ const Reservations = () => {
                          <option  value="pending">pending</option>
                          <option  value="Active">Active</option>
                          <option  value="Done">done</option>
-                         <option  value="Late">Late</option>
-                         <option  value="Accepted">Accepted</option>
                        
                        
                        
@@ -359,7 +311,7 @@ const Reservations = () => {
                 <select
                 className="form-control "
 
-                     name='bookStockId'
+                     name='shelf'
                      onChange={filterValue}
                       
                      >
@@ -390,13 +342,73 @@ const Reservations = () => {
                 <select
                 className="form-control "
 
-                     name='bookStockId'
+                     name='bookTitle'
                      onChange={filterValue}
                       
                      >
                        <option value='' >Filter</option>
                          {book.map(u=>(
-                          <option value={u.id} >{u.bookTitle}</option>
+                          <option value={u.bookTitle} >{u.bookTitle}</option>
+                         ))}
+                       
+                       
+                       
+                     </select>
+
+
+             </div>
+           </div>
+
+
+</th>
+<th>Genre Name 
+
+<div className="col-md-12">
+             
+
+             <div className="form-group w-75">
+
+
+                <select
+                className="form-control "
+
+                     name='genreName'
+                     onChange={filterValue}
+                      
+                     >
+                       <option value='' >Filter</option>
+                         {genres.map(u=>(
+                          <option value={u.id} >{u.genreName}</option>
+                         ))}
+                       
+                       
+                       
+                     </select>
+
+
+             </div>
+           </div>
+
+
+</th>
+<th>Distributor Name 
+
+<div className="col-md-12">
+             
+
+             <div className="form-group w-75">
+
+
+                <select
+                className="form-control "
+
+                     name='bookStockId'
+                     onChange={filterValue}
+                      
+                     >
+                       <option value='' >Filter</option>
+                         {genres.map(u=>(
+                          <option value={u.id} >{u.distributorName}</option>
                          ))}
                        
                        
@@ -410,35 +422,24 @@ const Reservations = () => {
 
 </th>
 
-<th>BookStock</th>
 
-<th>Actions</th>
    </tr>
       </thead>
       <tbody>
    
-        {reservation.map((item,index)=>(
-            <tr key={item.id}>
+        {reservation.map((item)=>(
+          <tr key={item.id}>
                <td>{item.id}</td>
                <td>{ moment.utc(item.reservationDate).format("MM-DD-YYYY") }</td>
                <td>{ moment.utc(item.dueDate).format("MM-DD-YYYY") }</td>
-                <td>{ item.returnDate !== null ? moment.utc(item.returnDate).format("MM-DD-YYYY") : "N/A"  }</td> 
+                <td>{  item.returnDate !== null ? moment.utc(item.returnDate).format("MM-DD-YYYY") : "N/A"}</td> 
                <td>{item.reservationStatus}</td>
                <td>{item.userId?.fullName}</td>
                <td>{item.bookStockId?.shelf}</td>
                <td>{item.bookStockId && item.bookStockId.book ? item.bookStockId.book.bookTitle : 'N/A'}</td>
-               <td>{theArray[index]}</td>
-              
-               <td >
-        <button  onClick={()=>{deleteReservations(item.id)}} className="btn btn-danger">Delete</button>
-        </td>
-        <td >
-
-          <button  onClick={()=>{updateDialog(item.id)}}  className="btn btn-outline-dark ">Update</button>
-          
-          </td>
-        
-               </tr>
+               <td>{item.bookStockId?.book.genres[0].genreName  || "N/A" }</td>
+               <td>{item.bookStockId?.distributor?.distributorName || "N/A" }</td>
+                              </tr>
         ))}
      <tr>
 
@@ -449,7 +450,7 @@ const Reservations = () => {
      </div>   
  </div>  
  <div className="model_box">
-      <Modal
+      {/* <Modal
  show={showUpdate}
  onHide={handleCloseUpdate}
  backdrop="static"
@@ -466,7 +467,7 @@ const Reservations = () => {
             <label htmlFor="exampleInputEmail1">Reservation Date</label>
             <input
               onChange={handleChange}
-              value={moment.utc(values.reservationDate).format('yyyy-MM-DD')}            
+              value={moment.utc(values.reservationDate).format('yyyy-MM-DDThh:mm:ss')}            
             name="reservationDate"
            //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
            type="datetime-local" class="form-control js-daterangepicker"/>
@@ -479,7 +480,7 @@ const Reservations = () => {
             <label htmlFor="exampleInputEmail1">Due Date</label>
             <input
               onChange={handleChange}
-              value={moment.utc(values.dueDate).format('yyyy-MM-DD')}
+              value={moment.utc(values.dueDate).format('yyyy-MM-DDThh:mm:ss')}
               name="dueDate"
            //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
            type="datetime-local" class="form-control js-daterangepicker"/>
@@ -492,7 +493,7 @@ const Reservations = () => {
             <label htmlFor="exampleInputEmail1">Return Date</label>
             <input
               onChange={handleChange}
-              value={moment.utc(values.returnDate).format('yyyy-MM-DD')}
+              value={moment.utc(values.returnDate).format('yyyy-MM-DDThh:mm:ss')}
               name="returnDate"
            //  className={errors.password && touched.password ?"form-control input-error":"form-control"}
            type="datetime-local" class="form-control js-daterangepicker"/>
@@ -528,7 +529,7 @@ const Reservations = () => {
    </Button>
    
  </Modal.Footer>
-      </Modal>
+      </Modal> */}
   
 {/* Model Box Finsihs */}
 </div> 
@@ -586,4 +587,7 @@ const Reservations = () => {
     //   }
 };
 
-export default Reservations;
+export default ReportGeneratorComponent;
+
+
+

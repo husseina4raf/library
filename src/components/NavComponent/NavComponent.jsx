@@ -84,30 +84,30 @@ function NavComponent() {
     onSubmit
   });
 
-  const inputRef = useRef(null);
-  const [image, setImage] = useState("");
+  // const inputRef = useRef(null);
+  // const [image, setImage] = useState("");
 
-  const handleImageClick = () =>{
-    inputRef.current.click();
-  };
+  // const handleImageClick = () =>{
+  //   inputRef.current.click();
+  // };
 
-  const handleImageChange = (event) =>{
-    const files = event.target.files[0];
-    console.log(files);
-    setImage(event.target.files[0]);
+  // const handleImageChange = (event) =>{
+  //   const files = event.target.files[0];
+  //   console.log(files);
+  //   setImage(event.target.files[0]);
 
-  };
+  // };
   
   return (
 
     <UserConsumer>
       {({ updateBookname }) => (
           <nav>
-            
-              <div onClick={handleImageClick} className={` ${styles.containerNav}`}>
+            {/* <div onClick={handleImageClick} className={` ${styles.containerNav}`}>
                   {image ? <img className={styles.logo} src={URL.createObjectURL(image)}  alt="" /> :<img className={styles.logo} src={logo}  alt="" />}
-                  <input type="file" ref={inputRef} onChange={handleImageChange} style={{display: "none"}}/>
-                  {/* </div> */}
+                  <input type="file" ref={inputRef} onChange={handleImageChange} style={{display: "none"}}/> */}
+              <div className={` ${styles.containerNav}`} >
+                   <img className={styles.logo} src={logo}  alt="" ></img> 
                   <div className={styles.searchWrapper} style={{position: "relative"}}>
                     <input type="search" placeholder='search' 
                       onChange={event => {

@@ -107,6 +107,7 @@ function showBody(props){
          break;
 
          case "Reservations": 
+         console.log(props);
         return (
           <Table size="small" aria-label="purchases">
           <TableHead>
@@ -123,7 +124,7 @@ function showBody(props){
                         {props.body.dueDate} 
                       </TableCell>
                       <TableCell >
-                        {props.body.bookStockId}
+                        {props.body.bookStockId?.id}
                       </TableCell>
                       <TableCell >
                         {props.body.reservationDate}
@@ -227,13 +228,13 @@ export default function CollapsibleTable() {
           })
      },[]);
 
-     const [currentPage, setCurrentPage]= useState(1)
-  const recordsPerPage = 5;
-  const lastIndex = currentPage * recordsPerPage;
-  const firstIndex = lastIndex - recordsPerPage;
-  const records = logsData.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(logsData.length / recordsPerPage )
-  const numbers = [...Array(npage + 1).keys()].slice(1)
+  //    const [currentPage, setCurrentPage]= useState(1)
+  // const recordsPerPage = 5;
+  // const lastIndex = currentPage * recordsPerPage;
+  // const firstIndex = lastIndex - recordsPerPage;
+  // const records = logsData.slice(firstIndex, lastIndex);
+  // const npage = Math.ceil(logsData.length / recordsPerPage )
+  // const numbers = [...Array(npage + 1).keys()].slice(1)
  
   return (
     <>
@@ -249,9 +250,9 @@ export default function CollapsibleTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {records.map((logData) => (
+          {logsData.map((logData) => (
             <Row  key={logData.id} row={logData} />
-          ))}
+          )).reverse()}
           
 
 
@@ -262,7 +263,7 @@ export default function CollapsibleTable() {
       </Table>
      
     </TableContainer>
-    <nav>
+    {/* <nav>
         <ul className='pagination'>
           <li className='page-item'>
             <a  className='page-link'
@@ -287,26 +288,26 @@ export default function CollapsibleTable() {
 
 
         </ul>
-      </nav>
+      </nav> */}
     </>
   );
 
   
-  function prePage(){
-    if(currentPage !== 1){
-      setCurrentPage(currentPage - 1)
-    }
+  // function prePage(){
+  //   if(currentPage !== 1){
+  //     setCurrentPage(currentPage - 1)
+  //   }
     
-  }
-  function changeCPage(id){
-    setCurrentPage(id)
+  // }
+  // function changeCPage(id){
+  //   setCurrentPage(id)
     
-  }
-  function nextPage(){
-    if(currentPage !== npage){
-      setCurrentPage(currentPage + 1)
-    }
+  // }
+  // function nextPage(){
+  //   if(currentPage !== npage){
+  //     setCurrentPage(currentPage + 1)
+  //   }
 
-  }
+  // }
   
 }

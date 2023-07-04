@@ -615,7 +615,7 @@ const [done, setDone] = useState('');
       </div>    
       </div>    
 
-<nav>
+{/* <nav>
 <ul className='pagination'>
   <li className='page-item'>
     <a  className='page-link'
@@ -640,7 +640,7 @@ const [done, setDone] = useState('');
 
 
 </ul>
-</nav> 
+</nav>  */}
 </>
   );
   function prePage(){

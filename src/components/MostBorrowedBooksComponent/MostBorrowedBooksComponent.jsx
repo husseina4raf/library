@@ -20,13 +20,13 @@ const MostBorrowedBooksComponent = () => {
     },[]);
 
 
-    const [currentPage, setCurrentPage]= useState(1)
-    const recordsPerPage = 5;
-    const lastIndex = currentPage * recordsPerPage;
-    const firstIndex = lastIndex - recordsPerPage;
-    const records = books.slice(firstIndex,lastIndex);
-    const npage = Math.ceil(books.length / recordsPerPage );
-    const numbers = [...Array(npage + 1).keys()].slice(1);
+    // const [currentPage, setCurrentPage]= useState(1)
+    // const recordsPerPage = 5;
+    // const lastIndex = currentPage * recordsPerPage;
+    // const firstIndex = lastIndex - recordsPerPage;
+    // const records = books.slice(firstIndex,lastIndex);
+    // const npage = Math.ceil(books.length / recordsPerPage );
+    // const numbers = [...Array(npage + 1).keys()].slice(1);
     return (
         <>
         <div class="container ">
@@ -53,7 +53,7 @@ const MostBorrowedBooksComponent = () => {
    </tr>
       </thead>
       <tbody>
-        {records.map((item)=>(
+        {books.map((item)=>(
             <tr key={item.id}>
                               <td>{item.bookTitle}</td>
 
@@ -75,7 +75,7 @@ const MostBorrowedBooksComponent = () => {
       </div>    
       </div>  
 
-<nav>
+{/* <nav>
 <ul className='pagination'>
   <li className='page-item'>
     <a  className='page-link'
@@ -100,28 +100,28 @@ const MostBorrowedBooksComponent = () => {
 
 
 </ul>
-</nav>
+</nav> */}
 </>
 
        
     );
 
-    function prePage(){
-        if(currentPage !== 1){
-          setCurrentPage(currentPage - 1)
-        }
+    // function prePage(){
+    //     if(currentPage !== 1){
+    //       setCurrentPage(currentPage - 1)
+    //     }
         
-      }
-      function changeCPage(id){
-        setCurrentPage(id)
+    //   }
+    //   function changeCPage(id){
+    //     setCurrentPage(id)
         
-      }
-      function nextPage(){
-        if(currentPage !== npage){
-          setCurrentPage(currentPage + 1)
-        }
+    //   }
+    //   function nextPage(){
+    //     if(currentPage !== npage){
+    //       setCurrentPage(currentPage + 1)
+    //     }
       
-      }
+    //   }
 };
 
 export default MostBorrowedBooksComponent;

@@ -20,13 +20,13 @@ const OverdueBooksComponent = () => {
     },[]);
 
 
-    const [currentPage, setCurrentPage]= useState(1)
-    const recordsPerPage = 5;
-    const lastIndex = currentPage * recordsPerPage;
-    const firstIndex = lastIndex - recordsPerPage;
-    const records = reservation.slice(firstIndex,lastIndex);
-    const npage = Math.ceil(reservation.length / recordsPerPage );
-    const numbers = [...Array(npage + 1).keys()].slice(1);
+    // const [currentPage, setCurrentPage]= useState(1)
+    // const recordsPerPage = 5;
+    // const lastIndex = currentPage * recordsPerPage;
+    // const firstIndex = lastIndex - recordsPerPage;
+    // const records = reservation.slice(firstIndex,lastIndex);
+    // const npage = Math.ceil(reservation.length / recordsPerPage );
+    // const numbers = [...Array(npage + 1).keys()].slice(1);
 
     return (
         <>
@@ -48,20 +48,20 @@ const OverdueBooksComponent = () => {
       <thead>
    <tr>
 <th>ID</th>
-<th> Reservarion Date </th>
+<th> Reservation Date </th>
 <th> Due Date </th>
 <th> Return Date </th>
-<th> ReservationStatus </th>
+<th> Reservation Status </th>
 
    </tr>
       </thead>
       <tbody>
-        {records.map((item)=>(
+        {reservation.map((item)=>(
             <tr key={item.id}>
                <td>{item.id}</td>
                <td>{ moment.utc(item.reservationDate).format("DD-MM-YYYY") }</td>
                <td>{ moment.utc(item.dueDate).format("DD-MM-YYYY") }</td>
-                <td>{ moment.utc(item.returnDate).format("DD-MM-YYYY") }</td> 
+                <td>{ item.returnDate !== null ? moment.utc(item.returnDate).format("MM-DD-YYYY") : "" }</td> 
                <td>{item.reservationStatus}</td>
         
                </tr>
@@ -80,7 +80,7 @@ const OverdueBooksComponent = () => {
       </div>    
       </div>  
 
-<nav>
+{/* <nav>
 <ul className='pagination'>
   <li className='page-item'>
     <a  className='page-link'
@@ -105,27 +105,27 @@ const OverdueBooksComponent = () => {
 
 
 </ul>
-</nav>
+</nav> */}
 </>
         
         );
 
-        function prePage(){
-            if(currentPage !== 1){
-              setCurrentPage(currentPage - 1)
-            }
+        // function prePage(){
+        //     if(currentPage !== 1){
+        //       setCurrentPage(currentPage - 1)
+        //     }
             
-          }
-          function changeCPage(id){
-            setCurrentPage(id)
+        //   }
+        //   function changeCPage(id){
+        //     setCurrentPage(id)
             
-          }
-          function nextPage(){
-            if(currentPage !== npage){
-              setCurrentPage(currentPage + 1)
-            }
+        //   }
+        //   function nextPage(){
+        //     if(currentPage !== npage){
+        //       setCurrentPage(currentPage + 1)
+        //     }
           
-          }
+        //   }
 };
 
 export default OverdueBooksComponent;

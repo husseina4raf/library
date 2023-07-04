@@ -74,7 +74,7 @@ const MostBorrowedGenresComponent = () => {
       </div>    
       </div>  
 
-<nav>
+{/* <nav>
 <ul className='pagination'>
   <li className='page-item'>
     <a  className='page-link'
@@ -99,28 +99,28 @@ const MostBorrowedGenresComponent = () => {
 
 
 </ul>
-</nav>
+</nav> */}
 </>
 
        
     );
 
-    function prePage(){
-        if(currentPage !== 1){
-          setCurrentPage(currentPage - 1)
-        }
+    // function prePage(){
+    //     if(currentPage !== 1){
+    //       setCurrentPage(currentPage - 1)
+    //     }
         
-      }
-      function changeCPage(id){
-        setCurrentPage(id)
+    //   }
+    //   function changeCPage(id){
+    //     setCurrentPage(id)
         
-      }
-      function nextPage(){
-        if(currentPage !== npage){
-          setCurrentPage(currentPage + 1)
-        }
+    //   }
+    //   function nextPage(){
+    //     if(currentPage !== npage){
+    //       setCurrentPage(currentPage + 1)
+    //     }
       
-      }
+    //   }
 };
 
 export default MostBorrowedGenresComponent;

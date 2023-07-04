@@ -5,6 +5,7 @@ import UserActivityComponent from '../UserActivitComponent/UserActivityComponent
 import OverdueBooksComponent from '../OverdueBooksComponent/OverdueBooksComponent';
 import MostBorrowedGenresComponent from '../MostBorrowedGenresComponent/MostBorrowedGenresComponent';
 import MostBorrowedBooksComponent from '../MostBorrowedBooksComponent/MostBorrowedBooksComponent';
+import ReportGeneratorComponent from '../ReportGeneratorComponent/ReportGeneratorComponent';
 
 
 
@@ -20,7 +21,7 @@ const ReportsComponent = () => {
             </NavLink>
             
             <NavLink className={styles.dashboradItem} to='useractivity'>
-            <p>User Activit</p>
+            <p>User Activity</p>
             </NavLink>
 
             <NavLink className={styles.dashboradItem} to='mborrowed'>
@@ -29,6 +30,10 @@ const ReportsComponent = () => {
 
             <NavLink className={styles.dashboradItem} to='mborrowedbook'>
             <p> Most Borrowed Books</p>
+            </NavLink>
+
+            <NavLink className={styles.dashboradItem} to='generator'>
+            <p> Report Generator</p>
             </NavLink>
             
         </div>
@@ -40,6 +45,7 @@ const ReportsComponent = () => {
       <Route path="/useractivity" element={<UserActivityComponent/>}/>
       <Route path="mborrowed" element={<MostBorrowedGenresComponent/>}/>
       <Route path="mborrowedbook" element={<MostBorrowedBooksComponent/>}/>
+      <Route path="generator" element={<ReportGeneratorComponent/>}/>
 
        
       </Routes>

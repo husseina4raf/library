@@ -61,7 +61,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched} = useFormik({
         
         <div className="container my-4">
             <div className="text-center d-flex justify-content-center position-relative">
-        <img src={logo}  alt="" ></img>
+        <img src={logo}  alt="" />
         {error && <Alert className={styles.alert} variant="filled" severity="error">
                                                                {error}
                                                           </Alert>}
